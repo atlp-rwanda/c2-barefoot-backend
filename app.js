@@ -1,13 +1,9 @@
 import express from 'express';
-import bodyParser from 'body-parser';
 import swaggerUI from 'swagger-ui-express';
 import routes from './src/routes/routes';
 import swaggerDocument from './swagger.json';
 
 const app = express();
-
-// middleware
-app.use(bodyParser.json());
 
 // routes
 app.use('/', routes);
