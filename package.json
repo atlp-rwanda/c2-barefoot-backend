@@ -1,0 +1,25 @@
+{
+  "name": "c2-barefoot-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/atlp-rwanda/c2-barefoot-backend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/atlp-rwanda/c2-barefoot-backend/issues"
+  },
+  "homepage": "https://github.com/atlp-rwanda/c2-barefoot-backend#readme",
+  "dependencies": {
+    "pg": "^8.4.0",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^6.3.5"
+  }
+}
