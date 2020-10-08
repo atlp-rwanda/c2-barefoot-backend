@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node_modules/.bin/babel-node ./app.js",
     "cohort2-barefoot": "nodemon --exec babel-node app.js",
-    "test": "nyc --reporter=html --reporter=text mocha --require @babel/register ./src/tests/*.test.js --timeout 1000000 --exit",
+    "test": "NODE_ENV=test nyc --reporter=html --reporter=text mocha --require @babel/register ./src/tests/*.test.js --timeout 1000000 --exit",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "lint": "eslint . --fix"
   },

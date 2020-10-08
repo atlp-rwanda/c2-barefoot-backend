@@ -7,6 +7,6 @@ describe('testing welcome router', () => {
   it('Should get welcome message', async () => {
     const res = await request(app).get('/');
     expect(res).to.have.status([200]);
-    expect('Welcome to Barefoot Nomad').to.equal('Welcome to Barefoot Nomad');
+    expect(res.text).to.equal('Welcome to Barefoot Nomad');
   });
 });
