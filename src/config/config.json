@@ -1,0 +1,27 @@
+{
+  "development": {
+    "username": "andelaTeam",
+    "password": "andela@post",
+    "database": "barefoot",
+    "host": "127.0.0.1",
+    "port": "5000",
+    "dialect": "postgres",
+    "operatorsAliases": 0
+  },
+  "test": {
+    "username": "root",
+    "password": null,
+    "database": "database_test",
+    "host": "127.0.0.1",
+    "dialect": "postgres",
+    "operatorsAliases": 0
+  },
+  "production": {
+    "username": "root",
+    "password": null,
+    "database": "database_production",
+    "host": "127.0.0.1",
+    "dialect": "postgres",
+    "operatorsAliases": 0
+  }
+}
