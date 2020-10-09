@@ -22,6 +22,7 @@
   "homepage": "https://github.com/atlp-rwanda/c2-barefoot-backend#readme",
   "dependencies": {
     "coverage": "^0.4.1",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "swagger-ui-express": "^4.1.4"
   },
