@@ -4,8 +4,10 @@
   "description": "Backend API for Barefoot Nomad ",
   "main": "app.js",
   "scripts": {
-    "start": "node_modules/.bin/babel-node ./app.js",
-    "dev": "nodemon --exec babel-node app.js",
+    "clean": "rm -rf build/src && mkdir build/src",
+    "build": "babel -d ./build ./src -s",
+    "start": "npm run build && node ./build/app.js",
+    "dev": "nodemon --exec babel-node ./src/app.js",
     "test": "NODE_ENV=test nyc --reporter=html --reporter=text mocha --require @babel/register ./src/tests/*.test.js --timeout 1000000 --exit",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "lint": "eslint . --fix"
