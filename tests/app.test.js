@@ -1,6 +1,6 @@
 import { expect, request, use } from 'chai';
 import chaiHttp from 'chai-http';
-import app from '../app';
+import app from '../src/app';
 
 use(chaiHttp);
 describe('testing welcome router', () => {

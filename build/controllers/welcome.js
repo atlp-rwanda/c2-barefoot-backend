@@ -11,8 +11,7 @@ var welcome = function welcome(req, res) {
     status: 200,
     message: 'Welcome to Barefoot Nomad'
   });
-}; //  "name": "node_modules/.bin/babel-node ./app.js",
-
+};
 
 var _default = welcome;
 exports["default"] = _default;
