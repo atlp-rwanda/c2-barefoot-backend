@@ -13,7 +13,7 @@
     "seed": "cd src && npx sequelize-cli db:seed:all",
     "seed-undo": "cd src && npx sequelize-cli db:seed:undo",
     "seed-undo-all": "cd src && npx sequelize-cli db:seed:undo:all",
-    "clean": "del -f build && mkdir build",
+    "clean": "rm -rf build && mkdir build",
     "build-babel": "babel -d ./build ./src -s",
     "build": "npm run clean && npm run build-babel",
     "test": "set NODE_ENV=test nyc --reporter=html --reporter=text mocha --require @babel/register ./tests/*.test.js --timeout 1000000 --exit",
