@@ -5,8 +5,8 @@
   "main": "app.js",
   "scripts": {
     "clean": "rm -rf build && mkdir build",
-    "build-babel": "babel -d ./build ./src -s",
-    "build": "npm run clean && npm run build-babel",
+    "heroku-postbuild": "babel -d ./build ./src -s",
+    "build": "npm run clean && npm run heroku-postbuild",
     "start": "npm run build && node ./build/app.js",
     "dev": "nodemon --exec babel-node ./src/app.js",
     "test": "NODE_ENV=test nyc --reporter=html --reporter=text mocha --require @babel/register ./tests/*.test.js --timeout 1000000 --exit",
