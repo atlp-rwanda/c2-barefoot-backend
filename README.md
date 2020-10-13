@@ -1,4 +1,8 @@
 # c1-barefoot-backend
+[![Build Status](https://travis-ci.com/atlp-rwanda/c2-barefoot-backend.svg?token=1XybCTDw8TEfYfRbKuNS&branch=develop)](https://travis-ci.com/atlp-rwanda/c2-barefoot-backend) [![Coverage Status](https://coveralls.io/repos/github/atlp-rwanda/c2-barefoot-backend/badge.svg?branch=develop)](https://coveralls.io/github/atlp-rwanda/c2-barefoot-backend?branch=develop) [![Maintainability](https://api.codeclimate.com/v1/badges/e3c9894d9fd5a5ced4a0/maintainability)](https://codeclimate.com/github/atlp-rwanda/c2-barefoot-backend/maintainability)
+
+>You can find coveralls repo token `.sample-env` file.
+
 ## Running the project
 * Development mode: ``npm run devStart``
 * Production mode: ``npm run start``
@@ -57,6 +61,7 @@ module.exports = {
   }
 };
  ```
+ Here in this file you will have to change data as you want before running the seed.
 
  ## Running the seed
  we have created a seed file and we have to commit it to the database.
