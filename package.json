@@ -4,7 +4,15 @@
   "description": "Backend API for Barefoot Nomad ",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon --exec babel-node app.js",
+    "start": "set NODE_ENV=production && nodemon  --exec babel-node app.js",
+    "devStart":"set NODE_ENV=development && nodemon  --exec babel-node app.js",
+    "createModel":"cd src && npx sequelize-cli model:generate ",
+    "migrate":"cd src && npx sequelize-cli db:migrate",
+    "migrate-undo":"cd src && npx sequelize-cli db:migrate:undo",
+    "createSeed":"cd src && npx sequelize-cli seed:generate",
+    "seed":"cd src && npx sequelize-cli db:seed:all",
+    "seed-undo":"cd src && npx sequelize-cli db:seed:undo",
+    "seed-undo-all":"cd src && npx sequelize-cli db:seed:undo:all",
     "lint": "eslint . --fix"
   },
   "repository": {
@@ -23,6 +31,7 @@
     "pg": "^8.4.0",
     "pg-hstore": "^2.3.3",
     "sequelize": "^6.3.5",
+    "sequelize-cli": "^6.2.0",
     "swagger-ui-express": "^4.1.4"
   },
   "devDependencies": {
