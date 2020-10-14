@@ -15,7 +15,7 @@ This command takes two parameters:
 
 To create a model named _``User``_  we have to run:
 ```ps
-npm run createModel -- --name Me --attributes Name:string,Email:string
+npm run createModel -- --name User --attributes Name:string,Email:string
 ```
 This will:
 

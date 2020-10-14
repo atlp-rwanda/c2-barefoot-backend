@@ -1,19 +1,18 @@
 import Sequelize from 'sequelize';
 
 // production database credentials
-const { DB_NAME, DB_USERNAME, PASSWORD, HOST} = process.env;
+const { DB_NAME, DB_USERNAME, DB_PASSWORD, DB_HOST, DB_PORT} = process.env;
 
 var db
 // local database credentials
-const { DB_NAME_LOCAL, DB_USERNAME_LOCAL, PASSWORD_LOCAL, HOST_LOCAL} = process.env;
+const { LOCAL_DB_NAME, LOCAL_DB_USERNAME, LOCAL_DB_PASSWORD, LOCAL_DB_HOST, LOCAL_DB_PORT} = process.env;
 if((process.env.NODE_ENV).trim() === "development"){
-  /**during set up i set postgres to work on port 500
+  /**during set up i set postgres to work on port 5000
    * So, you put it on 5432 if you used default port locally 
   */
-  const port = 5000
-  db = new Sequelize(DB_NAME_LOCAL, DB_USERNAME_LOCAL, PASSWORD_LOCAL, {
-    host: HOST_LOCAL,
-    port: port,
+  db = new Sequelize(LOCAL_DB_NAME, LOCAL_DB_USERNAME, LOCAL_DB_PASSWORD, {
+    host: LOCAL_DB_HOST,
+    port: LOCAL_DB_PORT,
     dialect: 'postgres',
     /** In localhost this causes SSL connection error */
     // dialectOptions: {
@@ -31,10 +30,9 @@ if((process.env.NODE_ENV).trim() === "development"){
   });
 }else{
   // Production setup
-  const port = 5432
-  db = new Sequelize(DB_NAME, DB_USERNAME, PASSWORD, {
-    host: HOST,
-    port: port,
+  db = new Sequelize(DB_NAME, DB_USERNAME, DB_PASSWORD, {
+    host: DB_HOST,
+    port: DB_PORT,
     dialect: 'postgres',
     dialectOptions: {
       ssl: {

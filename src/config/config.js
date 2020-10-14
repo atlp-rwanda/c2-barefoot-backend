@@ -1,11 +1,12 @@
 require('@babel/register')
+require('dotenv').config({path:'../.env'});
 module.exports =  {
   development: {
-    username: "andelaTeam",
-    password: "andela@post",
-    database: "barefoot",
-    host: "127.0.0.1",
-    port: "5000",
+    username: process.env.LOCAL_DB_USERNAME,
+    password: process.env.LOCAL_DB_PASSWORD,
+    database: process.env.LOCAL_DB_NAME,
+    host: process.env.LOCAL_DB_HOST,
+    port: process.env.LOCAL_DB_PORT,
     dialect: "postgres",
     operatorsAliases: 0
   },
@@ -13,7 +14,7 @@ module.exports =  {
     username: process.env.CI_DB_USERNAME,
     password: process.env.CI_DB_PASSWORD,
     database: process.env.CI_DB_NAME,
-    host: '127.0.0.1',
+    host: process.env.CI_HOST,
     dialect: 'postgres'
   },
   production: {

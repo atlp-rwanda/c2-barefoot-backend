@@ -18,11 +18,13 @@ db.authenticate()
   .then(() => console.log('Database connected...'))
   .catch((err) => console.log(`Error: ${err}`));
 
-const port = process.env.PORT || 4000;
+const port = process.env.PORT || 3000;
 
 app.listen(port, () => {
   console.log(`Server started on port ${port} ...`);
   console.log(process.env.NODE_ENV)
+  console.log(process.env.LOCAL_DB_PORT);
+  
 });
 
 export default app;
