@@ -4,7 +4,7 @@
   "description": "Backend API for Barefoot Nomad ",
   "main": "app.js",
   "scripts": {
-    "start": "npm run build && node ./build/app.js",
+    "start": "node ./build/app.js",
     "devStart": "set NODE_ENV=development && nodemon  --exec babel-node ./src/app.js",
     "createModel": "cd src && npx sequelize-cli model:generate ",
     "migrate": "cd src && npx sequelize-cli db:migrate",
@@ -16,7 +16,9 @@
     "clean": "rm -rf build && mkdir build",
     "build-babel": "babel -d ./build ./src -s",
     "build": "npm run clean && npm run build-babel",
-    "test": "set NODE_ENV=test nyc --reporter=html --reporter=text mocha --require @babel/register ./tests/*.test.js --timeout 1000000 --exit",
+    "heroku-postbuild": "babel src -d build",
+    
+    "test": "NODE_ENV=test nyc --reporter=html --reporter=text mocha --require @babel/register ./tests/*.test.js --timeout 1000000 --exit",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "lint": "eslint . --fix"
   },
