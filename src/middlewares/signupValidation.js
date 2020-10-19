@@ -2,11 +2,13 @@ import Joi from 'joi';
 
 export default function (req, res, next) {
   const schema = Joi.object({
-    firstName: Joi.string().required(),
-    lastName: Joi.string().required(),
+    first_name: Joi.string().required(),
+    last_name: Joi.string().required(),
     email: Joi.string().email().required(),
     password: Joi.string().required().min(8),
-    password2: Joi.string().required().min(8),
+    address: Joi.string().required(),
+    language: Joi.string().required(),
+    profile_picture: Joi.string().required()
   });
 
   const { error } = schema.validate(req.body);
