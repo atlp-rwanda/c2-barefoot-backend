@@ -1,6 +1,5 @@
 import express from 'express';
 import swaggerUI from 'swagger-ui-express';
-import bodyParser from 'body-parser';
 import routes from './routes/routes';
 import swaggerDocument from '../swagger.json';
 import db from './config/connection';
@@ -8,7 +7,7 @@ import 'dotenv/config';
 
 const app = express();
 
-app.use(bodyParser.json());
+app.use(express.json());
 
 // routes
 app.use('/', routes);
