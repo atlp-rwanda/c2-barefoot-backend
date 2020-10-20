@@ -1,5 +1,4 @@
 require('dotenv/config');
-
 module.exports = {
   development: {
     use_env_variable: 'LOCAL_DB_URL',
