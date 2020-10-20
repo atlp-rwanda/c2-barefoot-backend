@@ -1,4 +1,5 @@
 import nodemailer from 'nodemailer';
+import jwt from 'jsonwebtoken';
 import 'dotenv/config';
 
 const transporter = nodemailer.createTransport({
@@ -11,13 +12,16 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-export const sendVerificationEmail = async (data) => {
+const sendVerificationEmail = async (data) => {
+  const accessToken = jwt.sign({ user: data }, process.env.TOKEN_SECRET);
   const mailOptions = {
     from: `"Barefoot Nomad"<${process.env.GMAIL_EMAIL}>`,
     to: data,
-    subject: 'Verify your email.',
-    html: '<p>Welcome to Barefoot Nomad, verify your email to continue</p>'
+    subject: 'Verify your email',
+    html: `<p>Welcome to Barefoot Nomad, Click on the link below to verify your email.</p> <br> <a href='http://localhost:3000/verification/${accessToken}'>Link</a>`
   };
   const sendmail = await transporter.sendMail(mailOptions);
   return sendmail;
 };
+
+export default sendVerificationEmail;
