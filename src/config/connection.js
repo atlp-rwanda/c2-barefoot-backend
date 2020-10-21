@@ -14,7 +14,7 @@ const {
 } = process.env;
 // testing database
 const {
-  CI_DB_NAME, CI_DB_USERNAME, CI_DB_PASSWORD, CI_DB_HOST, CI_DB_PORT
+  CI_DB_NAME, CI_DB_USERNAME, CI_DB_PASSWORD, CI_HOST, CI_PORT
 } = process.env;
 if (process.env.NODE_ENV === 'development') {
   /** during set up i set postgres to work on port 5000
@@ -43,8 +43,8 @@ if (process.env.NODE_ENV === 'development') {
    * So, you put it on 5432 if you used default port locally
   */
   db = new Sequelize(CI_DB_NAME, CI_DB_USERNAME, CI_DB_PASSWORD, {
-    host: CI_DB_HOST,
-    port: CI_DB_PORT,
+    host: CI_HOST,
+    port: CI_PORT,
     dialect: 'postgres',
     /** In localhost this causes SSL connection error */
     dialectOptions: {
