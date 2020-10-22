@@ -22,9 +22,9 @@ db.authenticate()
 
 const port = process.env.PORT || 3000;
 
-db.authenticate()
-  .then(() => console.log('Database connected...'))
-  .catch((err) => console.log(`Error: ${err}`));
+// db.authenticate()
+//   .then(() => console.log('Database connected...'))
+//   .catch((err) => console.log(`Error: ${err}`));
 
 app.listen(port, () => {
   console.log(`Server started on port ${port} ...`);
