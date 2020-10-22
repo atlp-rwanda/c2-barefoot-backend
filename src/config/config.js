@@ -2,27 +2,36 @@ require('dotenv/config');
 
 module.exports = {
   development: {
-    username: process.env.LOCAL_DB_USERNAME,
-    password: process.env.LOCAL_DB_PASSWORD,
+    use_env_variable: 'LOCAL_DB_URL',
     database: process.env.LOCAL_DB_NAME,
-    host: process.env.LOCAL_DB_HOST,
-    port: process.env.LOCAL_DB_PORT,
-    dialect: 'postgres',
-    operatorsAliases: 0
+    password: process.env.LOCAL_DB_PASSWORD,
+    username: process.env.LOCAL_DB_USERNAME,
+    dialect: 'postgres'
   },
   test: {
-    username: process.env.CI_DB_USERNAME,
-    password: process.env.CI_DB_PASSWORD,
+    use_env_variable: 'CI_DB_URL',
     database: process.env.CI_DB_NAME,
-    host: process.env.CI_HOST,
-    port: process.env.CI_PORT,
-    dialect: 'postgres'
+    password: process.env.CI_DB_PASSWORD,
+    username: process.env.CI_DB_USERNAME,
+    dialect: 'postgres',
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false
+      }
+    }
   },
   production: {
-    username: process.env.DB_USERNAME,
-    password: process.env.DB_PASSWORD,
+    use_env_variable: 'DB_URL',
     database: process.env.DB_NAME,
-    host: process.env.DB_HOST,
-    dialect: 'postgres'
+    password: process.env.DB_PASSWORD,
+    username: process.env.DB_USERNAME,
+    dialect: 'postgres',
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false
+      }
+    }
   }
 };
