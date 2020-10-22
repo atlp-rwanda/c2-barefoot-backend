@@ -5,6 +5,6 @@ const router = express.Router();
 
 // ------------------Welcome Page-----------------
 
-router.get('/', welcome);
+router.post('/', welcome);
 
 export default router;

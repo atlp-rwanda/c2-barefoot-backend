@@ -52,5 +52,14 @@
         }
       }
     ]
-  }
+  },
+  "overrides": [
+    {
+      "files": ["*test/*","*build/*"],
+      "rules": {
+        "require-jsdoc": "off",
+        "no-unused-expressions": "off"
+      }
+    }
+  ]
 }
