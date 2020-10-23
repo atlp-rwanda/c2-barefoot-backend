@@ -18,7 +18,7 @@ if (!fs.existsSync('./permissions/index.json')) {
 exports.create = (req, res) => {
   /* data validation */
   const { error } = roleValidate.roleValidation(req.body);
-  if (error) return res.status(400).json(error.details[0].message);
+  if (error) return res.status(401).json(error.details[0].message);
 
   /** receives the body object from the request */
   const requestData = req.body;
@@ -71,7 +71,7 @@ exports.create = (req, res) => {
       /* convert this new JSON data from one line to readable using stringify */
       const dataJson = JSON.stringify(roles, null, 2);
       fs.writeFileSync('./permissions/index.json', dataJson);
-      return res.status(200).json(roles);
+      return res.status(201).json(roles);
     }
   } catch (err) {
     res.status(500).json({ status: 500, errors: err });
@@ -82,7 +82,7 @@ exports.updatePermissions = (req, res)=>{
 
     /* data validation */
     const { error } = roleValidate.updateValidation(req.body);
-    if (error) return res.status(400).json(error.details[0].message);
+    if (error) return res.status(401).json(error.details[0].message);
 
     let requestData = req.body;
     try {
@@ -104,7 +104,7 @@ exports.updatePermissions = (req, res)=>{
 
         if(existProp){
             /*check if requested permissions are valid and values are valid*/
-            let permissions = requestData.permissions
+            let permissions = requestData.permissions;
             let validPermission = [];
             for(let property in permissions){
                 if(roles[role].hasOwnProperty(property)){
@@ -131,10 +131,52 @@ exports.updatePermissions = (req, res)=>{
             fs.writeFileSync('./permissions/index.json', dataJson);     
 
             if(validPermission != ""){
-                res.status(200).json( {error: "these permissions or values are not allowed", "failed permissions": validPermission, success: roles[role]}); 
+                res.status(201).json( {error: "these permissions or values are not allowed", "failed permissions": validPermission, success: roles[role]}); 
             }
             else{
-                res.status(200).json({message: "Permissions updated successfully", "failed permissions": validPermission, success: roles[role]});
+                res.status(401).json({message: "Permissions updated successfully", "failed permissions": validPermission, success: roles[role]});
+            }
+            
+        }
+
+    } catch (err) {
+        res.status(500).json({ status: 500, errors: err });
+    }
+};
+
+exports.deleteRoles = (req, res)=>{
+    /* data validation */
+    const { error } = roleValidate.deleteValidation(req.body);
+    if (error) return res.status(401).json(error.details[0].message);
+
+    let requestRole = req.body.role;
+    try {
+        /* read data from index.json file */
+
+        const existingData = fs.readFileSync('./permissions/index.json');
+
+        /* converting the data from buffer to json format */
+        let roles = {};
+        roles = JSON.parse(existingData);
+
+        let existProp = true;
+        /* check if index.json does not have this requested role */
+        if (!roles.hasOwnProperty(requestRole)) {
+            existProp = false;
+            return res.status(500).json({ status: 500, message: 'Bad request, role not exist!' });
+        }
+
+        if(existProp){
+            if(delete roles[requestRole]){
+                const dataJson = JSON.stringify(roles, null, 2);
+
+                /* save changes */
+                fs.writeFileSync('./permissions/index.json', dataJson);     
+
+                return res.status(201).json({status:201,message: "Role deleted successfully", roles: roles});
+                
+            }else{
+                return res.status(500).json({status:500,error: "Failed to delete this role"});
             }
             
         }

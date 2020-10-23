@@ -15,6 +15,9 @@ router.post('/roles', roles.create);
 /* create a role endpoint for updating permissions*/
 router.post('/roles/update', roles.updatePermissions);
 
+/* create a role endpoint for deleting roles*/
+router.delete('/roles', roles.deleteRoles);
+
 /* a delete endpoint to show how to use this middleware of permissions*
  *for this pass to pass you have to send role and exact permission
  in your json body request */
