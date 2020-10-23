@@ -1,26 +1,27 @@
 import fs from 'fs';
-import roleValidation from '../../validation/createRole';
+import roleValidate from '../../validation/createRole';
+
+
+  /* creates a new folder if it does not exist */
+const dir = './permissions';
+if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir);
+    fs.writeFileSync('./permissions/index.json', '{}');
+}
+
+/* creates index.js if it doesn't exist */
+
+if (!fs.existsSync('./permissions/index.json')) {
+    fs.writeFileSync('./permissions/index.json', '{}');
+}
 
 exports.create = (req, res) => {
   /* data validation */
-  const { error } = roleValidation(req.body);
+  const { error } = roleValidate.roleValidation(req.body);
   if (error) return res.status(400).json(error.details[0].message);
 
   /** receives the body object from the request */
   const requestData = req.body;
-
-  /* creates a new folder if it does not exist */
-  const dir = './permissions';
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir);
-    fs.writeFileSync('./permissions/index.json', '{}');
-  }
-
-  /* creates index.js if it doesn't exist */
-
-  if (!fs.existsSync('./permissions/index.json')) {
-    fs.writeFileSync('./permissions/index.json', '{}');
-  }
 
   /* a constructor holding all permissions */
 
@@ -76,3 +77,69 @@ exports.create = (req, res) => {
     res.status(500).json({ status: 500, errors: err });
   }
 };
+
+exports.updatePermissions = (req, res)=>{
+
+    /* data validation */
+    const { error } = roleValidate.updateValidation(req.body);
+    if (error) return res.status(400).json(error.details[0].message);
+
+    let requestData = req.body;
+    try {
+        /* read data from index.json file */
+
+        const existingData = fs.readFileSync('./permissions/index.json');
+
+        /* converting the data from buffer to json format */
+        let roles = {};
+        roles = JSON.parse(existingData);
+
+        let existProp = true;
+        /* check if index.json does not have this requested role */
+        const role = `${requestData.role}`;
+        if (!roles.hasOwnProperty(role)) {
+            existProp = false;
+            return res.status(500).json({ status: 500, message: 'Bad request, role not exist!' });
+        }
+
+        if(existProp){
+            /*check if requested permissions are valid and values are valid*/
+            let permissions = requestData.permissions
+            let validPermission = [];
+            for(let property in permissions){
+                if(roles[role].hasOwnProperty(property)){
+                    if((permissions[property] === 0) || (permissions[property] === 1) ){
+
+                        /*a property from index.json is assigned a value from the request*/
+                        roles[role][property]= permissions[property];       
+
+                    }else{
+                        
+                        /*catch invalid property values (non 0 or 1 values)*/
+                        validPermission.push(property);         
+                    }
+                    
+                }else{
+                    
+                    /* catch invalid properties*/
+                    validPermission.push(property);         
+                }
+            }
+            const dataJson = JSON.stringify(roles, null, 2);
+
+            /* save changes */
+            fs.writeFileSync('./permissions/index.json', dataJson);     
+
+            if(validPermission != ""){
+                res.status(200).json( {error: "these permissions or values are not allowed", "failed permissions": validPermission, success: roles[role]}); 
+            }
+            else{
+                res.status(200).json({message: "Permissions updated successfully", "failed permissions": validPermission, success: roles[role]});
+            }
+            
+        }
+
+    } catch (err) {
+        res.status(500).json({ status: 500, errors: err });
+    }
+}
