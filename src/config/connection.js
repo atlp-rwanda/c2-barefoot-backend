@@ -1,5 +1,5 @@
 import Sequelize from 'sequelize';
-
+import 'dotenv/config'; 
 // production database credentials
 const { DB_NAME, DB_USERNAME, DB_PASSWORD, DB_HOST, DB_PORT} = process.env;
 

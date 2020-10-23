@@ -9,6 +9,7 @@ import ApplicationError from './utils/ApplicationError';
 import swaggerConfigs from './config/swaggerDoc';
 
 const app = express();
+app.use(express.json());
 
 app.use(cors());
 

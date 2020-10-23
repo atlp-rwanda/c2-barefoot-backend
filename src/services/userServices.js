@@ -8,7 +8,7 @@ export  const findUserByEmail = async (email) => {
     try {
         const userFound = await userModel.findOne({
             where: {
-                email
+                email:email
             }
         })
         if(!userFound) return false;
