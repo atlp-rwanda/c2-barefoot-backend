@@ -16,7 +16,7 @@ const login = async (req, res) => {
       const userData = {
         id: isUser.id, first_name: isUser.first_name, last_name: isUser.last_name, email: isUser.email, address: isUser.address, language: isUser.language, profile_picture: isUser.profile_picture
       };
-      const userToken = jwt.sign({ userData }, process.env.TOKEN_SECRET);
+      const userToken = jwt.sign({ userData }, process.env.TOKEN_SECRET, { expiresIn: '1h' });
       return res.status(200).json({ status: 200, message: 'login successful', data: userToken });
     });
   } catch (error) {
