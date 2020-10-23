@@ -1,27 +1,20 @@
-require('dotenv/config');
+require('dotenv').config();
 module.exports = {
   development: {
-    username: process.env.LOCAL_DB_USERNAME,
-    password: process.env.LOCAL_DB_PASSWORD,
-    database: process.env.LOCAL_DB_NAME,
-    host: process.env.LOCAL_DB_HOST,
-    port: process.env.LOCAL_DB_PORT,
+    use_env_variable: 'DATABASE_URL',
     dialect: 'postgres',
-    operatorsAliases: 0
+    // dialectOptions: {
+    //   "ssl": { "require": true }
+    // }
   },
   test: {
-    username: process.env.CI_DB_USERNAME,
-    password: process.env.CI_DB_PASSWORD,
-    database: process.env.CI_DB_NAME,
-    host: process.env.CI_HOST,
-    port: process.env.CI_PORT,
-    dialect: 'postgres'
+    use_env_variable: 'TEST_DATABASE_URL',
+    dialect: 'postgres',
+    logging: false
   },
   production: {
-    username: process.env.DB_USERNAME,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-    host: process.env.DB_HOST,
-    dialect: 'postgres'
-  }
-};
+    use_env_variable: 'DATABASE_URL',
+    dialect: 'postgres',
+    logging: false,
+  },
+}

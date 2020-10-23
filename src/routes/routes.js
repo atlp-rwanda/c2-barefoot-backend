@@ -1,7 +1,7 @@
 import express from 'express';
 import welcome from '../controllers/welcome';
-import {resetPassword} from '../controllers/resetPassword';
-import { validateResetEmail } from '../validations/userValidation';
+import resetPassword from '../controllers/resetPassword';
+import {validateResetEmail } from '../validations/userValidation';
 
 const router = express.Router();
 
