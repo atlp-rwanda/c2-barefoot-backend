@@ -5,9 +5,9 @@
   "main": "app.js",
   "scripts": {
     "heroku-postbuild": "babel src -d build",
-    "start": "node ./build/app.js",
+    "start": "cross-env NODE_ENV=production node ./build/app.js",
     "dev": "nodemon --exec babel-node ./src/app.js",
-    "test": "cross-env NODE_ENV=test nyc --reporter=html --reporter=text mocha --require @babel/register ./tests/*.test.js --timeout 1000000 --exit",
+    "test": "npm run migrate && cross-env NODE_ENV=test nyc --reporter=html --reporter=text mocha --require @babel/register ./tests/*.test.js --timeout 1000000 --exit",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "lint": "eslint . --fix",
     "createModel": "npx sequelize-cli model:generate ",
@@ -39,6 +39,7 @@
     "pg": "^8.4.1",
     "pg-hstore": "^2.3.3",
     "sequelize": "^6.3.5",
+    "sequelize-cli": "^6.2.0",
     "swagger-ui-express": "^4.1.4"
   },
   "devDependencies": {
@@ -59,7 +60,6 @@
     "nodemon": "^2.0.4",
     "nyc": "^15.1.0",
     "request": "^2.88.2",
-    "sequelize-cli": "^6.2.0",
     "sinon": "^9.2.0"
   }
 }

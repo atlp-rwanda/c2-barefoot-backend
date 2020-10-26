@@ -2,7 +2,7 @@ import express from 'express';
 import swaggerUI from 'swagger-ui-express';
 import 'dotenv/config';
 import db from './models/index';
-import routes from './routes/routes';
+import routes from './routes/index';
 import swaggerDocument from '../swagger.json';
 
 const app = express();
@@ -10,7 +10,7 @@ const app = express();
 app.use(express.json());
 
 // routes
-app.use('/', routes);
+routes(app);
 
 // docuemntation route
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
