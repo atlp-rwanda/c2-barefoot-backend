@@ -13,12 +13,12 @@ const transporter = nodemailer.createTransport({
 });
 
 let link;
-if (process.env.NODE_ENV == 'development') {
+if (process.env.NODE_ENV === 'development') {
   link = 'http://localhost:3000/verification/';
 } else {
-  link = 'https://barefoot-nomad-production.herokuapp.com/';
+  link = 'https://barefoot-nomad-production.herokuapp.com/verification/';
 }
-
+console.log(link);
 const sendVerificationEmail = async (req, res) => {
   const { first_name, email } = req.body;
   const accessToken = jwt.sign({ user: email }, process.env.TOKEN_SECRET);
