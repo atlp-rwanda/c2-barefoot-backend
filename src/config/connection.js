@@ -1,4 +1,5 @@
 import Sequelize from 'sequelize';
+import 'dotenv/config';
 
 // production database credentials
 const {
@@ -6,15 +7,16 @@ const {
 } = process.env;
 
 let db;
+
 // local database credentials
 const {
   LOCAL_DB_NAME, LOCAL_DB_USERNAME, LOCAL_DB_PASSWORD, LOCAL_DB_HOST, LOCAL_DB_PORT
 } = process.env;
 // testing database
 const {
-  CI_DB_NAME, CI_DB_USERNAME, CI_DB_PASSWORD, CI_DB_HOST, CI_DB_PORT
+  CI_DB_NAME, CI_DB_USERNAME, CI_DB_PASSWORD, CI_HOST, CI_PORT
 } = process.env;
-if ((process.env.NODE_ENV).trim() === 'development') {
+if (process.env.NODE_ENV === 'development') {
   /** during set up i set postgres to work on port 5000
    * So, you put it on 5432 if you used default port locally
   */
@@ -36,21 +38,21 @@ if ((process.env.NODE_ENV).trim() === 'development') {
       idle: 10000
     }
   });
-} else if ((process.env.NODE_ENV).trim() === 'test') {
+} else if (process.env.NODE_ENV === 'test') {
   /** during set up i set postgres to work on port 5000
    * So, you put it on 5432 if you used default port locally
   */
   db = new Sequelize(CI_DB_NAME, CI_DB_USERNAME, CI_DB_PASSWORD, {
-    host: CI_DB_HOST,
-    port: CI_DB_PORT,
+    host: CI_HOST,
+    port: CI_PORT,
     dialect: 'postgres',
     /** In localhost this causes SSL connection error */
-    // dialectOptions: {
-    //   ssl: {
-    //     require: true,
-    //     rejectUnauthorized: false
-    //   }
-    // },
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false
+      }
+    },
     pool: {
       max: 5,
       min: 0,

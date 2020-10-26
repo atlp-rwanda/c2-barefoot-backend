@@ -2,23 +2,18 @@ import fs from 'fs';
 import roleValidate from '../../validation/createRole';
 
 
-  /* creates a new folder if it does not exist */
-const dir = './permissions';
-if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir);
-    fs.writeFileSync('./permissions/index.json', '{}');
-}
 
-/* creates index.js if it doesn't exist */
-
-if (!fs.existsSync('./permissions/index.json')) {
-    fs.writeFileSync('./permissions/index.json', '{}');
-}
 
 exports.create = (req, res) => {
   /* data validation */
   const { error } = roleValidate.roleValidation(req.body);
   if (error) return res.status(401).json(error.details[0].message);
+
+    /* creates index.js if it doesn't exist */
+
+    if (!fs.existsSync('./permissions/index.json')) {
+        fs.writeFileSync('./permissions/index.json', '{}');
+    }
 
   /** receives the body object from the request */
   const requestData = req.body;
@@ -83,6 +78,13 @@ exports.updatePermissions = (req, res)=>{
     /* data validation */
     const { error } = roleValidate.updateValidation(req.body);
     if (error) return res.status(401).json(error.details[0].message);
+    
+    /* creates index.js if it doesn't exist */
+
+    if (!fs.existsSync('./permissions/index.json')) {
+        fs.writeFileSync('./permissions/index.json', '{}');
+    }
+
 
     let requestData = req.body;
     try {
@@ -149,8 +151,19 @@ exports.deleteRoles = (req, res)=>{
     const { error } = roleValidate.deleteValidation(req.body);
     if (error) return res.status(401).json(error.details[0].message);
 
+    /* creates index.js if it doesn't exist */
+
+    if (!fs.existsSync('./permissions/index.json')) {
+        fs.writeFileSync('./permissions/index.json', '{}');
+    }
+
+
     let requestRole = req.body.role;
     try {
+
+
+
+        
         /* read data from index.json file */
 
         const existingData = fs.readFileSync('./permissions/index.json');
