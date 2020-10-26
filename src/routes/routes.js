@@ -13,7 +13,7 @@ const router = express.Router();
 router.post('/requests/request', travelRequest) //make a request
 router.get('/requests/view', getTravelRequest) // view all requests
 router.get('/requests/view/:requestId', getTravelRequest) //Get single request
-router.get('/requests/direct-reports', getDirectReport) // view direct reports
+router.get('/requests/direct-reports/:managerId', getDirectReport) // view direct reports
 router.get('/', welcome);
 
 export default router;
