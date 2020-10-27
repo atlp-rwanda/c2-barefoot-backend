@@ -1,7 +1,7 @@
 import express from 'express';
 import welcome from '../controllers/welcome';
-import resetPassword from '../controllers/resetPassword';
-import {validateResetEmail } from '../validations/userValidation';
+import {resetPassword, verifyResetPassword} from '../controllers/resetPassword';
+import {validateResetEmail}  from '../validations/userValidation';
 
 const router = express.Router();
 
@@ -9,5 +9,6 @@ const router = express.Router();
 
 router.get('/', welcome);
 router.post('/resetPassword/request',validateResetEmail, resetPassword);
-
+// router.patch('/ResetPassword',resetLink)
+router.post('/v1/resetPassword/verify', verifyResetPassword)
 export default router;
