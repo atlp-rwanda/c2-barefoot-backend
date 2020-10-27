@@ -4,7 +4,7 @@ import findUser from '../../servises/findUser';
 const refreshToken = async (req, res) => {
   try {
     const token = req.cookies.make;
-    if (!token) return res.json({ message: 'no token in cookie', userToken: '' });
+    if (!token) return res.status(400).json({ message: 'no token in cookie', userToken: '' });
 
     const payload = jwt.verify(token, process.env.TOKEN_SECRET);
     // check if user exist in databasa
@@ -19,14 +19,14 @@ const refreshToken = async (req, res) => {
       language: newUser.language,
       profile_picture: newUser.profile_picture
     };
-    if (!newUser) return res.json({ message: 'no user found with this token', userToken: '' });
+    if (!newUser) return res.status(400).json({ message: 'no user found with this token', userToken: '' });
 
     const userToken = jwt.sign(userData, process.env.TOKEN_SECRET, { expiresIn: '2h' });
     const reftoken = jwt.sign(userData, process.env.TOKEN_SECRET, { expiresIn: '7d' });
 
     // user.reftoken = reftoken;
-    res.cookie('make', reftoken, { httpOnly: true, path: '/refresh-token' });
-    return res.json({ userToken });
+    res.cookie('make', reftoken, { httpOnly: true, path: '/api/v1/refresh-token' });
+    return res.status(200).json({ userToken });
   } catch (error) {
     console.log(error.message);
   }
