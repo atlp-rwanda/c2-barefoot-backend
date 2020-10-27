@@ -18,7 +18,7 @@ const sendResetPasswordLink = async (data) => {
     from: `"Barefoot Nomad"<${process.env.GMAIL_EMAIL}>`,
     to: data,
     subject: 'Reset password',
-    html:`<p>Welcome to barefoot nomad, click on this <a href=http://localhost:3000/resetPassword/${accessToken}>link</a> to reset your password</p>`
+    html:`<p>Welcome to barefoot nomad, click on this <a href=http://localhost:3000/resetPassword/verify?token=${accessToken}>link</a> to reset your password</p>`
 
   };
   const sendEmail = await sender.sendMail(mailOptions);
