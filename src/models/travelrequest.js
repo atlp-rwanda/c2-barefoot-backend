@@ -14,29 +14,30 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       console.log(models);
       
-      models.Trip.hasOne(TravelRequest, {foreignKey:"tripId"})
-      TravelRequest.belongsTo(models.Trip, {foreignKey:"tripId"})
+      // models.Trip.hasOne(TravelRequest, {foreignKey:"joiner"})
+      // TravelRequest.belongsToMany(models.Trip, {foreignKey:"joiner"})
       // TravelRequest.sync({alter:true})
     }
   };
   TravelRequest.init({
-    travelID: {
+    travelId: {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
+      unique: true,
       type: DataTypes.INTEGER
     },
-    managerID: {
+    managerId: {
       allowNull: false,
       type:DataTypes.INTEGER
     },
-    userID: {
+    userId: {
       allowNull: false,
       type:DataTypes.STRING
     },
-    // tripID: {
+    // tripId: {
     //   allowNull: false,
-    //   type:DataTypes.DATE
+    //   type:DataTypes.JSON
     // },
     status: {
       allowNull: false,

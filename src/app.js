@@ -10,6 +10,7 @@ const app = express();
 
 // parser
 app.use(bodyParser.urlencoded())
+app.use(bodyParser.json())
 // routes
 app.use('/', routes);
 

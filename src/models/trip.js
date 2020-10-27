@@ -11,6 +11,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      models.TravelRequest.hasMany(Trip, {foreignKey:"joiner", targetKey:"travelId"})
+      Trip.belongsTo(models.TravelRequest, {foreignKey:"joiner", targetKey:"travelId"})
       // Trip.sync({alter:true})
     }
   };
