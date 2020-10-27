@@ -1,6 +1,6 @@
 // Signup page controller
 import bcrypt from 'bcrypt';
-import models from '../models';
+import models from '../../models';
 import sendVerificationEmail from './sendEmail';
 
 const signup = async (req, res) => {

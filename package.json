@@ -30,6 +30,7 @@
   "homepage": "https://github.com/atlp-rwanda/c2-barefoot-backend#readme",
   "dependencies": {
     "bcrypt": "^5.0.0",
+    "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "coverage": "^0.4.1",
     "dotenv": "^8.2.0",

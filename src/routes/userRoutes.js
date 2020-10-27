@@ -1,12 +1,13 @@
 import express from 'express';
-import welcome from '../controllers/welcome';
-import signup from '../controllers/signup';
-import verification from '../controllers/verification';
+import welcome from '../controllers/userController/welcome';
+import signup from '../controllers/userController/signup';
+import verification from '../controllers/userController/verification';
 import signupValidation from '../middlewares/signupValidation';
 import loginValidation from '../middlewares/loginValidation';
-import logedIn from '../isLogedIn';
-import login from '../controllers/login';
-import logout from '../controllers/logout';
+import logedIn from '../helper/isLogedIn';
+import login from '../controllers/userController/login';
+import logout from '../controllers/userController/logout';
+import refreshToken from '../controllers/userController/refreshToken';
 
 const router = express.Router();
 
@@ -26,6 +27,8 @@ router.get('/verification/:token', verification);
 router.post('/login', loginValidation, login);
 
 // --------------- Logout ----------------------------------
-router.get('/logout', logedIn, logout);
+router.post('/logout', logedIn, logout);
+// --------------- refresh token ---------------------------
+router.post('/refresh-token', refreshToken);
 
 export default router;
