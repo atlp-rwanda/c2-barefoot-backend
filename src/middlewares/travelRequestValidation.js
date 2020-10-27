@@ -12,11 +12,16 @@ export class DbErrorHandler{
         status:"Status"
     }
     static getTravelRequestError(error){
-        var pathIterator = error.errors[0].path
-        if(error.errors[0].type == "notNull Violation"){
-            return {message: (this.dictionary[pathIterator] || pathIterator) + " can not be empty"}
-        }else{
-            return {message: "error::" + error.errors[0].path }
+        try{
+            var pathIterator = error.errors[0].path
+            if(error.errors[0].type == "notNull Violation"){
+                return {message: (this.dictionary[pathIterator] || pathIterator) + " can not be empty"}
+            }else{
+                return {message: "error::" + error.errors[0].path }
+            }
+        }catch(err){
+            return {message: error.message}
         }
+        
     }
 }

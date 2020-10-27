@@ -8,7 +8,8 @@ export function findTravelRequest(res,query){
                 console.log("TravelRequest")
                 var counter = tRequestDataSet.rows.length
                 tRequestDataSet.rows.forEach((tRequestData) => {
-                    db.Trip.findOne({where:{tripId:tRequestData.tripId}})
+                    console.log(tRequestData.tripId)
+                    db.Trip.findAll({where:{joiner:tRequestData.travelId}})
                         .then(tripData => {
                             counter -=1
                             if(tripData != null){
@@ -16,7 +17,7 @@ export function findTravelRequest(res,query){
                                 const allData = Object.assign(
                                     {},
                                     tRequestData.get({ plain: true }), 
-                                    {Trip:tripData.get({ plain: true })},
+                                    {Trip:tripData},
                                     )
                                 resultSet.push(allData)
                                 if(counter == 0){res.json(resultSet);}

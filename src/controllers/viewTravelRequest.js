@@ -6,9 +6,9 @@ const getTravelRequest = (req, res) => {
     console.log("++----++" + id)
     
     if(id){     // get a specific travel request
-        var query = {userID:userid, travelID:id}
+        var query = {userId:userid, travelId:id}
     }else{      // get all travel request (for a specific user)
-        var query = {userID:userid}
+        var query = {userId:userid}
     }
     findTravelRequest(res, query)
 }
