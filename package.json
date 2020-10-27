@@ -7,7 +7,7 @@
     "heroku-postbuild": "babel src -d build",
     "start": "node ./build/app.js",
     "devStart": "cross-env NODE_ENV=development nodemon --exec babel-node ./src/app.js",
-    "test": "cross-env NODE_ENV=test nyc --reporter=html --reporter=text mocha --require @babel/register ./tests/*.test.js --timeout 1000000 --exit",
+    "test": "nyc --reporter=html --reporter=text mocha --require @babel/register ./tests/*.test.js --timeout 1000000 --exit",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "lint": "eslint . --fix",
     "createModel": "npx sequelize-cli model:generate ",
@@ -31,6 +31,7 @@
   "dependencies": {
     "body-parser": "^1.19.0",
     "bcrypt": "^5.0.0",
+    "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "coverage": "^0.4.1",
     "dotenv": "^8.2.0",

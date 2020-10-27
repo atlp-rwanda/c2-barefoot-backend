@@ -7,7 +7,8 @@
   },
   "servers": [
     {
-      "url": "/"
+      "url": "HTTPS",
+      "url": "HTTP"
     }
   ],
   "paths": {
@@ -24,6 +25,43 @@
                   "example": "Welcome to Barefoot Nomad"
                 }
               }
+            }
+          }
+        }
+      }
+    },
+     "/api/v1/login":{
+      "post":{
+        "description":"User login with email and password",
+        "parameter":{
+          "name":"User login",
+          "in":"boddy",
+          "required":true,
+          "description":"User login will be json object",
+          "schema":{
+            "type":"object",
+            "properties":{
+              "email":{
+                "type":"string",
+                "example":"habajeunes@gmail.com"
+              },
+              "password":{
+                "type":"string",
+                "example":"@12345ami!"
+              }
+            }
+          }
+
+        },
+        "responses":{
+          "200":{
+            "application/json":{
+              "description":"message:login successful! and genarate token",
+              "schema":{
+                "type":"string",
+                "example":"login successful!"
+              }
+              
             }
           }
         }

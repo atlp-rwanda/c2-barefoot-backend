@@ -1,7 +1,7 @@
-const logout = (req, res) => {
+const logout = (_req, res) => {
   try {
-    let tokens = req.headers.authorization;
-    tokens = '';
+    res.clearCookie('make', { path: '/api/v1/refresh-token' });
+
     res.status(200).json({ status: 200, message: 'Logout successful!' });
   } catch (error) {
     res.status(400).json(error.message);

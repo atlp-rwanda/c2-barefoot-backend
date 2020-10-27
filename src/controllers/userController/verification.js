@@ -1,6 +1,6 @@
 // verification controller
 import jwt from 'jsonwebtoken';
-import models from '../models';
+import models from '../../models';
 import 'dotenv/config';
 
 const verification = async (req, res) => {
