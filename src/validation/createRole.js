@@ -1,4 +1,4 @@
-import Joi from '@hapi/joi';
+import Joi from 'joi';
 
 exports.roleValidation = (data) => {
   const schema = Joi.object({

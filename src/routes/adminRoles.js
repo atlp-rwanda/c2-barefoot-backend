@@ -1,6 +1,8 @@
 import express from 'express';
 import index from '../controllers/admin';
 import roles from '../controllers/admin/roles';
+import users from '../controllers/admin/users';
+
 import dlt from '../controllers/admin/delete';
 import permissions from '../controllers/admin/accessControl';
 
@@ -17,6 +19,9 @@ router.post('/roles/update', roles.updatePermissions);
 
 /* create a role endpoint for deleting roles*/
 router.delete('/roles', roles.deleteRoles);
+
+/* retrieve all users */
+router.get('/users', users.findThem);
 
 /* a delete endpoint to show how to use this middleware of permissions*
  *for this pass to pass you have to send role and exact permission
