@@ -1,7 +1,6 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import isUserExist from '../../servises/findUser';
-import badRequstError from '../../errorHandler/badRequestError';
 
 const login = async (req, res, next) => {
   const { email, password } = req.body;

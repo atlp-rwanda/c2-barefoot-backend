@@ -5,7 +5,7 @@ const refreshToken = async (req, res) => {
   try {
     const token = req.cookies.make;
     if (!token) return res.status(400).json({ message: 'no token in cookie', userToken: '' });
-
+    console.log(token);
     const payload = jwt.verify(token, process.env.TOKEN_SECRET);
     // check if user exist in databasa
     const newUser = await findUser(payload.email);
