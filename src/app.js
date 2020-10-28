@@ -6,6 +6,7 @@ import 'dotenv/config';
 import db from './models/index';
 import indexRoutes from './routes/index';
 import swaggerDocument from '../swagger.json';
+import ApplicationError from './utils/applicationError';
 
 const app = express();
 
@@ -28,8 +29,13 @@ const port = process.env.PORT || 3000;
 
 // Not found error handle
 app.use((req, res, next) => {
-  res.status(404);
-  res.json({ status: 404, error: `This URL ${req.path} not found` });
+  const err = new ApplicationError(`This URL ${req.path} not found`, 404);
+  next(err);
+});
+
+app.use((err, req, res, next) => {
+  const statusCode = err.statusCode || 500;
+  res.status(statusCode).json({ status: statusCode, error: err.message, stack: err.stack });
 });
 
 app.listen(port, () => {

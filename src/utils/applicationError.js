@@ -1,12 +1,12 @@
-class BadRequestError extends Error {
-  constructor(message, status){
+class ApplicationError extends Error {
+  constructor(message, statusCode){
     super(message);
     this.name = this.constructor.name;
     this.message = message || 'Something went wrong. Please try again';
-    this.status = status || 500;
+    this.statusCode = statusCode;
 
     Error.captureStackTrace(this, this.constructor);
   }
 };
 
-export default BadRequestError;
+export default ApplicationError;

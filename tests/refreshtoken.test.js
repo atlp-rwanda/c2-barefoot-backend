@@ -10,8 +10,8 @@ describe('api/v1/refreshtoken', () => {
   it('it should not refresh token if no cookies', async () => {
     const res = await request(app).post('/api/v1/refresh-token');
     expect(res).to.have.status(400);
-    expect(res.body).to.have.property('message');
-    expect(res.body.message).to.equal('no token in cookie');
+    expect(res.body).to.have.property('error');
+    expect(res.body.error).to.equal('no token in cookie');
   });
   it('it should refresh token if there are cookies', async () => {
     const userToken = jwt.sign({
