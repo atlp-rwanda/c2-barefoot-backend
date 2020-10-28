@@ -17,19 +17,19 @@ const permissions = (req, res, next) => {
 
   /* check if this role exist */
   if (!rolesData.hasOwnProperty(role)) {
-    return res.status(401).json({ status: 401, message: 'Access denied, not allowed!' });
+    return res.status(403).json({ status: 403, message: 'Access denied, not allowed!' });
   }
 
   /* check if this task exist */
   if (!rolesData[role].hasOwnProperty(task)) {
-    return res.status(401).json({ status: 401, message: 'Access denied, permission does not exist!' });
+    return res.status(403).json({ status: 403, message: 'Access denied, permission does not exist!' });
   }
 
   /* if everything is okay, check the permission (1 or 0) */
   if (rolesData[role][task]) {
     next();
   } else {
-    return res.status(401).json({ status: 401, message: "You don't have permissions to perform this task" });
+    return res.status(403).json({ status: 403, message: "You don't have permissions to perform this task" });
   }
 };
 

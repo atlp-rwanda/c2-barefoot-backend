@@ -1,5 +1,5 @@
 {
-  "manager": {
+  "requester": {
     "edit profile": 1,
     "assign requesters to manager": 0,
     "create travel requests": 0,

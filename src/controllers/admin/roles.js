@@ -1,13 +1,12 @@
 import fs from 'fs';
 import roleValidate from '../../validation/createRole';
+import models from '../../models';
 
 
-
-
-exports.create = (req, res) => {
+exports.create = async (req, res) => {
   /* data validation */
   const { error } = roleValidate.roleValidation(req.body);
-  if (error) return res.status(401).json(error.details[0].message);
+  if (error) return res.status(400).json(error.details[0].message);
 
     /* creates index.js if it doesn't exist */
 
@@ -57,16 +56,32 @@ exports.create = (req, res) => {
     const role = `${requestData.role}`;
     if (roles.hasOwnProperty(role)) {
       existProp = true;
-      return res.status(500).json({ status: 500, message: 'Bad request, role exist!' });
+      return res.status(401).json({ status: 401, message: 'Unauthorized role, role exist!' });
     }
     /* if request role doesn't exist, then create one */
     if (!existProp) {
-      roles[role] = new Perm();
 
-      /* convert this new JSON data from one line to readable using stringify */
-      const dataJson = JSON.stringify(roles, null, 2);
-      fs.writeFileSync('./permissions/index.json', dataJson);
-      return res.status(201).json(roles);
+        /* a role object to add in db*/
+      const Roles = {
+            name: requestData.role,
+            description: requestData.description
+        };
+
+        const saveRole = await models.Role.create(Roles);
+        if(saveRole){
+
+            roles[role] = new Perm();
+
+            /* convert this new JSON data from one line to readable using stringify */
+            const dataJson = JSON.stringify(roles, null, 2);
+            fs.writeFileSync('./permissions/index.json', dataJson);
+            
+            res.status(201).json({message:"Role created successfully"});
+        }
+        else{
+            res.status(500).json({error:"Failed to create this role, try again!"});
+        }
+      
     }
   } catch (err) {
     res.status(500).json({ status: 500, errors: err });
@@ -77,7 +92,7 @@ exports.updatePermissions = (req, res)=>{
 
     /* data validation */
     const { error } = roleValidate.updateValidation(req.body);
-    if (error) return res.status(401).json(error.details[0].message);
+    if (error) return res.status(400).json(error.details[0].message);
     
     /* creates index.js if it doesn't exist */
 
@@ -101,7 +116,7 @@ exports.updatePermissions = (req, res)=>{
         const role = `${requestData.role}`;
         if (!roles.hasOwnProperty(role)) {
             existProp = false;
-            return res.status(500).json({ status: 500, message: 'Bad request, role not exist!' });
+            return res.status(401).json({ status: 401, message: 'Unauthorized role, role not exist!' });
         }
 
         if(existProp){
@@ -136,7 +151,7 @@ exports.updatePermissions = (req, res)=>{
                 res.status(201).json( {error: "these permissions or values are not allowed", "failed permissions": validPermission, success: roles[role]}); 
             }
             else{
-                res.status(401).json({message: "Permissions updated successfully", "failed permissions": validPermission, success: roles[role]});
+                res.status(400).json({message: "Permissions updated successfully", "failed permissions": validPermission, success: roles[role]});
             }
             
         }
@@ -146,10 +161,10 @@ exports.updatePermissions = (req, res)=>{
     }
 };
 
-exports.deleteRoles = (req, res)=>{
+exports.deleteRoles = async (req, res)=>{
     /* data validation */
     const { error } = roleValidate.deleteValidation(req.body);
-    if (error) return res.status(401).json(error.details[0].message);
+    if (error) return res.status(400).json(error.details[0].message);
 
     /* creates index.js if it doesn't exist */
 
@@ -176,18 +191,22 @@ exports.deleteRoles = (req, res)=>{
         /* check if index.json does not have this requested role */
         if (!roles.hasOwnProperty(requestRole)) {
             existProp = false;
-            return res.status(500).json({ status: 500, message: 'Bad request, role not exist!' });
+            return res.status(401).json({ status: 401, message: 'Unauthorized role, role not exist!' });
         }
 
         if(existProp){
             if(delete roles[requestRole]){
                 const dataJson = JSON.stringify(roles, null, 2);
 
-                /* save changes */
-                fs.writeFileSync('./permissions/index.json', dataJson);     
+                const deletedRole = await models.Role.destroy({ where:{ name: requestRole}});
+               if(deletedRole){
+                    /* save changes */
+                    fs.writeFileSync('./permissions/index.json', dataJson);     
 
-                return res.status(201).json({status:201,message: "Role deleted successfully", roles: roles});
-                
+                    return res.status(201).json({status:201,message: "Role deleted successfully", roles: roles});
+                }else{
+                    return res.status(500).json({error: "Failed to delete this role, try again"});
+                }
             }else{
                 return res.status(500).json({status:500,error: "Failed to delete this role"});
             }
