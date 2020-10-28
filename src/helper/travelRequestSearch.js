@@ -1,8 +1,8 @@
 import db from '../models'
 
-export function findTravelRequest(res,query){
+export function findTravelRequest(res,query, pagination){
     const resultSet = [];
-    db.TravelRequest.findAndCountAll({where:query, offset:0, limit:10})
+    db.TravelRequest.findAndCountAll({where:query, ...pagination})
         .then(tRequestDataSet => {
             if(tRequestDataSet.rows.length > 0){
                 console.log("TravelRequest")

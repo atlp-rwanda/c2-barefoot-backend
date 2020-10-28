@@ -16,13 +16,7 @@ import isLogedIn from '../helper/isLogedIn';
 const router = express.Router();
 
 // ------------------Welcome Page-----------------
-// router.post('/user/add', dummyData)
-router.post('/requests/request', isLogedIn, travelRequest) //make a request
-router.get('/requests/view', isLogedIn, getTravelRequest) // view all requests
-router.get('/requests/view/:requestId', isLogedIn, getTravelRequest) //Get single request
-router.get('/requests/direct-reports/:managerId', isLogedIn, getDirectReport) // view direct reports
 router.get('/', welcome);
-
 // --------------------Signup Route ---------------
 
 router.post('/signup', signupValidation, signup);

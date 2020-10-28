@@ -9,7 +9,6 @@ const login = async (req, res, next) => {
     if (isUser === null) return res.status(404).json({ status: 404, message: `You don't have an accoutn with this email: ${email}` });
 
     if (isUser.verified === false) return res.status(403).json({ status: 403, message: 'Please verify your email first' });
-
     bcrypt.compare(password, isUser.password, async (error, results) => {
       if (error) return res.status(400).json({ status: 400, errors: error.message });
       if (!results) return res.status(400).json({ status: 400, message: 'Password incoreect' });
