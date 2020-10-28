@@ -10,5 +10,5 @@ const router = express.Router();
 router.get('/', welcome);
 router.post('/resetPassword/request',validateResetEmail, resetPassword);
 // router.patch('/ResetPassword',resetLink)
-router.post('/v1/resetPassword/verify', verifyResetPassword)
+router.post('/resetPassword/verify', verifyResetPassword);
 export default router;
