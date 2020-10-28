@@ -31,4 +31,6 @@ router.delete('/users', users.deleteOne);
  in your json body request */
 router.delete('/user', permissions, dlt);
 
+
+
 export default router;

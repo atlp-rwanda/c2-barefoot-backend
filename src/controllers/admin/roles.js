@@ -1,7 +1,7 @@
 import fs from 'fs';
 import roleValidate from '../../validation/createRole';
 import models from '../../models';
-
+import roleExist from '../../errorHandling/existRole';
 
 exports.create = async (req, res) => {
   /* data validation */
@@ -56,7 +56,8 @@ exports.create = async (req, res) => {
     const role = `${requestData.role}`;
     if (roles.hasOwnProperty(role)) {
       existProp = true;
-      return res.status(401).json({ status: 401, message: 'Unauthorized role, role exist!' });
+      throw new roleExist("role exist", 401);
+    //   return res.status(401).json({ status: 401, message: 'Unauthorized role, role exist!' });
     }
     /* if request role doesn't exist, then create one */
     if (!existProp) {
@@ -84,7 +85,8 @@ exports.create = async (req, res) => {
       
     }
   } catch (err) {
-    res.status(500).json({ status: 500, errors: err });
+    // res.status(500).json({ status: 500, errors: err });
+    console.log("this is the error", err);
   }
 };
 
