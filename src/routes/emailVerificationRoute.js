@@ -3,6 +3,6 @@ import verification from '../controllers/verification';
 
 const router = express.Router();
 
-router.get('/:token', verification);
+router.patch('/:token', verification);
 
 export default router;

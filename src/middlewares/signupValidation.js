@@ -1,12 +1,12 @@
 import Joi from 'joi';
 
 const schema = Joi.object({
-  first_name: Joi.string().required(),
-  last_name: Joi.string().required(),
+  first_name: Joi.string().required().regex(/^[A-Za-z]+$/),
+  last_name: Joi.string().required().regex(/^[A-Za-z]+$/),
   email: Joi.string().email().required(),
   password: Joi.string().required().min(8),
   address: Joi.string().required(),
-  language: Joi.string().required(),
+  language: Joi.string().required().regex(/^[A-Za-z]+$/),
   profile_picture: Joi.string().required()
 });
 

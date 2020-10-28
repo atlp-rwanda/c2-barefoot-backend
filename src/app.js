@@ -24,8 +24,18 @@ sequelize
   .then(() => console.log('Database connected...'))
   .catch((err) => console.log(`Error: ${err}`));
 
+app.use((err, req, res, next) => {
+  res.status(err.status);
+  res.json({ error: err.message });
+});
+
 app.listen(port, () => {
   console.log(`Server started on port ${port} ...`);
+});
+
+process.on('unhandledRejection', (err) => {
+  console.error('Got an Unhandled Promise Rejection', err);
+  process.exit(1); // mandatory (as per the Node docs)
 });
 
 export default app;
