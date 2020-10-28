@@ -18,7 +18,6 @@ if (process.env.NODE_ENV === 'development') {
 } else {
   link = 'https://barefoot-nomad-production.herokuapp.com/verification/';
 }
-console.log(link);
 const sendVerificationEmail = async (req, res) => {
   const { first_name, email } = req.body;
   const accessToken = jwt.sign({ user: email }, process.env.TOKEN_SECRET);
@@ -31,7 +30,7 @@ const sendVerificationEmail = async (req, res) => {
 
   try {
     const sendmail = await transporter.sendMail(mailOptions);
-    return res.status(200).json({ Message: `User ${first_name} has been created. Check email for verification` });
+    return res.status(201).json({ Message: `User ${first_name} has been created. Check email for verification` });
   } catch (error) {
     return res.status(400).json({ Error: 'Verification Email not sent, try again' });
   }
