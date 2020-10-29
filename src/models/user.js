@@ -79,11 +79,6 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       defaultValue: 'refreshtoken'
 
-    },
-    user_role_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      defaultValue: 1
     }
   }, {
     sequelize,
