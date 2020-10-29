@@ -8,7 +8,7 @@ use(chaiHttp);
 
 describe('api/v1/refreshtoken', () => {
   it('it should not refresh token if no cookies', async () => {
-    const res = await request(app).post('/api/v1/refresh-token');
+    const res = await request(app).post('/refresh-token');
     expect(res).to.have.status(400);
     expect(res.body).to.have.property('error');
     expect(res.body.error).to.equal('no token in cookie');
@@ -18,7 +18,7 @@ describe('api/v1/refreshtoken', () => {
       id: 19, first_name: 'ami', last_name: 'joseph', email: 'habajeunes2@gmail.com', address: 'kigali', language: 'english', profile_picture: 'ami.png'
     }, process.env.TOKEN_SECRET, { expiresIn: '2h' });
 
-    const res = await request(app).post('/api/v1/refresh-token').set('Cookie', `make=${userToken}`);
+    const res = await request(app).post('/refresh-token').set('Cookie', `make=${userToken}`);
     expect(res).to.have.status(200);
     expect(res.body).to.have.property('userToken');
   });
