@@ -1,9 +1,9 @@
 import ApplicationError from './applicationError';
 
-class roleExist extends ApplicationError {
+class unauthaurizedResources extends ApplicationError {
     constructor(message) {
         super(message, 401);
     }
 }
 
-module.exports = roleExist;
+module.exports = unauthaurizedResources;

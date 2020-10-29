@@ -1,36 +1,44 @@
 import usersService from '../../services/users';
 import userValidation from '../../validation/createRole';
+import applicationError from '../../errorHandling/applicationError';
+import userBadRequest from '../../errorHandling/userBadRequest';
 
-exports.findThem = async (req, res) =>{
+
+exports.findThem = async (req, res, next) =>{
     try{
-        // const users= await models.user.findAll({});
 
+        //find users using services
         const users = await usersService.findUsers({});
-        return res.status(200).json({ users });
-    }catch(error){
-        return res.status(500).json({error: "Internal error"});
+        if(users){
+           return res.status(200).json({ users }); 
+        }
+        else{
+            throw new applicationError('Failed to fetch users, try again!', 500);
+        }
+    }
+    catch(error){
+        next(error);
     }
 }
 
 
-exports.deleteOne = async (req, res) =>{
+exports.deleteOne = async (req, res, next) =>{
     try{
-
+        
         /* data validation */
         const { error } = userValidation.deleteValidationEmail(req.body);
-        if (error) return res.status(400).json(error.details[0].message);
-
+        if (error) throw new userBadRequest(error.details[0].message);
 
         const userEmail = req.body.email;
         const deleted = await usersService.deleteUser(userEmail);
         if(deleted){
-            res.status(200).json({deleted});
+            res.status(200).json({message: "The user is deleted successfully!"});
         }
         else{
-            res.status(500).json({error: "user not deleted! Try again"});
+            throw new applicationError('User not deleted! Try again', 500);
         }
-    }catch(erro){
-        return res.status(500).json({ error: "Internal error", erro});
+    }catch(error){
+        next(error);
     }
 }
 

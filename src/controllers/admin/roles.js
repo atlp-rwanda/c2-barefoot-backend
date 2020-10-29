@@ -1,17 +1,21 @@
 import roleValidate from '../../validation/createRole';
 import roleServices from '../../services/roles';
-import roleExist from '../../errorHandling/existRole';
+import unauthorizedResources from '../../errorHandling/unauthorizedResources';
+import userBadRequest from '../../errorHandling/userBadRequest';
+import applicationError from '../../errorHandling/applicationError';
 
-exports.create = async (req, res) => {
-  /* data validation */
-  const { error } = roleValidate.roleValidation(req.body);
-  if (error) return res.status(400).json(error.details[0].message);
-
+exports.create = async (req, res, next) => {
+    try{
+        /* data validation */
+        const { error } = roleValidate.roleValidation(req.body);
+        if (error) throw new userBadRequest(error.details[0].message);
+    }
+    catch(err){
+        next(err);
+    }
+  
     /* creates index.js if it doesn't exist */
 
-    // if (!fs.existsSync('./permissions/index.json')) {
-    //     fs.writeFileSync('./permissions/index.json', '{}');
-    // }
     roleServices.fileExistOrNot('./permissions/index.json');
 
   /** receives the body object from the request */
@@ -55,9 +59,8 @@ exports.create = async (req, res) => {
     /* check if index.json has this requested role */
     const role = `${requestData.role}`;
     if (roles.hasOwnProperty(role)) {
-      existProp = true;
-    //   throw new roleExist("role exist", 401);
-      return res.status(401).json({ status: 401, message: 'Unauthorized role, role exist!' });
+        existProp = true;
+        throw new unauthorizedResources("Role exist!");
     }
     /* if request role doesn't exist, then create one */
     if (!existProp) {
@@ -75,33 +78,33 @@ exports.create = async (req, res) => {
 
             /* convert this new JSON data from one line to readable using stringify */
             const dataJson = JSON.stringify(roles, null, 2);
-            // fs.writeFileSync('./permissions/index.json', dataJson);
             roleServices.saveInFile(dataJson); 
             
-            res.status(201).json({message:"Role created successfully"});
+            res.status(201).json({status: 201, message:"Role created successfully"});
         }
         else{
-            res.status(500).json({error:"Failed to create this role, try again!"});
+            throw new applicationError('Failed to create this role, try again!', 500);
         }
       
     }
-  } catch (err) {
-    // res.status(500).json({ status: 500, errors: err });
-    console.log("this is the error", err);
   }
+  catch (err) {
+      next(err);
+    }
 };
 
-exports.updatePermissions = (req, res)=>{
-
-    /* data validation */
-    const { error } = roleValidate.updateValidation(req.body);
-    if (error) return res.status(400).json(error.details[0].message);
-    
+exports.updatePermissions = (req, res, next)=>{
+    try{
+        /* data validation */
+        const { error } = roleValidate.updateValidation(req.body);
+        if (error) throw new userBadRequest(error.details[0].message);
+    }
+    catch(err){
+        next(err);
+    }
+  
     /* creates index.js if it doesn't exist */
 
-    // if (!fs.existsSync('./permissions/index.json')) {
-    //     fs.writeFileSync('./permissions/index.json', '{}');
-    // }
     roleServices.fileExistOrNot('./permissions/index.json');
 
 
@@ -120,7 +123,7 @@ exports.updatePermissions = (req, res)=>{
         const role = `${requestData.role}`;
         if (!roles.hasOwnProperty(role)) {
             existProp = false;
-            return res.status(401).json({ status: 401, message: 'Unauthorized role, role not exist!' });
+            throw new unauthorizedResources("Role not exist!");
         }
 
         if(existProp){
@@ -152,24 +155,29 @@ exports.updatePermissions = (req, res)=>{
             roleServices.saveInFile(dataJson);
 
             if(validPermission != ""){
-                res.status(201).json( {error: "these permissions or values are not allowed", "failed permissions": validPermission, success: roles[role]}); 
+                throw new userBadRequest( {message: "These permissions or values are not allowed", "failed permissions": validPermission, success: roles[role]});
             }
             else{
-                res.status(400).json({message: "Permissions updated successfully", "failed permissions": validPermission, success: roles[role]});
+                res.status(201).json({message: "Permissions updated successfully", "failed permissions": validPermission, success: roles[role]});
             }
             
         }
 
-    } catch (err) {
-        res.status(500).json({ status: 500, errors: err });
+    }
+    catch (err) {
+        next(err);
     }
 };
 
-exports.deleteRoles = async (req, res)=>{
-    /* data validation */
-    const { error } = roleValidate.deleteValidation(req.body);
-    if (error) return res.status(400).json(error.details[0].message);
-
+exports.deleteRoles = async (req, res, next)=>{
+    try{
+        /* data validation */
+        const { error } = roleValidate.deleteValidation(req.body);
+        if (error) throw new userBadRequest(error.details[0].message);
+    }
+    catch(err){
+        next(err);
+    }
     /* creates index.js if it doesn't exist */
 
     roleServices.fileExistOrNot('./permissions/index.json'); 
@@ -177,9 +185,6 @@ exports.deleteRoles = async (req, res)=>{
     let requestRole = req.body.role;
     try {
 
-
-
-        
         /* read data from index.json file */
 
         const existingData = roleServices.readFile();
@@ -192,7 +197,7 @@ exports.deleteRoles = async (req, res)=>{
         /* check if index.json does not have this requested role */
         if (!roles.hasOwnProperty(requestRole)) {
             existProp = false;
-            return res.status(401).json({ status: 401, message: 'Unauthorized role, role not exist!' });
+            throw new unauthorizedResources("Role not exist!");
         }
 
         if(existProp){
@@ -207,15 +212,16 @@ exports.deleteRoles = async (req, res)=>{
 
                     return res.status(201).json({status:201,message: "Role deleted successfully", roles: roles});
                 }else{
-                    return res.status(500).json({error: "Failed to delete this role, try again"});
+                    throw new applicationError('Failed to delete this role, try again!', 500);
                 }
             }else{
-                return res.status(500).json({status:500,error: "Failed to delete this role"});
+                throw new applicationError('Failed to delete this role, try again!', 500);
             }
             
         }
 
-    } catch (err) {
-        res.status(500).json({ status: 500, errors: err });
+    }
+    catch (err) {
+        next(err);
     }
 }
