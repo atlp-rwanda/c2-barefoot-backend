@@ -5,20 +5,21 @@ import models from '../src/models';
 
 use(chaiHttp);
 
+const user = {
+  first_name: 'TestName',
+  last_name: 'TestName',
+  email: 'renedeolynda@gmail.com',
+  password: 'pa13332335',
+  address: 'Kigali',
+  language: 'English',
+  profile_picture: 'image.png'
+};
+
 describe('Testing signup route', () => {
   models.user.destroy({
     where: {},
     truncate: true
   });
-  const user = {
-    first_name: 'TestName',
-    last_name: 'TestName',
-    email: 'renedeolynda@gmail.com',
-    password: 'pa13332335',
-    address: 'Kigali',
-    language: 'English',
-    profile_picture: 'image.png'
-  };
 
   it('Should save a new user', async () => {
     const res = await request(app).post('/signup').send(user);
@@ -42,6 +43,21 @@ describe('Testing email verification', () => {
     expect(res).to.have.status(400);
     expect(res.type).to.equal('application/json');
     expect(res.body).to.have.property('Error');
-    expect(res.body.Error).to.have.equal('Invalid token');
+    expect(res.body.Error).to.equal('Invalid token');
+  });
+
+  const validToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoicmVuZWRlb2x5bmRhQGdtYWlsLmNvbSIsImlhdCI6MTYwMzk3ODk3NX0.9JQj9YxHtXFLZHojzLSOhzxCMwisml7Pr2ynT-vhiL8';
+  it('Should update email verification with valid token', async () => {
+    const res = await request(app).patch(`/verification/${validToken}`);
+    expect(res).to.have.status(200);
+    expect(res.type).to.equal('application/json');
+    expect(res.body.Message).to.equal('Email has been verified');
+  });
+
+  it('Shouldn\'nt verify more than once', async () => {
+    const res = await request(app).patch(`/verification/${validToken}`);
+    expect(res).to.have.status(400);
+    expect(res.type).to.equal('application/json');
+    expect(res.body.Error).to.equal('Account already verified');
   });
 });
