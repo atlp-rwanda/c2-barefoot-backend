@@ -1,4 +1,5 @@
 import Joi from 'joi';
+import signUpError from '../utils/signUpError';
 
 const schema = Joi.object({
   first_name: Joi.string().required().regex(/^[A-Za-z]+$/),
@@ -12,6 +13,8 @@ const schema = Joi.object({
 
 export default (req, res, next) => {
   const { error } = schema.validate(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
+  if (error) {
+    throw new signUpError(error.details[0].message, 400);
+  }
   next();
 };

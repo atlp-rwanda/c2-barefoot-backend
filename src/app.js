@@ -4,6 +4,7 @@ import 'dotenv/config';
 import db from './models/index';
 import routes from './routes/index';
 import swaggerDocument from '../swagger.json';
+import ApplicationError from './utils/ApplicationError';
 
 const app = express();
 
@@ -11,6 +12,11 @@ app.use(express.json());
 
 // routes
 routes(app);
+
+app.all('*', (req, res, next) => {
+  const err = new ApplicationError('Page Requested not found', 404);
+  next(err);
+});
 
 // docuemntation route
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
@@ -24,18 +30,13 @@ sequelize
   .then(() => console.log('Database connected...'))
   .catch((err) => console.log(`Error: ${err}`));
 
-app.use((err, req, res, next) => {
-  res.status(err.status);
-  res.json({ error: err.message });
-});
-
 app.listen(port, () => {
   console.log(`Server started on port ${port} ...`);
 });
 
-process.on('unhandledRejection', (err) => {
-  console.error('Got an Unhandled Promise Rejection', err);
-  process.exit(1); // mandatory (as per the Node docs)
+app.use((err, req, res, next) => {
+  const statusCode = err.status || 500;
+  res.status(statusCode).json({ Status: statusCode, Error: err.message });
 });
 
 export default app;

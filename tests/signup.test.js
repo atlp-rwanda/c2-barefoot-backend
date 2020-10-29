@@ -34,3 +34,14 @@ describe('Testing signup route', () => {
     expect(res.body).to.have.property('Error');
   });
 });
+
+describe('Testing email verification', () => {
+  const invalidToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjMMDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c';
+  it('Should\'nt update with invalid token', async () => {
+    const res = await request(app).patch(`/verification/${invalidToken}`);
+    expect(res).to.have.status(400);
+    expect(res.type).to.equal('application/json');
+    expect(res.body).to.have.property('Error');
+    expect(res.body.Error).to.have.equal('Invalid token');
+  });
+});

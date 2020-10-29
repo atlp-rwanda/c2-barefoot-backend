@@ -2,23 +2,29 @@
 import jwt from 'jsonwebtoken';
 import models from '../models';
 import 'dotenv/config';
+import signUpError from '../utils/ApplicationError';
+import isUserExist from '../services/findUser';
 
-const verification = async (req, res) => {
+const verification = async (req, res, next) => {
   const updateUser = async (user) => {
     try {
-      const record = await models.user.findOne({ where: { email: user } });
+      const record = await isUserExist(user);
+      if (!record) {
+        throw new signUpError('Account does not exist', 404);
+      }
+
       if (record.verified === false) {
         models.user.update({ verified: true }, { where: { email: user } });
-        return res.status(200).json({ Message: 'Email has been verified' });
+        return res.status(200).json({ Status: 200, Message: 'Email has been verified' });
       }
-      return res.status(400).json({ Message: 'account already verified' });
+      throw new signUpError('Account already verified', 400);
     } catch (error) {
-      return res.status(400).json({ Error: 'Account does not exist' });
+      next(error);
     }
   };
 
   jwt.verify(req.params.token, process.env.TOKEN_SECRET, (err, user) => {
-    if (err) return res.status(400).json({ Message: 'Invalid token' });
+    if (err) throw new signUpError('Invalid token', 400);
     updateUser(user.user);
   });
 };

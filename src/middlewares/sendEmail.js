@@ -1,6 +1,7 @@
 import nodemailer from 'nodemailer';
 import jwt from 'jsonwebtoken';
 import 'dotenv/config';
+import 'express-async-errors';
 
 const transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',
@@ -16,9 +17,9 @@ let link;
 if (process.env.NODE_ENV === 'development') {
   link = 'http://localhost:3000/verification/';
 } else {
-  link = 'https://barefoot-nomad-production.herokuapp.com/verification/';
+  link = 'https://barefoot-nomad-app-v1.herokuapp.com/verification/';
 }
-const sendVerificationEmail = async (req, res) => {
+const sendVerificationEmail = async (req, res, next) => {
   const { first_name, email } = req.body;
   const accessToken = jwt.sign({ user: email }, process.env.TOKEN_SECRET);
   const mailOptions = {
@@ -32,7 +33,7 @@ const sendVerificationEmail = async (req, res) => {
     const sendmail = await transporter.sendMail(mailOptions);
     return res.status(201).json({ Message: `User ${first_name} has been created. Check email for verification` });
   } catch (error) {
-    return res.status(400).json({ Error: 'Verification Email not sent, try again' });
+    next(error);
   }
 };
 
