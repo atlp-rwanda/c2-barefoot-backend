@@ -74,6 +74,18 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: true
       }
     },
+    user_role_id: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: 1,
+      validate: {
+        notEmpty: true
+      },
+    },
+    manager_id: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    }
   }, {
     sequelize,
     modelName: 'user',
