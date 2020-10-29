@@ -52,28 +52,7 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         notEmpty: true
       }
-    },
-    address: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
-    },
-    language: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
-    },
-    profile_picture: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
-    },
+    }
   }, {
     sequelize,
     modelName: 'user',

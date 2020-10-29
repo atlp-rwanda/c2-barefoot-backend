@@ -1,15 +1,21 @@
 import models from '../models';
 
-class Users {
-    constructor(query){
-        this._query = query;
-    }
+// class Users {
+//     constructor(query){
+//         this._query = query;
+//     }
 
-    findUsers(query){
+exports.findUsers = (query) =>{
         const users= models.user.findAll(query);
         return users;
-    }
 }
 
+exports.deleteUser = (data)=>{
+    const deleting = models.user.destroy({where: {email :data}});
+    return deleting;
+}
 
-export default Users;
+// }
+
+
+// export default {findUsers, deleteUser};

@@ -3,7 +3,7 @@ import swaggerUI from 'swagger-ui-express';
 import 'dotenv/config';
 import db from './config/connection';
 import routes from './routes/routes';
-import adminRoles from './routes/adminRoles';
+import adminRoutes from './routes/adminRoutes';
 import swaggerDocument from '../swagger.json';
 
 const app = express();
@@ -13,7 +13,7 @@ app.use(express.json());
 
 // routes
 app.use('/', routes);
-app.use('/admin', adminRoles);
+app.use('/admin', adminRoutes);
 
 // docuemntation route
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));

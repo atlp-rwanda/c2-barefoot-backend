@@ -23,7 +23,7 @@ router.delete('/roles', roles.deleteRoles);
 /* retrieve all users */
 router.get('/users', users.findThem);
 
-/* 
+/* delete one user */
 router.delete('/users', users.deleteOne);
 
 /* a delete route to show how to use this middleware of permissions*

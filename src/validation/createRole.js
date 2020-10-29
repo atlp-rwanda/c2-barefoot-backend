@@ -23,3 +23,12 @@ exports.deleteValidation = (data) => {
     });
     return schema.validate(data);
 };
+
+exports.deleteValidationEmail = (data) => {
+    const schema = Joi.object({
+        email: Joi.string().min(5).email().max(50).required()
+    });
+    return schema.validate(data);
+};
+
+
