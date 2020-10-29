@@ -12,7 +12,6 @@ const refreshToken = async (req, res, next) => {
     } catch (e) {
       next(e);
     }
-    console.log(token);
     const payload = jwt.verify(token, process.env.TOKEN_SECRET);
     // check if user exist in databasa
     const newUser = await findUser(payload.email);
