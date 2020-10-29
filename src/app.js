@@ -14,7 +14,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 // routes
-app.use('/api/v1', indexRoutes);
+app.use('/', indexRoutes);
 
 // docuemntation route
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
