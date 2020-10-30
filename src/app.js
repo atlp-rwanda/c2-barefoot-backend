@@ -1,10 +1,11 @@
 import express from 'express';
 import swaggerUI from 'swagger-ui-express';
 import 'dotenv/config';
+import swaggerJsDoc from 'swagger-jsdoc';
 import db from './models/index';
 import routes from './routes/index';
-import swaggerDocument from '../swagger.json';
 import ApplicationError from './utils/ApplicationError';
+import swaggerConfigs from './swagger/index';
 
 const app = express();
 
@@ -13,13 +14,14 @@ app.use(express.json());
 // routes
 routes(app);
 
+// documentation route
+const swaggerDocs = swaggerJsDoc(swaggerConfigs);
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
+
 app.all('*', (req, res, next) => {
   const err = new ApplicationError('Page Requested not found', 404);
   next(err);
 });
-
-// docuemntation route
-app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
 // db connection check
 const port = process.env.PORT || 3000;
