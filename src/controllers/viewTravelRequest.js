@@ -9,6 +9,7 @@ const getTravelRequest = async (req, res) => {
         const offset = req.query.from
         const limit = req.query.to
         var pagination = {offset, limit}
+        console.log(id+"...................")
         if(id){     // get a specific travel request
             var query = {userId:userid, travelId:id}
         }else{      // get all travel request

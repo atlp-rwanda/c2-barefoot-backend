@@ -5,15 +5,15 @@ import { getDataFromToken } from '../helper/tokenToData';
 const travelRequest = async (req, res) => {
     const decoded = await getDataFromToken(req, res)
     try{
-        const userid = decoded.id.toString()
+        const userid = JSON.stringify(decoded.id)
     }catch(err){
         const userid=null
     }
-    
+    console.log(decoded)
     if(decoded.managerId){
         const request = {
-            managerId: req.body.managerId,
-            userId:userid,
+            managerId:decoded.managerId || "1", // in case manager is not available
+            userId:decoded.id,
             status:req.body.status,
             createdAt:new Date(),
             updatedAt: new Date(),
