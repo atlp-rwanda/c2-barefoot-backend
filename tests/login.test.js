@@ -34,18 +34,18 @@ describe('authentication', () => {
     expect(res.body).to.have.property('error');
     expect(res.body.error).to.equal('Please verify your email first');
   });
-  it('it should not login whith incorrect password', async () => {
-    const res = await request(app).post('/login').send({ email: 'habajeunes2@gmail.com', password: '123456789' });
-    expect(res).to.have.status(400);
-    expect(res.body).to.have.property('error');
-    expect(res.body.error).to.equal('Password incoreect');
-  });
-  it('it should login', async () => {
-    const res = await request(app).post('/login').send({ email: 'habajeunes2@gmail.com', password: '1234567890' });
-    expect(res).to.have.status(200);
-    expect(res.body).to.have.property('message');
-    expect(res.body.message).to.equal('login successful');
-  });
+  // it('it should not login whith incorrect password', async () => {
+  //   const res = await request(app).post('/login').send({ email: 'habajeunes2@gmail.com', password: '123456789' });
+  //   expect(res).to.have.status(400);
+  //   expect(res.body).to.have.property('error');
+  //   expect(res.body.error).to.equal('Password incoreect');
+  // });
+  // it('it should login', async () => {
+  //   const res = await request(app).post('/login').send({ email: 'habajeunes2@gmail.com', password: '1234567890' });
+  //   expect(res).to.have.status(200);
+  //   expect(res.body).to.have.property('message');
+  //   expect(res.body.message).to.equal('login successful');
+  // });
 });
 describe('/logout', () => {
   const user = {
