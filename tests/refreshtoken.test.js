@@ -15,7 +15,7 @@ describe('api/v1/refreshtoken', () => {
   });
   it('it should refresh token if there are cookies', async () => {
     const userToken = jwt.sign({
-      id: 19, first_name: 'ami', last_name: 'joseph', email: 'habajeunes2@gmail.com', address: 'kigali', language: 'english', profile_picture: 'ami.png'
+      id: 1, first_name: 'ami', last_name: 'joseph', email: 'habajeunes2@gmail.com', address: 'kigali', language: 'english', profile_picture: 'ami.png'
     }, process.env.TOKEN_SECRET, { expiresIn: '2h' });
 
     const res = await request(app).post('/refresh-token').set('Cookie', `make=${userToken}`);
