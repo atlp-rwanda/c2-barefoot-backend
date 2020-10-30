@@ -15,6 +15,16 @@ const user = {
   profile_picture: 'image.png'
 };
 
+const invalidUser = {
+  first_name: 'TestName',
+  last_name: 'TestName',
+  email: '123',
+  password: 'pa13332335',
+  address: 'Kigali',
+  language: 'English',
+  profile_picture: 'image.png'
+};
+
 describe('Testing signup route', () => {
   models.user.destroy({
     where: {},
@@ -33,6 +43,15 @@ describe('Testing signup route', () => {
     expect(res).to.have.status(400);
     expect(res.type).to.equal('application/json');
     expect(res.body).to.have.property('Error');
+  });
+
+  it('Should\'nt save a user with invalid/incomplete data', async () => {
+    const res = await request(app).post('/signup').send(invalidUser);
+    expect(res).to.have.status(400);
+    expect(res.type).to.equal('application/json');
+    expect(res.body).to.have.property('Error');
+    expect(res.body).to.have.property('Status');
+    expect(res.body.Status).to.equal(400);
   });
 });
 
