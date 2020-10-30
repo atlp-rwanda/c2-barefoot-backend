@@ -31,7 +31,7 @@ const refreshToken = async (req, res, next) => {
     const reftoken = jwt.sign(userData, process.env.TOKEN_SECRET, { expiresIn: '7d' });
 
     // user.reftoken = reftoken;
-    res.cookie('make', reftoken, { httpOnly: true, path: '/refresh-token' });
+    res.cookie('make', reftoken, { httpOnly: false, path: '/refresh-token' });
     return res.status(200).json({ userToken });
   } catch (error) {
     console.log(error.message);
