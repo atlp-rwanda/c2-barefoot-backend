@@ -27,9 +27,11 @@ const router = express.Router();
  *          status:
  *            type: integer
  *            description: The http status code
+ *            example: 200
  *          message:
  *            type: string
  *            description: Success message
+ *            example: Welcome to Barefoot Nomad
  */
 
 router.get('/', welcome);
