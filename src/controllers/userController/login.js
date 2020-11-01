@@ -37,7 +37,7 @@ const login = async (req, res, next) => {
           const refreshToken = jwt.sign(userData, process.env.TOKEN_SECRET, { expiresIn: '7d' });
           // updating user refresh token in database
           await isUser.update({ refreshtoken: refreshToken });
-          res.cookie('make', refreshToken, { httpOnly: true, path: '/refresh-token' });
+          res.cookie('make', refreshToken, { httpOnly: false, path: '/refresh-token' });
           return res.status(200).json({ status: 200, message: 'login successful', data: userToken });
         } catch (err) {
           next(err);
