@@ -29,7 +29,7 @@
         }
       }
     },
-     "/api/v1/login":{
+     "/login":{
       "post":{
         "description":"User login with email and password",
         "tags": [

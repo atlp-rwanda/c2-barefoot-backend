@@ -1,12 +1,14 @@
 import express from 'express';
 import swaggerUI from 'swagger-ui-express';
+import swaggerJsDoc from 'swagger-jsdoc';
 import cookieParser from 'cookie-parser';
 import 'dotenv/config';
 // import db from './config/connection';
 import db from './models/index';
 import indexRoutes from './routes/index';
-import swaggerDocument from '../swagger.json';
+// import swaggerDocument from '../swagger.json';
 import ApplicationError from './utils/applicationError';
+import swaggerConfigs from './swagger/index';
 
 const app = express();
 
@@ -17,7 +19,8 @@ app.use(cookieParser());
 app.use('/', indexRoutes);
 
 // docuemntation route
-app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
+const swaggerDocs = swaggerJsDoc(swaggerConfigs);
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 
 // db connection check
 const { sequelize } = db;
