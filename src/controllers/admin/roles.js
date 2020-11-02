@@ -1,8 +1,8 @@
 import roleValidate from '../../validation/createRole';
 import roleServices from '../../services/roles';
-import unauthorizedResources from '../../errorHandling/unauthorizedResources';
 import userBadRequest from '../../errorHandling/userBadRequest';
 import applicationError from '../../errorHandling/applicationError';
+import notFound from '../../errorHandling/notFound';
 
 exports.create = async (req, res, next) => {
     try{
@@ -60,7 +60,7 @@ exports.create = async (req, res, next) => {
     const role = `${requestData.role}`;
     if (roles.hasOwnProperty(role)) {
         existProp = true;
-        throw new unauthorizedResources("Role exist!");
+        throw new userBadRequest("Role exist!");
     }
     /* if request role doesn't exist, then create one */
     if (!existProp) {
@@ -123,7 +123,7 @@ exports.updatePermissions = (req, res, next)=>{
         const role = `${requestData.role}`;
         if (!roles.hasOwnProperty(role)) {
             existProp = false;
-            throw new unauthorizedResources("Role not exist!");
+            throw new notFound("Role not exist!");
         }
 
         if(existProp){
@@ -197,7 +197,7 @@ exports.deleteRoles = async (req, res, next)=>{
         /* check if index.json does not have this requested role */
         if (!roles.hasOwnProperty(requestRole)) {
             existProp = false;
-            throw new unauthorizedResources("Role not exist!");
+            throw new notFound("Role not exist!");
         }
 
         if(existProp){

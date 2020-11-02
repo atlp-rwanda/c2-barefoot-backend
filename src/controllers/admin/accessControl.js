@@ -1,4 +1,5 @@
 import accessDenied from '../../errorHandling/accessDenied';
+import notFound from '../../errorHandling/notFound';
 import roleServices from '../../services/roles';
 
 
@@ -14,33 +15,43 @@ import roleServices from '../../services/roles';
   const roles =  roleServices.readFile();
   let rolesData = {};
   rolesData = JSON.parse(roles);
+export default function  permit(permission) {
 
-  const permissions = (req, res, next) => {
+  return (req, res, next) => {
     const { role } = req.body;
-    const { task } = req.body;
     try{
       /* check if this role exist */
       if (!rolesData.hasOwnProperty(role)) {
-        throw new accessDenied('Access denied, not allowed!');
+        throw new notFound('Access denied, role does not exist');
       }
+      let allowed = permission.length ? true : false;
 
-      /* check if this task exist */
-      if (!rolesData[role].hasOwnProperty(task)) {
-        throw new accessDenied('Access denied, permission does not exist!');
+      /* loop through permissions sent */
+
+      for(let i = 0; i< permission.length; i++){
+        /* check if this task does not exist */
+        if (!rolesData[role].hasOwnProperty(permission[i])) {
+          throw new notFound(`Access denied, permission does not exist! ["${permission[i]}"]`);
+        }
+
+        /* check if rolesData[role][permission[i]] is 1 or 0 
+           then assign "allowed", true or false
+           if false "break" the loop otherwise go to the next permission */
+        if(!(allowed = rolesData[role][permission[i]] ? true : false)) break;
       }
+      
 
-      /* if everything is okay, check the permission (1 or 0) */
-      if (rolesData[role][task]) {
+     if(allowed) {
         next();
-      } else {
-        throw new accessDenied("You don't have permissions to perform this task");
+      }else{
+        throw new accessDenied(`You don't have permissions to [${permission}]`);
       }
+
     }
     catch(error){
       next(error);
     }
-  };
-
-
-
-export default permissions;
+  }
+  
+  
+}

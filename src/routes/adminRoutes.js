@@ -4,7 +4,7 @@ import roles from '../controllers/admin/roles';
 import users from '../controllers/admin/users';
 
 import dlt from '../controllers/admin/delete';
-import permissions from '../controllers/admin/accessControl';
+import permit from '../controllers/admin/accessControl';
 
 const router = express.Router();
 
@@ -17,7 +17,7 @@ router.post('/roles', roles.create);
 /* update role's permissions */
 router.post('/roles/update', roles.updatePermissions);
 
-/* delete a role */
+/* delete a role */ 
 router.delete('/roles', roles.deleteRoles);
 
 /* retrieve all users */
@@ -27,9 +27,8 @@ router.get('/users', users.findThem);
 router.delete('/users', users.deleteOne);
 
 /* a delete route to show how to use this middleware of permissions*
- *for this pass to pass you have to send role and exact permission
- in your json body request */
-router.delete('/user', permissions, dlt);
+ *for this to pass you have to send exact permission(s) as parameter(s)*/
+router.delete('/locations', permit(['delete locations']), dlt);
 
 
 

@@ -10,7 +10,7 @@
     "heroku-postbuild": "babel src -d build",
     "start": "node ./build/app.js",
     "dev": "cross-env NODE_ENV=development nodemon --exec babel-node ./src/app.js",
-    "test": "cross-env NODE_ENV=test nyc --reporter=html --reporter=text mocha --require @babel/register ./tests/*.test.js --timeout 1000000 --exit",
+    "test": "cross-env NODE_ENV=test npm run migrate && npm run seed && nyc --reporter=html --reporter=text mocha --require @babel/register ./tests/*.test.js --timeout 1000000 --exit",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "lint": "eslint . --fix",
     "createModel": "npx sequelize-cli model:generate ",
@@ -37,12 +37,14 @@
     "coverage": "^0.4.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "express-async-errors": "^3.1.1",
     "joi": "^17.3.0",
     "jsonwebtoken": "^8.5.1",
     "nodemailer": "^6.4.14",
     "pg": "^8.4.2",
     "pg-hstore": "^2.3.3",
     "sequelize": "^6.3.5",
+    "swagger-jsdoc": "^5.0.0",
     "swagger-ui-express": "^4.1.4"
   },
   "devDependencies": {

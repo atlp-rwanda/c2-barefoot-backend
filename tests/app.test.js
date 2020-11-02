@@ -13,4 +13,14 @@ describe('testing welcome router', () => {
     expect(res.body.message).to.equal('Welcome to Barefoot Nomad');
     expect(res.body.status).to.equal(200);
   });
+  it('Should handle not found URLs', async () => {
+    const res = await request(app).get('/notFoundURL');
+    expect(res).to.have.status(404);
+    expect(res.type).to.equal('application/json');
+    expect(res.body).to.have.property('status');
+    expect(res.body).to.have.property('error');
+    expect(res.body).to.have.property('stack');
+    expect(res.body.error).to.equal('This URL /notFoundURL is not found');
+    expect(res.body.status).to.equal(404);
+  });
 });
