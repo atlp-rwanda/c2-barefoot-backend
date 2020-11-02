@@ -16,7 +16,7 @@ const options = {
         email: 'info@barefootnomad.com'
       }
     },
-    basePath: '/',
+    basePath: '/api/v1',
     components: {
       securitySchemes: {
         bearerAuth: {

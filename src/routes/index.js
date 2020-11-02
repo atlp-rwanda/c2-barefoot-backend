@@ -1,9 +1,10 @@
-import landingPage from './landingPageRoute';
-import signUp from './signUpRoute';
-import emailVerification from './emailVerificationRoute';
+import express from 'express';
+import landingPage from './api/landingPageRoute';
+import userRoute from './api/user';
 
-export default (app) => {
-  app.use('/', landingPage);
-  app.use('/signup', signUp);
-  app.use('/verification', emailVerification);
-};
+const routes = express.Router();
+
+routes.use('/user', userRoute);
+routes.use('/', landingPage);
+
+export default routes;

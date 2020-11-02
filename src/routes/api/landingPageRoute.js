@@ -1,12 +1,12 @@
 import express from 'express';
-import welcome from '../controllers/welcome';
+import welcome from '../../controllers/welcome';
 
 const router = express.Router();
 
 /**
  * @swagger
  *
- * /:
+ * /api/v1:
  *    get:
  *      summary: A route that shows the landing page
  *      description: This is the first page you meet when starting the app.

@@ -11,12 +11,13 @@ const app = express();
 
 app.use(express.json());
 
-// routes
-routes(app);
+app.use(express.urlencoded({ extended: false }));
+
+app.use('/api/v1/', routes);
 
 // documentation route
 const swaggerDocs = swaggerJsDoc(swaggerConfigs);
-app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
+app.use('/documentation', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 
 app.all('*', (req, res, next) => {
   const err = new ApplicationError('Page Requested not found', 404);
