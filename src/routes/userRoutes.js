@@ -1,9 +1,6 @@
 import express from 'express';
 import swaggerJSDoc from 'swagger-jsdoc';
 import welcome from '../controllers/userController/welcome';
-import signup from '../controllers/userController/signup';
-import verification from '../controllers/userController/verification';
-import signupValidation from '../middlewares/signupValidation';
 import loginValidation from '../middlewares/loginValidation';
 import logedIn from '../helper/isLogedIn';
 import login from '../controllers/userController/login';
@@ -67,74 +64,74 @@ router.get('/', welcome);
  *             type: string
  *
  */
-router.post('/signup', signupValidation, signup);
+// router.post('/signup', signupValidation, signup);
 
 // ------------------Email verification Route --------------
 
-router.get('/verification/:token', verification);
+// router.get('/verification/:token', verification);
 
-/**
-@swagger
-/refresh-token/:
-  post:
-    summary: This is for regenarating new access token to access protected route
-    tags: Refresh-token
-    description: regenerate a new access token
-    responses:
-      "200":
-        message: New token generated
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/refreshtoken'
-components:
-  schemas:
-    refreshtoken:
-      properties:
-        userToken:
-          type: string
-          example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJeyJpZCI6MjQsImZpcnN0X25hbWUiOiJBbWkgZGVzIGpl'
+// /**
+// @swagger
+// /refresh-token/:
+//   post:
+//     summary: This is for regenarating new access token to access protected route
+//     tags: Refresh-token
+//     description: regenerate a new access token
+//     responses:
+//       "200":
+//         message: New token generated
+//       content:
+//         application/json:
+//           schema:
+//             $ref: '#/components/schemas/refreshtoken'
+// components:
+//   schemas:
+//     refreshtoken:
+//       properties:
+//         userToken:
+//           type: string
+//           example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJeyJpZCI6MjQsImZpcnN0X25hbWUiOiJBbWkgZGVzIGpl'
 
-*/
+// */
 router.post('/refresh-token', refreshToken);
 
 // ---------------users login ------------------------------
 
-/**
-@swagger
- /login:
-  post:
-  tags:
-    - Users
-  name: Login
-  summary: Logs in a user
-  consummes:
-    - application/json
-  parameters:
-    - name: body
-      in: body
-      schema:
-        user:
-          type: object
-      required:
-        - email
-        - password
-          properties:
-            email:
-              type: string
-            password:
-              type: string
-  responses:
-    "200":
-      description: Login succesful. token: hfhasfbcsdjhfb45348242xkjfhckjfchjfhfakldf
-    "400"
-      description: for validation error, incorrect password
-    "404":
-      description: if you used none registered email which not found in database
-    "403":
-      description: when you don't verify you email, please verify your email first
+// /**
+// @swagger
+//  /login:
+//   post:
+//   tags:
+//     - Users
+//   name: Login
+//   summary: Logs in a user
+//   consummes:
+//     - application/json
+//   parameters:
+//     - name: body
+//       in: body
+//       schema:
+//         user:
+//           type: object
+//       required:
+//         - email
+//         - password
+//           properties:
+//             email:
+//               type: string
+//             password:
+//               type: string
+//   responses:
+//     "200":
+//       description: Login succesful. token: hfhasfbcsdjhfb45348242xkjfhckjfchjfhfakldf
+//     "400"
+//       description: for validation error, incorrect password
+//     "404":
+//       description: if you used none registered email which not found in database
+//     "403":
+//       description: when you don't verify you email, please verify your email first
 
-*/
+// */
 router.post('/login', loginValidation, login);
 
 // --------------- Logout ----------------------------------
