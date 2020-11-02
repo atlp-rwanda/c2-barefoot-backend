@@ -2,12 +2,15 @@ import express from 'express';
 import swaggerUI from 'swagger-ui-express';
 import 'dotenv/config';
 import swaggerJsDoc from 'swagger-jsdoc';
+import cors from 'cors';
 import db from './models/index';
 import routes from './routes/index';
 import ApplicationError from './utils/ApplicationError';
 import swaggerConfigs from './config/swaggerDoc';
 
 const app = express();
+
+app.use(cors());
 
 app.use(express.json());
 
@@ -34,7 +37,7 @@ sequelize
   .catch((err) => console.log(`Error: ${err}`));
 
 app.listen(port, () => {
-  console.log(`Server started on port ${port} ...`);
+  console.log(`CORS-enabled web server listening on port ${port} ...`);
 });
 
 app.use((err, req, res, next) => {
