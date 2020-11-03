@@ -3,10 +3,11 @@ module.exports = {
     await queryInterface.bulkInsert('users', [{
       first_name: 'Ineza',
       last_name: 'Bonte',
-      email: 'rene@gmail.com',
+      email: 'inezabonte@gmail.com',
       password: '12345678',
-      createdAt: new Date(),
-      updatedAt: new Date()
+      address: 'Kigali',
+      language: 'English',
+      profile_picture: 'image.png'
     }], {});
   },
 
