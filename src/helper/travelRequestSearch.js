@@ -9,7 +9,7 @@ export function findTravelRequest(res,query, pagination){
                 var counter = tRequestDataSet.rows.length
                 tRequestDataSet.rows.forEach((tRequestData) => {
                     console.log(tRequestData.tripId)
-                    db.Trip.findAll({where:{joiner:tRequestData.travelId}})
+                    db.Trip.findAll({where:{travelId:tRequestData.travelId}})
                         .then(tripData => {
                             counter -=1
                             if(tripData != null){

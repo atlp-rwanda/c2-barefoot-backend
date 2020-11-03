@@ -9,9 +9,7 @@ export default function (req, res, next) {
                 destination: Joi.string().required(),
                 tripDate: Joi.date().required(),
                 returnDate: Joi.date(),
-                accommodationID: Joi.string().required(),
-                userId: Joi.string().required(),
-                // managerId: Joi.string().required(),
+                accommodationId: Joi.string().required(),
                 reason: Joi.string().required()
             })
         ).required()

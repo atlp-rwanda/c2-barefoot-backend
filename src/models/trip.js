@@ -11,8 +11,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      models.TravelRequest.hasMany(Trip, {foreignKey:"joiner", targetKey:"travelId"})
-      Trip.belongsTo(models.TravelRequest, {foreignKey:"joiner", targetKey:"travelId"})
+      models.TravelRequest.hasMany(Trip, {foreignKey:"travelId", targetKey:"travelId"})
+      Trip.belongsTo(models.TravelRequest, {foreignKey:"travelId", targetKey:"travelId"})
       // Trip.sync({alter:true})
     }
   };
@@ -42,13 +42,12 @@ module.exports = (sequelize, DataTypes) => {
     returnDate: {
       type: DataTypes.DATE
     },
-    accommodationID: {
+    accommodationId: {
       type: DataTypes.INTEGER,
       allowNull: false
     },
-    userId: {
+    travelId: {
       type: DataTypes.INTEGER,
-      //defaultValue: "123456",
       allowNull: false
     },
     createdAt: {

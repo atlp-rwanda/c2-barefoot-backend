@@ -23,8 +23,12 @@ module.exports = {
       returnDate: {
         type: Sequelize.DATE
       },
-      accommodationID: {
+      accommodationId: {
         type: Sequelize.INTEGER
+      },
+      travelId: {
+        type: Sequelize.INTEGER,
+        allowNull: false
       },
       createdAt: {
         allowNull: false,

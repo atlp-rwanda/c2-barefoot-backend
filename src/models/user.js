@@ -75,7 +75,7 @@ const {
           notEmpty: true
         }
       },
-      mangerId: {
+      managerId: {
         allowNull: true,
         type: DataTypes.INTEGER,
       },

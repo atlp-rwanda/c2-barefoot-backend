@@ -7,7 +7,7 @@ export const getDirectReport = async (req, res) => {
     try{
         const managerId = decoded.id.toString()
         const role = decoded.user_role
-        const roleType = 2 == 2
+        const roleType = managerId == 2
         const offset = req.query.from
         const limit = req.query.to
         var pagination = {offset, limit}

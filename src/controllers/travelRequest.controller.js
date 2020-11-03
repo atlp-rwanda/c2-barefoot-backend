@@ -10,9 +10,9 @@ const travelRequest = async (req, res) => {
         const userid=null
     }
     console.log(decoded)
-    if(decoded.managerId){
+    if(decoded.manager_id){
         const request = {
-            managerId:decoded.managerId || "1", // in case manager is not available
+            managerId:decoded.manager_id, //|| "1",  in case manager is not available
             userId:decoded.id,
             status:req.body.status,
             createdAt:new Date(),
@@ -27,10 +27,13 @@ const travelRequest = async (req, res) => {
                     var counter = req.body.trip.length
                     for(var record of req.body.trip){
                         counter -=1
-                        record.joiner = tRequestData.travelId
+                        record.travelId = tRequestData.travelId
                         if(counter == 0){
                             db.Trip.bulkCreate(req.body.trip, {hooks:true})
-                            .then((tripData) => { /*awit.commit();*/ res.json({message: "Trip request sent successfully"})})
+                            .then((tripData) => { 
+                                /*awit.commit();*/ 
+                                var allData = Object.assign({}, tRequestData.get({ plain: true }), {tripData})
+                                res.json({message: "Trip request sent successfully", data: allData})})
                             .catch(async (err) => {/*await t.rollback();*/ res.json(await TR.getTravelRequestError(err)); console.log(err.message);})
                         }
                     }

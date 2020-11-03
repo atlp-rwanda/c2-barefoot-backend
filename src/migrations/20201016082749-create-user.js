@@ -23,7 +23,7 @@ module.exports = {
       verified: {
         type: Sequelize.BOOLEAN
       },
-      mangerId: {
+      managerId: {
         allowNull: true,
         type: Sequelize.INTEGER
       },

@@ -37,7 +37,7 @@ describe("Travel Requests", ()=>{
     it("Should get a single travel requests if you are logged in", async ()=>{
         var User = await request(app).post("/api/v1/login").send(user)
         const res = await request(app)
-        .get("/api/v1/requests/35")
+        .get("/api/v1/requests/7")
         .set("Authorization", User.body.data)
         .query({requestId:"1"})
         expect(res).to.have.status(200)

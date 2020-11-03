@@ -8,7 +8,7 @@ export class DbErrorHandler{
         accommodationID:"Accommodation",
         userId:"User ID",
         managerId:"Manager ID",
-        joiner:"Joiner",
+        travelId:"travel ID",
         status:"Status"
     }
     static getTravelRequestError(error){
