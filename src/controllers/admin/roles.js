@@ -18,6 +18,12 @@ exports.create = async (req, res, next) => {
 
     roleServices.fileExistOrNot('./permissions/index.json');
 
+    /* creates index.js if it doesn't exist */
+
+    if (!fs.existsSync('./permissions/index.json')) {
+        fs.writeFileSync('./permissions/index.json', '{}');
+    }
+
   /** receives the body object from the request */
   const requestData = req.body;
 
@@ -181,6 +187,13 @@ exports.deleteRoles = async (req, res, next)=>{
     /* creates index.js if it doesn't exist */
 
     roleServices.fileExistOrNot('./permissions/index.json'); 
+
+    /* creates index.js if it doesn't exist */
+
+    if (!fs.existsSync('./permissions/index.json')) {
+        fs.writeFileSync('./permissions/index.json', '{}');
+    }
+
 
     let requestRole = req.body.role;
     try {
