@@ -15,9 +15,9 @@ const transporter = nodemailer.createTransport({
 
 let link;
 if (process.env.NODE_ENV === 'development') {
-  link = 'http://localhost:3000/verification/';
+  link = process.env.LOCAL_LINK;
 } else {
-  link = 'https://barefoot-nomad-app-v1.herokuapp.com/verification/';
+  link = process.env.PRODUCTION_LINK;
 }
 const sendVerificationEmail = async (req, res, next) => {
   const { first_name, email } = req.body;
