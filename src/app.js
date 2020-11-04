@@ -23,6 +23,22 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use('/api/v1/', routes);
+app.use(cors());
+
+app.use(express.json());
+
+app.use(express.urlencoded({ extended: false }));
+
+app.use('/api/v1/', routes);
+
+// documentation route
+const swaggerDocs = swaggerJsDoc(swaggerConfigs);
+app.use('/documentation', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
+
+app.all('*', (req, res, next) => {
+  const err = new ApplicationError('Page Requested not found', 404);
+  next(err);
+});
 
 // documentation route
 const swaggerDocs = swaggerJsDoc(swaggerConfigs);
@@ -47,6 +63,21 @@ app.use((err, req, res, next) => {
 
 app.listen(port, () => {
   console.log(`CORS-enabled web server listening on port ${port} ...`);
+const port = process.env.PORT || 3000;
+
+const { sequelize } = db;
+sequelize
+  .authenticate()
+  .then(() => console.log('Database connected...'))
+  .catch((err) => console.log(`Error: ${err}`));
+
+app.listen(port, () => {
+  console.log(`CORS-enabled web server listening on port ${port} ...`);
+});
+
+app.use((err, req, res, next) => {
+  const statusCode = err.status || 500;
+  res.status(statusCode).json({ Status: statusCode, Error: err.message });
 });
 
 export default app;

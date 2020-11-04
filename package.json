@@ -8,6 +8,7 @@
     "start": "cross-env NODE_ENV=production node ./build/app.js",
     "dev": "cross-env NODE_ENV=development nodemon --exec babel-node ./src/app.js",
     "test": "cross-env NODE_ENV=test nyc --reporter=html --reporter=text mocha --require @babel/register ./tests/*.test.js --timeout 1000000 --exit || true",
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
     "lint": "eslint . --fix",
     "createModel": "npx sequelize-cli model:generate ",
     "migrate": "npx sequelize-cli db:migrate",
@@ -42,6 +43,7 @@
     "pg": "^8.4.1",
     "pg-hstore": "^2.3.3",
     "sequelize": "^6.3.5",
+    "sequelize-cli": "^6.2.0",
     "swagger-jsdoc": "^5.0.0",
     "swagger-ui-express": "^4.1.4"
   },
