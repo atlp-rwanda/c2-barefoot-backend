@@ -74,10 +74,10 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: true
       }
     },
-    user_role_id: {
+    user_role: {
       type: DataTypes.STRING,
       allowNull: false,
-      defaultValue: 1,
+      defaultValue: "requester",
       validate: {
         notEmpty: true
       },

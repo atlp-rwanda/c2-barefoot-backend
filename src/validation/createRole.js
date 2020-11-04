@@ -17,6 +17,14 @@ exports.updateValidation = (data) => {
   return schema.validate(data);
 };
 
+exports.updateUserRoleValidation = (data) => {
+  const schema = Joi.object({
+    role: Joi.string().min(2).max(50).required(),
+    email: Joi.string().min(5).email().max(50).required()
+  });
+  return schema.validate(data);
+};
+
 exports.deleteValidation = (data) => {
     const schema = Joi.object({
         role: Joi.string().min(2).max(50).required()

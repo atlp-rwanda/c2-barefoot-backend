@@ -7,7 +7,8 @@ module.exports = {
       password: '12345678',
       address: 'Kigali',
       language: 'English',
-      profile_picture: 'image.png'
+      profile_picture: 'image.png',
+      manager_id:"1"
     }], {});
   },
 

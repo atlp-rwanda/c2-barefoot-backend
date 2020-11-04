@@ -3,7 +3,8 @@ import userValidation from '../../validation/createRole';
 import applicationError from '../../errorHandling/applicationError';
 import userBadRequest from '../../errorHandling/userBadRequest';
 import notFound from '../../errorHandling/notFound';
-
+import roleServices from '../../services/roles';
+import accessDenied from '../../errorHandling/accessDenied';
 
 exports.findThem = async (req, res, next) =>{
     try{
@@ -19,13 +20,21 @@ exports.findThem = async (req, res, next) =>{
         const users = await usersService.findUsers({
             offset: skip,
             limit:limit,
-            attributes:["id","first_name","last_name","email"]
+            attributes:["id","first_name","last_name","email","user_role","address","language","profile_picture","manager_id"]
         });
+
+
         if(users){
+            // for(let i =0; i< users.count; i++){
+            //     let user= await  usersService.getUser({attributes:["first_name","last_name"], where:{id:users.rows[i].manager_id}});
+            //     users.rows[i].line_manager = user;
+            // }
+
+
             if(!users.rows.length){
                 throw new notFound(`Page ${page} does not exist!`);
             }
-           return res.status(200).json({status:200, users: users }); 
+           return res.status(200).json({status:200, users: users}); 
         }
         else{
             throw new applicationError('Failed to fetch users, try again!', 500);
@@ -33,6 +42,46 @@ exports.findThem = async (req, res, next) =>{
     }
     catch(error){
         next(error);
+    }
+}
+
+exports.updateHim = async (req, res, next) =>{
+    try{
+        /* data validation */
+        const { error } = userValidation.updateUserRoleValidation(req.body);
+        if (error) throw new userBadRequest(error.details[0].message);
+
+        const { email, role } = req.body;
+
+        /* read data from index.json file */
+
+        const existingData = roleServices.readFile();
+
+        /* converting the data from buffer to json format */
+        const roles = JSON.parse(existingData);
+
+        /* check if role exist */
+        if (!roles.hasOwnProperty(role)){throw new notFound("Role not exist!")}
+        if(role === 'administrator'){throw new accessDenied("Access denied!") }
+        
+        /* check if the user exist*/
+        const findUser = await usersService.getUser({email: email});
+        if(findUser){
+
+            /* update the user role*/
+            const upDate = await usersService.updateUserRole({email:email, user_role: role});
+            if(upDate){
+                res.status(201).json({status:200, message: `The user role is updated to ${role}`});
+            }else{
+                throw new applicationError('Failed to update this role, try again!',500);
+            }
+        }else{
+            throw new notFound(`${email} does not exist!`);
+        }
+
+    }
+    catch(err){
+        next(err);
     }
 }
 

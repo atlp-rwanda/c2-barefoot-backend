@@ -17,12 +17,15 @@ router.post('/roles', roles.create);
 /* update role's permissions */
 router.post('/roles/update', roles.updatePermissions);
 
+
+
 /* delete a role */ 
 router.delete('/roles', roles.deleteRoles);
 
 /* retrieve all users */
 router.get('/users', users.findThem);
 
+router.put('/users', users.updateHim);
 /* delete one user */
 router.delete('/users', users.deleteOne);
 
