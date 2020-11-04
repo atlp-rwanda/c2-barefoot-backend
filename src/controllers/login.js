@@ -26,12 +26,7 @@ const login = async (req, res, next) => {
           if (!results) throw new BadRequestError('Password incoreect');
           const userData = {
             id: isUser.id,
-            first_name: isUser.first_name,
-            last_name: isUser.last_name,
-            email: isUser.email,
-            address: isUser.address,
-            language: isUser.language,
-            profile_picture: isUser.profile_picture
+            email: isUser.email
           };
           const userToken = jwt.sign(userData, process.env.TOKEN_SECRET, { expiresIn: '2h' });
           const refreshToken = jwt.sign(userData, process.env.TOKEN_SECRET, { expiresIn: '7d' });

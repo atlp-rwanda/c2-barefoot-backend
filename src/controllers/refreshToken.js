@@ -17,12 +17,7 @@ const refreshToken = async (req, res, next) => {
     const newUser = await findUser(payload.email);
     const userData = {
       id: newUser.id,
-      first_name: newUser.first_name,
-      last_name: newUser.last_name,
-      email: newUser.email,
-      address: newUser.address,
-      language: newUser.language,
-      profile_picture: newUser.profile_picture
+      email: newUser.email
     };
     if (!newUser) {
       throw new BadRequestError('no user found with this token', 400);
