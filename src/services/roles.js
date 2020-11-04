@@ -2,12 +2,12 @@ import fs from 'fs';
 import models from '../models';
 
 exports.createOne = (data)=>{
-    const created = models.Role.create(data);
+    const created = models.role.create(data);
     return created;
 }
 
 exports.deleteOne = (data)=>{
-    const deleted = models.Role.destroy({where:{ name: data}});
+    const deleted = models.role.destroy({where:{ name: data}});
     return deleted;
 }
 

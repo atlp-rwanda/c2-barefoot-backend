@@ -3,6 +3,7 @@ import roleServices from '../../services/roles';
 import userBadRequest from '../../errorHandling/userBadRequest';
 import applicationError from '../../errorHandling/applicationError';
 import notFound from '../../errorHandling/notFound';
+import fs from 'fs';
 
 exports.create = async (req, res, next) => {
     try{
@@ -104,18 +105,13 @@ exports.updatePermissions = (req, res, next)=>{
         /* data validation */
         const { error } = roleValidate.updateValidation(req.body);
         if (error) throw new userBadRequest(error.details[0].message);
-    }
-    catch(err){
-        next(err);
-    }
   
-    /* creates index.js if it doesn't exist */
+        /* creates index.js if it doesn't exist */
 
-    roleServices.fileExistOrNot('./permissions/index.json');
+        roleServices.fileExistOrNot('./permissions/index.json');
 
 
-    let requestData = req.body;
-    try {
+        let requestData = req.body;
         /* read data from index.json file */
 
         const existingData = roleServices.readFile();
@@ -180,23 +176,18 @@ exports.deleteRoles = async (req, res, next)=>{
         /* data validation */
         const { error } = roleValidate.deleteValidation(req.body);
         if (error) throw new userBadRequest(error.details[0].message);
-    }
-    catch(err){
-        next(err);
-    }
-    /* creates index.js if it doesn't exist */
+        /* creates index.js if it doesn't exist */
 
-    roleServices.fileExistOrNot('./permissions/index.json'); 
+        roleServices.fileExistOrNot('./permissions/index.json'); 
 
-    /* creates index.js if it doesn't exist */
+        /* creates index.js if it doesn't exist */
 
-    if (!fs.existsSync('./permissions/index.json')) {
-        fs.writeFileSync('./permissions/index.json', '{}');
-    }
+        if (!fs.existsSync('./permissions/index.json')) {
+            fs.writeFileSync('./permissions/index.json', '{}');
+        }
 
 
-    let requestRole = req.body.role;
-    try {
+        let requestRole = req.body.role;
 
         /* read data from index.json file */
 
@@ -223,7 +214,7 @@ exports.deleteRoles = async (req, res, next)=>{
                     // fs.writeFileSync('./permissions/index.json', dataJson);    
                     roleServices.saveInFile(dataJson); 
 
-                    return res.status(201).json({status:201,message: "Role deleted successfully", roles: roles});
+                    return res.status(201).json({status:201,message: "Role deleted successfully", role: requestRole});
                 }else{
                     throw new applicationError('Failed to delete this role, try again!', 500);
                 }

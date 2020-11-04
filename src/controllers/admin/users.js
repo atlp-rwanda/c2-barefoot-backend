@@ -32,7 +32,7 @@ exports.findThem = async (req, res, next) =>{
 
 
             if(!users.rows.length){
-                throw new notFound(`Page ${page} does not exist!`);
+                throw new notFound(`No user found on page ${page}`);
             }
            return res.status(200).json({status:200, users: users}); 
         }
