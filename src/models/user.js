@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate(models) {
+    static associate(_models) {
       // define association here
     }
   }
@@ -74,11 +74,23 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: true
       }
     },
+    user_role_id: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: 1,
+      validate: {
+        notEmpty: true
+      },
+    },
     refreshtoken: {
       type: DataTypes.STRING(700),
       allowNull: false,
       defaultValue: 'refreshtoken'
 
+    },
+    manager_id: {
+      type: DataTypes.INTEGER,
+      allowNull: true
     }
   }, {
     sequelize,

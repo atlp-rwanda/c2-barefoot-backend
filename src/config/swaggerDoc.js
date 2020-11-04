@@ -1,6 +1,3 @@
-// Swagger set up
-import path from 'path';
-
 const options = {
   swaggerDefinition: {
     openapi: '3.0.0',
@@ -19,7 +16,7 @@ const options = {
         email: 'info@barefootnomad.com'
       }
     },
-    basePath: '/',
+    basePath: '/api/v1',
     components: {
       securitySchemes: {
         bearerAuth: {
@@ -34,10 +31,6 @@ const options = {
       bearerAuth: []
     }]
   },
-  apis: [
-    // all swagger api files will included here like below example
-    //   this is an example of how to include file : path.resolve(__dirname,'./Users.js'),
-    path.resolve(__dirname, '../routes/userRoutes.js')
-  ]
+  apis: ['src/routes/api/*.js']
 };
 export default options;

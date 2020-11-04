@@ -1,10 +1,10 @@
 import bcrypt from 'bcrypt';
 import 'express-async-errors';
 import jwt from 'jsonwebtoken';
-import isUserExist from '../../services/findUser';
-import ApplicationError from '../../utils/applicationError';
-import BadRequestError from '../../utils/badRequestError';
-import NotFoundRequestError from '../../utils/notFoundRequestError';
+import isUserExist from '../services/findUser';
+import ApplicationError from '../utils/ApplicationError';
+import BadRequestError from '../utils/badRequestError';
+import NotFoundRequestError from '../utils/notFoundRequestError';
 
 const login = async (req, res, next) => {
   const { email, password } = req.body;
@@ -37,7 +37,7 @@ const login = async (req, res, next) => {
           const refreshToken = jwt.sign(userData, process.env.TOKEN_SECRET, { expiresIn: '7d' });
           // updating user refresh token in database
           await isUser.update({ refreshtoken: refreshToken });
-          res.cookie('make', refreshToken, { httpOnly: false, path: '/refresh-token' });
+          res.cookie('make', refreshToken, { httpOnly: false, path: '/api/v1/user/refresh-token' });
           return res.status(200).json({ status: 200, message: 'login successful', data: userToken });
         } catch (err) {
           next(err);

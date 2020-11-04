@@ -1,4 +1,5 @@
-import ApplicationError from './applicationError';
+/* eslint-disable require-jsdoc */
+import ApplicationError from './ApplicationError';
 
 class NotFoundRequestError extends ApplicationError {
   constructor(message) {

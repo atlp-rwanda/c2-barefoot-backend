@@ -5,10 +5,9 @@
   "main": "app.js",
   "scripts": {
     "heroku-postbuild": "babel src -d build",
-    "start": "node ./build/app.js",
+    "start": "cross-env NODE_ENV=production node ./build/app.js",
     "dev": "cross-env NODE_ENV=development nodemon --exec babel-node ./src/app.js",
-    "test": "nyc --reporter=html --reporter=text mocha --require @babel/register ./tests/*.test.js --timeout 1000000 --exit",
-    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "test": "cross-env NODE_ENV=test nyc --reporter=html --reporter=text mocha --require @babel/register ./tests/*.test.js --timeout 1000000 --exit || true",
     "lint": "eslint . --fix",
     "createModel": "npx sequelize-cli model:generate ",
     "migrate": "npx sequelize-cli db:migrate",
