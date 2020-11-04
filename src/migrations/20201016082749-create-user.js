@@ -23,10 +23,6 @@ module.exports = {
       verified: {
         type: Sequelize.BOOLEAN
       },
-      managerId: {
-        allowNull: true,
-        type: Sequelize.INTEGER
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

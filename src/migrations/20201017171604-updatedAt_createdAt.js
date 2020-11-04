@@ -22,6 +22,7 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('users');
+    await queryInterface.removeColumn('users', 'createdAt');
+    await queryInterface.removeColumn('users', 'updatedAt');
   }
 };

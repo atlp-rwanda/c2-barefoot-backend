@@ -4,7 +4,7 @@ module.exports = {
       first_name: 'Ineza',
       last_name: 'Bonte',
       email: 'inezabonte@gmail.com',
-      password: '$2b$10$QFid267DDwcB5z1LJJiYxOm9un.5yBeyFBfX3GWgqjUenx/Fcmt.O',
+      password: '12345678',
       address: 'Kigali',
       language: 'English',
       profile_picture: 'image.png'

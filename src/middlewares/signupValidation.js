@@ -1,17 +1,20 @@
 import Joi from 'joi';
+import signUpError from '../utils/signUpError';
 
-export default function (req, res, next) {
-  const schema = Joi.object({
-    first_name: Joi.string().required(),
-    last_name: Joi.string().required(),
-    email: Joi.string().email().required(),
-    password: Joi.string().required().min(8),
-    address: Joi.string().required(),
-    language: Joi.string().required(),
-    profile_picture: Joi.string().required()
-  });
+const schema = Joi.object({
+  first_name: Joi.string().required().regex(/^[A-Za-z]+$/),
+  last_name: Joi.string().required().regex(/^[A-Za-z]+$/),
+  email: Joi.string().email().required(),
+  password: Joi.string().required().min(8),
+  address: Joi.string().required(),
+  language: Joi.string().required().regex(/^[A-Za-z]+$/),
+  profile_picture: Joi.string().required()
+});
 
+export default (req, res, next) => {
   const { error } = schema.validate(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
+  if (error) {
+    throw new signUpError(error.details[0].message, 400);
+  }
   next();
-}
+};

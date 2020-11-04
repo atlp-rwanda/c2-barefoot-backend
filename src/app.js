@@ -2,43 +2,54 @@ import express from 'express';
 import swaggerUI from 'swagger-ui-express';
 import cookieParser from 'cookie-parser';
 import 'dotenv/config';
-// import db from './config/connection';
+import swaggerJsDoc from 'swagger-jsdoc';
+import cors from 'cors';
 import db from './models/index';
-import indexRoutes from './routes/index';
-import swaggerDocument from '../swagger.json';
+import routes from './routes/index';
+import ApplicationError from './utils/ApplicationError';
+import swaggerConfigs from './config/swaggerDoc';
 import bodyParser from 'body-parser'
 
 const app = express();
 
+app.use(cors());
 // parser
 app.use(bodyParser.urlencoded())
 app.use(bodyParser.json())
 //app.use(express.json());
 app.use(cookieParser());
 
-// routes
-app.use('/api/v1', indexRoutes);
+app.use(express.json());
 
-// docuemntation route
-app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
+app.use(express.urlencoded({ extended: false }));
+
+app.use('/api/v1/', routes);
+
+// documentation route
+const swaggerDocs = swaggerJsDoc(swaggerConfigs);
+app.use('/documentation', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
+
+app.all('*', (req, res, next) => {
+  const err = new ApplicationError('Page Requested not found', 404);
+  next(err);
+});
 
 // db connection check
+const port = process.env.PORT || 3000;
+
 const { sequelize } = db;
-sequelize.authenticate()
+sequelize
+  .authenticate()
   .then(() => console.log('Database connected...'))
   .catch((err) => console.log(`Error: ${err}`));
 
-const port = process.env.PORT || 3000;
-
-// Not found error handle
-app.use((req, res, next) => {
-  res.status(404);
-  res.json({ status: 404, error: `This URL ${req.path} not found` });
+app.listen(port, () => {
+  console.log(`CORS-enabled web server listening on port ${port} ...`);
 });
 
-app.listen(port, () => {
-  console.log(`Server started on port ${port} ...`);
-  console.log(process.env.NODE_ENV);
+app.use((err, req, res, next) => {
+  const statusCode = err.status || 500;
+  res.status(statusCode).json({ Status: statusCode, Error: err.message });
 });
 
 export default app;
