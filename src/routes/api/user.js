@@ -3,14 +3,11 @@ import signup from '../../controllers/signup';
 import signupValidation from '../../middlewares/signupValidation';
 import sendVerificationEmail from '../../middlewares/sendEmail';
 import verification from '../../controllers/verification';
-<<<<<<< HEAD
 import loginValidation from '../../middlewares/loginValidation';
 import logedIn from '../../helper/isLogedIn';
 import login from '../../controllers/login';
 import logout from '../../controllers/logout';
 import refreshToken from '../../controllers/refreshToken';
-=======
->>>>>>> develop
 
 const router = express.Router();
 
