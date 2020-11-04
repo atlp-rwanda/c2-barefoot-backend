@@ -1,7 +1,7 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.addColumn('users', 'refreshtoken', {
-      type: Sequelize.STRING,
+      type: Sequelize.STRING(700),
       allowNull: false,
       defaultValue: 'refreshtoken'
     });
