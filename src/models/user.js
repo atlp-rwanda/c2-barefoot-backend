@@ -82,6 +82,12 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: true
       },
     },
+    refreshtoken: {
+      type: DataTypes.STRING(700),
+      allowNull: false,
+      defaultValue: 'refreshtoken'
+
+    },
     manager_id: {
       type: DataTypes.INTEGER,
       allowNull: true
