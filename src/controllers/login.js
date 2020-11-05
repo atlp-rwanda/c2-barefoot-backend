@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt';
 import 'express-async-errors';
 import jwt from 'jsonwebtoken';
 import isUserExist from '../services/findUser';
-import ApplicationError from '../utils/ApplicationError';
+import ApplicationError from '../utils/applicationError';
 import BadRequestError from '../utils/badRequestError';
 import NotFoundRequestError from '../utils/notFoundRequestError';
 

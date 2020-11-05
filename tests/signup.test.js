@@ -70,13 +70,11 @@ describe('Testing email verification', () => {
     const res = await request(app).patch(`/api/v1/user/verification/?token=${validToken}`);
     expect(res).to.have.status(200);
     expect(res.type).to.equal('application/json');
-    // expect(res.body.error).to.equal('Email has been verified');
   });
 
   it('Shouldn\'nt verify more than once', async () => {
     const res = await request(app).patch(`/api/v1/user/verification/?token=${validToken}`);
     expect(res).to.have.status(200);
     expect(res.type).to.equal('application/json');
-    // expect(res.body.error).to.equal('Account already verified');
   });
 });
