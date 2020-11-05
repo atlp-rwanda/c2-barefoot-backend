@@ -1,6 +1,7 @@
 import models from '../models';
 
 exports.findUsers = (query) =>{
+    query.include = [{ model: models.role, as: 'role'},{ model: models.line_managers, as: 'line_manager'}];
     const users= models.user.findAndCountAll(query);
 
     return users;

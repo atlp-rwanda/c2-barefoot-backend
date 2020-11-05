@@ -1,17 +1,14 @@
-'use strict';
-
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     // await queryInterface.bulkInsert('users', [{
-    //   first_name: 'Barefoot',
-    //   last_name: 'Administrator',
-    //   email: 'renedeolynda@gmail.com',
-    //   password: 'barefoot.Admin:)',
+    //   first_name: 'Ineza',
+    //   last_name: 'Bonte',
+    //   email: 'inezabonte@gmail.com',
+    //   password: '12345678',
     //   address: 'Kigali',
     //   language: 'English',
-    //   profile_picture: 'admin.png',
-    //   verified: true,
-    //   user_role:"administrator"
+    //   profile_picture: 'image.png',
+    //   manager_id:"1"
     // }], {});
   },
 

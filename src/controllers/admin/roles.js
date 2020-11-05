@@ -214,7 +214,7 @@ exports.deleteRoles = async (req, res, next)=>{
                     // fs.writeFileSync('./permissions/index.json', dataJson);    
                     roleServices.saveInFile(dataJson); 
 
-                    return res.status(201).json({status:201,message: "Role deleted successfully", role: requestRole});
+                    return res.status(200).json({status:200,message: "Role deleted successfully", role: requestRole});
                 }else{
                     throw new applicationError('Failed to delete this role, try again!', 500);
                 }

@@ -20,17 +20,13 @@ exports.findThem = async (req, res, next) =>{
         const users = await usersService.findUsers({
             offset: skip,
             limit:limit,
-            attributes:["id","first_name","last_name","email","user_role","address","language","profile_picture","manager_id"]
+            attributes:["id","first_name","last_name","email","user_role_id","address","language","profile_picture","manager_id"]
+            
         });
 
 
         if(users){
-            // for(let i =0; i< users.count; i++){
-            //     let user= await  usersService.getUser({attributes:["first_name","last_name"], where:{id:users.rows[i].manager_id}});
-            //     users.rows[i].line_manager = user;
-            // }
-
-
+        
             if(!users.rows.length){
                 throw new notFound(`No user found on page ${page}`);
             }
@@ -67,14 +63,20 @@ exports.updateHim = async (req, res, next) =>{
         /* check if the user exist*/
         const findUser = await usersService.getUser({email: email});
         if(findUser){
-
-            /* update the user role*/
-            const upDate = await usersService.updateUserRole({email:email, user_role: role});
-            if(upDate){
-                res.status(201).json({status:200, message: `The user role is updated to ${role}`});
+            const findRole = await roleServices.findRole({name: role});
+            if(findRole){
+                /* update the user role*/
+                const upDate = await usersService.updateUserRole({email:email, user_role: role});
+                if(upDate){
+                    res.status(201).json({status:201, message: `The user role is updated to ${role}`});
+                }else{
+                    throw new applicationError('Failed to update this role, try again!',500);
+                } 
             }else{
-                throw new applicationError('Failed to update this role, try again!',500);
+                throw new notFound(`${role} does not exist`);
             }
+
+            
         }else{
             throw new notFound(`${email} does not exist!`);
         }
@@ -94,13 +96,22 @@ exports.deleteOne = async (req, res, next) =>{
         if (error) throw new userBadRequest(error.details[0].message);
 
         const userEmail = req.body.email;
-        const deleted = await usersService.deleteUser(userEmail);
-        if(deleted){
-            res.status(200).json({status:200, message: "The user is deleted successfully!"});
+        const findUser = await usersService.getUser({email: userEmail});
+        if(findUser){
+            if(findUser.user_role === "administrator"){
+                throw new accessDenied('Can not delete the administrator!');
+            }
+            const deleted = await usersService.deleteUser(userEmail);
+            if(deleted){
+                res.status(200).json({status:200, message: "The user is deleted successfully!"});
+            }
+            else{
+                throw new applicationError('Failed to delete this user! Try again', 500);
+            }
+        }else{
+            throw new notFound(`${userEmail} does not exist!`);
         }
-        else{
-            throw new applicationError('User not deleted! Try again', 500);
-        }
+        
     }catch(error){
         next(error);
     }

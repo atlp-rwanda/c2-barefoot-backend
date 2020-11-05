@@ -11,6 +11,15 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      user.belongsTo(models.role, {
+        foreignKey: 'user_role_id',
+        as: 'role'
+      });
+
+      user.belongsTo(models.line_managers, {
+        foreignKey: 'manager_id',
+        as: 'line_manager'
+      });
     }
   }
   user.init({
@@ -74,17 +83,17 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: true
       }
     },
-    user_role: {
+    user_role_id: {
       type: DataTypes.STRING,
       allowNull: false,
-      defaultValue: "requester",
+      defaultValue: 2,
       validate: {
         notEmpty: true
       },
     },
     manager_id: {
       type: DataTypes.INTEGER,
-      allowNull: true
+      allowNull: false
     }
   }, {
     sequelize,

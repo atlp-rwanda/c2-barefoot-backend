@@ -6,6 +6,11 @@ exports.createOne = (data)=>{
     return created;
 }
 
+exports.findRole = (data) =>{
+    const found = models.role.findOne({where:{ name: data.name}});
+    return found;
+}
+
 exports.deleteOne = (data)=>{
     const deleted = models.role.destroy({where:{ name: data}});
     return deleted;

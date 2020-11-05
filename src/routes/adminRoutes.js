@@ -238,8 +238,91 @@ router.delete('/roles', roles.deleteRoles);
 router.get('/users', users.findThem);
 
 /* update a user role */
+
+
+/**
+ * @swagger
+ *
+ * /api/v1/admin/users:
+ *    put:
+ *      summary: A route that allows the super admin to update one's role
+ *      description: This is the page that allows the admin to update/change all user roles or assign the new roles
+ *      tags: [Super admin]
+ *      requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/updateUser'
+ *      responses:
+ *        "201":
+ *          description: The user is updated
+ *        "400":
+ *          description: \"role\" and \"email\" are required
+ *        "403":
+ *          description: Forbidden
+ *        "404":
+ *          description: The user is not found or \"Role\" not exist
+ *
+ * components:
+ *    schemas:
+ *      updateUser:
+ *        type: object
+ *        required:
+ *          - role
+ *          - email
+ *        properties:
+ *          role:
+ *            type: string
+ *            example: string
+ *          email:
+ *            type: string
+ *            example: string@gmail.com
+ * 
+ */
 router.put('/users', users.updateHim);
+
+
 /* delete one user */
+
+
+/**
+ * @swagger
+ *
+ * /api/v1/admin/users:
+ *    put:
+ *      summary: A route that allows the super admin to delete one's account
+ *      description: This is the page that allows the admin to delete user accounts
+ *      tags: [Super admin]
+ *      requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/deleteUser'
+ *      responses:
+ *        "200":
+ *          description: The user is deleted successfully!
+ *        "400":
+ *          description: \"email\" is required
+ *        "403":
+ *          description: Forbidden
+ *        "404":
+ *          description: The user does not exist
+ *
+ * components:
+ *    schemas:
+ *      updateUser:
+ *        type: object
+ *        required:
+ *          - email
+ *        properties:
+ *          email:
+ *            type: string
+ *            example: string@gmail.com
+ * 
+ */
+
 router.delete('/users', users.deleteOne);
 
 /* a delete route to show how to use this middleware of permissions*
