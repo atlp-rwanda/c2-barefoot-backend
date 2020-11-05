@@ -1,9 +1,9 @@
 import db from '../models'
-import {DbErrorHandler as TR } from '../middlewares/travelRequestValidation';
+// import {DbErrorHandler as TR } from '../middlewares/travelRequestValidation';
 import { getDataFromToken } from '../helper/tokenToData';
 
-const travelRequest = async (req, res) => {
-    const decoded = await getDataFromToken(req, res)
+const travelRequest = async (req, res, next) => {
+    const decoded = await getDataFromToken(req, res, next)
     try{
         const userid = JSON.stringify(decoded.id)
     }catch(err){
@@ -34,18 +34,21 @@ const travelRequest = async (req, res) => {
                                 /*awit.commit();*/ 
                                 var allData = Object.assign({}, tRequestData.get({ plain: true }), {tripData})
                                 res.json({message: "Trip request sent successfully", data: allData})})
-                            .catch(async (err) => {/*await t.rollback();*/ res.json(await TR.getTravelRequestError(err)); console.log(err.message);})
+                            .catch((err) => {/*await t.rollback();*/ res.json( next(err)); })
                         }
                     }
                 }catch(err){
-                    res.status(400).json(TR.getTravelRequestError(err))
+                    // res.status(400).json(TR.getTravelRequestError(err))
+                    next(err)
                 }
             })
-            .catch(async err => {
-                res.json(await TR.getTravelRequestError(err))
+            .catch(err => {
+                // res.json(await TR.getTravelRequestError(err))
+                next(err)
             })
         }catch(err){
-            res.status(400).json(TR.getTravelRequestError(err.message))
+            // res.status(400).json(TR.getTravelRequestError(err.message))
+            next(err)
         }
     }else{
         res.json({message:"You need a Manager First."})

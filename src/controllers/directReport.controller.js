@@ -2,12 +2,12 @@ import db from '../models'
 import { findTravelRequest } from '../helper/travelRequestSearch';
 import { getDataFromToken } from '../helper/tokenToData';
 
-export const getDirectReport = async (req, res) => {
-    const decoded = await getDataFromToken(req, res)
+export const getDirectReport = async (req, res, next) => {
+    const decoded = await getDataFromToken(req, res, next)
     try{
         const managerId = decoded.id.toString()
         const role = decoded.user_role
-        const roleType = managerId == 2
+        const roleType = role == 2
         const offset = req.query.from
         const limit = req.query.to
         var pagination = {offset, limit}
@@ -20,6 +20,13 @@ export const getDirectReport = async (req, res) => {
             res.status(401).json({message:"you are not an approved manager"})
         }
     }catch(err){
-        console.log(err.message)
+        if(err instanceof TypeError){
+            next(err)
+        }
+        else{
+            next(err)
+        }
+        // console.log(err.message)
+        
     }
 }
