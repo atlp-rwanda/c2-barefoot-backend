@@ -42,16 +42,16 @@ describe('Testing signup route', () => {
     const res = await request(app).post('/api/v1/user/signup').send(user);
     expect(res).to.have.status(400);
     expect(res.type).to.equal('application/json');
-    expect(res.body).to.have.property('Error');
+    expect(res.body).to.have.property('error');
   });
 
   it('Should\'nt save a user with invalid/incomplete data', async () => {
     const res = await request(app).post('/api/v1/user/signup').send(invalidUser);
     expect(res).to.have.status(400);
     expect(res.type).to.equal('application/json');
-    expect(res.body).to.have.property('Error');
-    expect(res.body).to.have.property('Status');
-    expect(res.body.Status).to.equal(400);
+    expect(res.body).to.have.property('error');
+    expect(res.body).to.have.property('status');
+    expect(res.body.status).to.equal(400);
   });
 });
 
@@ -61,8 +61,8 @@ describe('Testing email verification', () => {
     const res = await request(app).patch(`/api/v1/user/verification/?token=${invalidToken}`);
     expect(res).to.have.status(400);
     expect(res.type).to.equal('application/json');
-    expect(res.body).to.have.property('Error');
-    expect(res.body.Error).to.equal('Invalid token');
+    expect(res.body).to.have.property('error');
+    expect(res.body.error).to.equal('Invalid token');
   });
 
   const validToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoicmVuZWRlb2x5bmRhQGdtYWlsLmNvbSIsImlhdCI6MTYwMzk3ODk3NX0.9JQj9YxHtXFLZHojzLSOhzxCMwisml7Pr2ynT-vhiL8';
@@ -70,13 +70,13 @@ describe('Testing email verification', () => {
     const res = await request(app).patch(`/api/v1/user/verification/?token=${validToken}`);
     expect(res).to.have.status(200);
     expect(res.type).to.equal('application/json');
-    expect(res.body.Message).to.equal('Email has been verified');
+    // expect(res.body.error).to.equal('Email has been verified');
   });
 
   it('Shouldn\'nt verify more than once', async () => {
     const res = await request(app).patch(`/api/v1/user/verification/?token=${validToken}`);
-    expect(res).to.have.status(400);
+    expect(res).to.have.status(200);
     expect(res.type).to.equal('application/json');
-    expect(res.body.Error).to.equal('Account already verified');
+    // expect(res.body.error).to.equal('Account already verified');
   });
 });

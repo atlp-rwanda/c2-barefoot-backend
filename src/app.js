@@ -6,7 +6,7 @@ import cookieParser from 'cookie-parser';
 import 'dotenv/config';
 import db from './models/index';
 import routes from './routes/index';
-import ApplicationError from './utils/ApplicationError';
+import ApplicationError from './utils/applicationError';
 import swaggerConfigs from './config/swaggerDoc';
 
 const app = express();
@@ -41,8 +41,8 @@ sequelize.authenticate()
   .catch((err) => console.log(`Error: ${err}`));
 
 app.use((err, req, res, next) => {
-  const statusCode = err.statusCode || 500;
-  res.status(statusCode).json({ status: statusCode, error: err.message });
+  const status = err.status || 500;
+  res.status(status).json({ status, error: err.message });
 });
 
 app.listen(port, () => {

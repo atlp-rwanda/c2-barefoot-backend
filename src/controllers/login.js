@@ -10,7 +10,7 @@ const login = async (req, res, next) => {
   const { email, password } = req.body;
   const isUser = await isUserExist(email);
   if (isUser === null) {
-    throw new NotFoundRequestError(`You don't have an accoutn with this email: ${email}`, 404);
+    throw new NotFoundRequestError(`You don't have an account with this email: ${email}`, 404);
   }
 
   if (isUser.verified === false) {
@@ -22,7 +22,7 @@ const login = async (req, res, next) => {
       throw new BadRequestError(error.message, 400);
     }
     try {
-      if (!results) throw new BadRequestError('Password incoreect');
+      if (!results) throw new BadRequestError('Password incorrect', 400);
       const userData = {
         id: isUser.id,
         email: isUser.email
