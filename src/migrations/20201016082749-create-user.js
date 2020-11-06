@@ -7,7 +7,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.UUID
       },
-    
+
       first_name: {
         allowNull: false,
         type: Sequelize.STRING
@@ -47,22 +47,23 @@ module.exports = {
           key: 'id',
         },
       },
-    language: {type: Sequelize.STRING,allowNull: false,defaultValue:'English'},
-    address: { type: Sequelize.STRING,allowNull: false},
-    user_role_id: {allowNull: true, 
-      allowNull: true,
-      type: Sequelize.UUID,
-      references: {
-        model: 'Roles',
-        key: 'id',
-      },},
-    refreshtoken: {type: Sequelize.STRING,allowNull: false,defaultValue: 'refreshtoken'},
-    verified: {
+      language: { type: Sequelize.STRING, allowNull: false, defaultValue: 'English' },
+      address: { type: Sequelize.STRING, allowNull: false },
+      user_role_id: {
+        allowNull: true,
+        type: Sequelize.UUID,
+        references: {
+          model: 'Roles',
+          key: 'id',
+        },
+      },
+      refreshtoken: { type: Sequelize.STRING, allowNull: false, defaultValue: 'refreshtoken' },
+      verified: {
         allowNull: true,
         type: Sequelize.BOOLEAN,
         defaultValue: false
       },
-  
+
       createdAt: {
         allowNull: true,
         type: Sequelize.DATE,

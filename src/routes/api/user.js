@@ -141,7 +141,7 @@ router.post('/signup', signupValidation, signup, sendVerificationEmail);
  *          Error: Account does not exist
  */
 
-router.patch('/verification', verification);
+router.patch('/verification/', verification);
 /**
  * @swagger
  * /api/v1/user/login:

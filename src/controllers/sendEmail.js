@@ -31,7 +31,7 @@ const sendVerificationEmail = async (req, res, next) => {
 
   try {
     const sendmail = await transporter.sendMail(mailOptions);
-    return res.status(201).json({ Message: `User ${first_name} has been created. Check email for verification` });
+    return res.status(201).json({ message: `User ${first_name} has been created. Check email for verification` });
   } catch (error) {
     next(error);
   }

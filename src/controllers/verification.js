@@ -14,7 +14,7 @@ const verification = async (req, res, next) => {
       }
 
       if (record.verified === false) {
-        models.user.update({ verified: true }, { where: { email: user } });
+        models.User.update({ verified: true }, { where: { email: user } });
         return res.status(200).json({ Status: 200, Message: 'Email has been verified' });
       }
       throw new signUpError('Account already verified', 400);

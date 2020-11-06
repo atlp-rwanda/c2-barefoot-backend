@@ -11,6 +11,6 @@ describe('api/v1/refreshtoken', () => {
     const res = await request(app).post('/api/v1/user/refresh-token');
     expect(res).to.have.status(400);
     expect(res.body).to.have.property('error');
-    expect(res.body.error).to.equal('no token in cookie');
+    expect(res.body.error).to.equal('Please login!');
   });
 });

@@ -1,5 +1,6 @@
 import roles from '../utils/roles';
 import { hashPassword } from '../utils/auth';
+
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
@@ -16,13 +17,16 @@ module.exports = (sequelize, DataTypes) => {
     password: DataTypes.STRING,
     username: DataTypes.STRING,
     verified: { type: DataTypes.BOOLEAN, defaultValue: false },
-    user_role_id: {allowNull: true, type: DataTypes.UUID,defaultValue: roles.REQUESTER,},
-    manager_id: { allowNull: true,type: DataTypes.UUID},
-    refreshtoken: {type: DataTypes.STRING,allowNull: false,defaultValue: 'refreshtoken'},
-    profile_picture: { type: DataTypes.STRING,allowNull: false,
-      defaultValue: 'https://www.cobdoglaps.sa.edu.au/wp-content/uploads/2017/11/placeholder-profile-sq.jpg'},
-    language: {type: DataTypes.STRING,allowNull: false,defaultValue:'Eng'},
-    address: { type: DataTypes.STRING,allowNull: false},
+    user_role_id: { allowNull: true, type: DataTypes.UUID, defaultValue: roles.REQUESTER, },
+    manager_id: { allowNull: true, type: DataTypes.UUID },
+    refreshtoken: { type: DataTypes.STRING, allowNull: false, defaultValue: 'refreshtoken' },
+    profile_picture: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: 'https://www.cobdoglaps.sa.edu.au/wp-content/uploads/2017/11/placeholder-profile-sq.jpg'
+    },
+    language: { type: DataTypes.STRING, allowNull: false, defaultValue: 'Eng' },
+    address: { type: DataTypes.STRING, allowNull: false },
   }, {});
 
   User.associate = (models) => {
@@ -30,16 +34,16 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'manager_id',
       as: 'manager',
     });
-    
+
     // user.hasMany(Travel_request, {
     //   as: 'requester',
     //   foreignKey: 'userId',
     // targetKey: 'id',
-     //  onUpdate: 'CASCADE',
-      // onDelete: 'CASCADE'
+    //  onUpdate: 'CASCADE',
+    // onDelete: 'CASCADE'
 
     // });
-   
+
     // user.belongsToMany(travelRequest, {
     //   through: 'Accomodation',
     //   as: 'TravelRequest',
@@ -48,14 +52,13 @@ module.exports = (sequelize, DataTypes) => {
     // })
   };
 
-
-//  hash user password before creating user
-User.beforeCreate((user) => {
-  if (user.password) { user.password = hashPassword(user.password); }
-});
-//  hash user password before updatng user password
-User.beforeBulkUpdate(({ attributes: user }) => {
-  if (user.password) { user.password = hashPassword(user.password); }
-});
-return User;
+  //  hash user password before creating user
+  User.beforeCreate((user) => {
+    if (user.password) { user.password = hashPassword(user.password); }
+  });
+  //  hash user password before updatng user password
+  User.beforeBulkUpdate(({ attributes: user }) => {
+    if (user.password) { user.password = hashPassword(user.password); }
+  });
+  return User;
 };
