@@ -1,100 +1,61 @@
-const {
-  Model
-} = require('sequelize');
-
+import roles from '../utils/roles';
+import { hashPassword } from '../utils/auth';
+'use strict';
 module.exports = (sequelize, DataTypes) => {
-  class user extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
-    }
-  }
-  user.init({
-    first_name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
-    },
-    last_name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
-    },
-    email: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
-      validate: {
-        isEmail: true,
-        notEmpty: true,
-      }
-    },
-    password: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        min: 8,
-        notEmpty: true
-      }
-    },
-    verified: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-      defaultValue: false,
-      validate: {
-        notEmpty: true
-      }
-    },
-    address: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
-    },
-    language: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
-    },
-    profile_picture: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
-    },
-    user_role_id: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      defaultValue: 1,
-      validate: {
-        notEmpty: true
-      },
-    },
-    manager_id: {
-      type: DataTypes.INTEGER,
-      allowNull: true
-    },
-    refreshtoken: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      defaultValue: 'refreshtoken'
+  const User = sequelize.define('User', {
 
-    }
-  }, {
-    sequelize,
-    modelName: 'user',
-  });
-  return user;
+    id: {
+      allowNull: false,
+      primaryKey: true,
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+    },
+    first_name: DataTypes.STRING,
+    last_name: DataTypes.STRING,
+    email: DataTypes.STRING,
+    password: DataTypes.STRING,
+    username: DataTypes.STRING,
+    verified: { type: DataTypes.BOOLEAN, defaultValue: false },
+    user_role_id: {allowNull: true, type: DataTypes.UUID,defaultValue: roles.REQUESTER,},
+    manager_id: { allowNull: true,type: DataTypes.UUID},
+    refreshtoken: {type: DataTypes.STRING,allowNull: false,defaultValue: 'refreshtoken'},
+    profile_picture: { type: DataTypes.STRING,allowNull: false,
+      defaultValue: 'https://www.cobdoglaps.sa.edu.au/wp-content/uploads/2017/11/placeholder-profile-sq.jpg'},
+    language: {type: DataTypes.STRING,allowNull: false,defaultValue:'Eng'},
+    address: { type: DataTypes.STRING,allowNull: false},
+  }, {});
+
+  User.associate = (models) => {
+    User.hasOne(models.User, {
+      foreignKey: 'manager_id',
+      as: 'manager',
+    });
+    
+    // user.hasMany(Travel_request, {
+    //   as: 'requester',
+    //   foreignKey: 'userId',
+    // targetKey: 'id',
+     //  onUpdate: 'CASCADE',
+      // onDelete: 'CASCADE'
+
+    // });
+   
+    // user.belongsToMany(travelRequest, {
+    //   through: 'Accomodation',
+    //   as: 'TravelRequest',
+    //   foreignKey: 'userId',
+    //   onDelete: 'CASCADE'
+    // })
+  };
+
+
+//  hash user password before creating user
+User.beforeCreate((user) => {
+  if (user.password) { user.password = hashPassword(user.password); }
+});
+//  hash user password before updatng user password
+User.beforeBulkUpdate(({ attributes: user }) => {
+  if (user.password) { user.password = hashPassword(user.password); }
+});
+return User;
 };
