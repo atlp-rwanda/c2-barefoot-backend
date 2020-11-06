@@ -1,15 +1,15 @@
-import accessDenied from '../../errorHandling/accessDenied';
-import notFound from '../../errorHandling/notFound';
+import accessDenied from '../../utils/errorHandling/accessDenied';
+import notFound from '../../utils/errorHandling/notFound';
 import roleServices from '../../services/roles';
 
 
 
   /* check if index.json exist if not create one */
-  const permissionsFile = './permissions/index.json';
+  // const permissionsFile = './permissions/index.json';
 
-  /* creates index.js if it doesn't exist */
+  // /* creates index.js if it doesn't exist */
 
-  roleServices.fileExistOrNot(permissionsFile);
+  // roleServices.fileExistOrNot(permissionsFile);
 
   /* read permissions file */
   const roles =  roleServices.readFile();

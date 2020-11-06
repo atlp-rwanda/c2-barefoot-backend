@@ -1,10 +1,10 @@
 import usersService from '../../services/users';
 import userValidation from '../../validation/createRole';
-import applicationError from '../../errorHandling/applicationError';
-import userBadRequest from '../../errorHandling/userBadRequest';
-import notFound from '../../errorHandling/notFound';
+import applicationError from '../../utils/errorHandling/applicationError';
+import userBadRequest from '../../utils/errorHandling/userBadRequest';
+import notFound from '../../utils/errorHandling/notFound';
 import roleServices from '../../services/roles';
-import accessDenied from '../../errorHandling/accessDenied';
+import accessDenied from '../../utils/errorHandling/accessDenied';
 
 exports.findThem = async (req, res, next) =>{
     try{
@@ -30,6 +30,8 @@ exports.findThem = async (req, res, next) =>{
             if(!users.rows.length){
                 throw new notFound(`No user found on page ${page}`);
             }
+            const findLineManagers = await roleServices.findLineManagers({});
+            if(findLineManagers){users.allLineManagers = findLineManagers;}
            return res.status(200).json({status:200, users: users}); 
         }
         else{
@@ -66,9 +68,23 @@ exports.updateHim = async (req, res, next) =>{
             const findRole = await roleServices.findRole({name: role});
             if(findRole){
                 /* update the user role*/
-                const upDate = await usersService.updateUserRole({email:email, user_role: role});
+                const upDate = await usersService.updateUserRole({email:email, user_role_id: findRole.id});
                 if(upDate){
+                    //if the role is manager add him to line_managers
+                    if(role === 'manager'){
+                        const findManager = await usersService.findManager({first_name: findUser.first_name, last_name: findUser.last_name});
+                        if(!findManager){
+                            const addLineManager = await usersService.addLineManager({first_name: findUser.first_name,last_name: findUser.last_name});
+                            if(addLineManager){
+                               return res.status(201).json({status:201, message: `The user role is updated to ${role}`});
+                            }else{
+                               throw new applicationError('Failed to update this role, try again!',500);
+                            }
+                        }
+                        
+                    }
                     res.status(201).json({status:201, message: `The user role is updated to ${role}`});
+                   
                 }else{
                     throw new applicationError('Failed to update this role, try again!',500);
                 } 
@@ -98,9 +114,23 @@ exports.deleteOne = async (req, res, next) =>{
         const userEmail = req.body.email;
         const findUser = await usersService.getUser({email: userEmail});
         if(findUser){
-            if(findUser.user_role === "administrator"){
+
+            const findRoleById = await roleServices.findRoleById({id:findUser.user_role_id});
+            if(findRoleById.name === "administrator"){
+                
                 throw new accessDenied('Can not delete the administrator!');
             }
+            if(findRoleById.name === "manager"){
+                const findManager = await usersService.findManager({first_name: findUser.first_name, last_name: findUser.last_name});
+                if(findManager){
+                    const deleteManager = await usersService.deleteManager({first_name: findUser.first_name, last_name: findUser.last_name});
+                    if(deleteManager){
+                        await usersService.changeRole({change: null,manager_id: findManager.id});
+                    }
+                }
+            }
+            
+            
             const deleted = await usersService.deleteUser(userEmail);
             if(deleted){
                 res.status(200).json({status:200, message: "The user is deleted successfully!"});
@@ -117,3 +147,37 @@ exports.deleteOne = async (req, res, next) =>{
     }
 }
 
+exports.assignLineManager = async (req, res, next) => {
+    try{
+        /* data validation */
+        const { error } = userValidation.assignLineManager(req.body);
+        if (error) throw new userBadRequest(error.details[0].message);
+
+        const { email, manager_id } = req.body;
+        const findUser = await usersService.getUser({email: email});
+        if(findUser){
+            if(findUser.last_name === 'Administrator'){
+                throw new accessDenied("Can not assign line manager to administrator!");
+            }
+        
+        const findLineManager = await usersService.findLineManager(manager_id);
+        if(findLineManager){
+            const updateUser = await usersService.updateUser({email:email, manager_id:manager_id});
+            if(updateUser){
+                 res.status(201).json({status:201, message: "Line manager is assigned successfully"});
+            }
+            else{
+                throw new applicationError("Failed to assign this line manager, try again!");
+            }
+        }else{
+            throw new notFound("The line manager does not exist",404);
+        }
+        }else{
+            throw new notFound("No user found!",404);
+        }
+
+    }
+    catch(err){
+        next(err);
+    }
+}

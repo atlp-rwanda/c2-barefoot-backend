@@ -16,20 +16,20 @@ const router = express.Router();
  *
  * /api/v1/admin:
  *    get:
- *      summary: A route that shows the landing page
- *      description: This is the first page you meet when starting the app.
- *      tags: [Super admin]
+ *      summary: A route that shows the landing page of the administrator
+ *      description: This is the first page of the administrator.
+ *      tags: [Super administrator]
  *      responses:
  *        "200":
- *          description: The landing page has loaded
+ *          description: The index page has loaded
  *          content:
  *            application/json:
  *              schema:
- *                $ref: '#/components/schemas/landing'
+ *                $ref: '#/components/schemas/indexAdmin'
  *
  * components:
  *    schemas:
- *      landing:
+ *      indexAdmin:
  *        type: object
  *        properties:
  *          status:
@@ -39,20 +39,77 @@ const router = express.Router();
  *          message:
  *            type: string
  *            description: Success message
- *            example: Welcome as an admin of Barefoot nomad
+ *            example: Welcome as an administrator of Barefoot nomad
  */
 
 router.get('/', index);
 
-/* create a role (/admin/roles) */
+/* retrieve all roles created */
+
+
 
 /**
  * @swagger
  *
- * /api/v1/admin/roles/:
+ * /api/v1/admin/roles:
+ *    get:
+ *      summary: A route that shows all roles available in Barefoot nomad
+ *      description: This is the page that allow the administrator to see all roles of the system
+ *      tags: [Super administrator]
+ *      responses:
+ *        "200":
+ *          description: Returns first 5 retrieved users
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/allRoles'
+ *        "404":
+ *          description: No role found
+ *        "500":
+ *          description: Failed to fetch roles try again!
+ *
+ * components:
+ *    schemas:
+ *      allRoles:
+ *        type: object
+ *        properties:
+ *          status:
+ *            type: integer
+ *            description: The http status code
+ *            example: 200
+ *          roles:
+ *            type: object
+ *            description: retrieved users
+ *            properties:
+ *              count:
+ *                type: integer
+ *                example: 1
+ *              rows:
+ *                type: object
+ *                properties:
+ *                  id:
+ *                   type: integer
+ *                   example: 1
+ *                  name:
+ *                    type: string
+ *                    example: string
+ *                  description:
+ *                    type: string
+ *                    example: string
+ *                  
+ */
+
+router.get('/roles', roles.getAll);
+
+/* create a new role  */
+
+/**
+ * @swagger
+ *
+ * /api/v1/admin/roles:
  *    post:
- *      summary: A route that allows the super admin to create roles
- *      tags: [Super admin]
+ *      summary: A route that allows the super administrator to create roles
+ *      tags: [Super administrator]
  *      requestBody:
  *        required: true
  *        content:
@@ -62,10 +119,14 @@ router.get('/', index);
  *      responses:
  *        "201":
  *          description: Role created successfully
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/roleCreated'
  *        "400":
  *          description: Role exists
  *        "500":
- *          description: Failed to create this role, try again!
+ *          description: Failed to create this role, try again
  *
  * components:
  *    schemas:
@@ -79,6 +140,15 @@ router.get('/', index);
  *             type: string
  *           description:
  *             type: string
+ *      roleCreated:
+ *        type: object
+ *        properties:
+ *           status:
+ *             type: integer
+ *             example: 201
+ *           message:
+ *             type: string
+ *             example: Role created successfully
  */
 
 router.post('/roles', roles.create);
@@ -90,8 +160,8 @@ router.post('/roles', roles.create);
  *
  * /api/v1/admin/roles/update:
  *    put:
- *      summary: A route that allows the super admin to update permissions
- *      tags: [Super admin]
+ *      summary: A route that allows the super administrator to update permissions
+ *      tags: [Super administrator]
  *      requestBody:
  *        required: true
  *        content:
@@ -101,6 +171,10 @@ router.post('/roles', roles.create);
  *      responses:
  *        "201":
  *          description: Permissions updated successfully
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/roleUpdated' 
  *        "400":
  *          description: These permissions or values are not allowed
  *        "404":
@@ -121,6 +195,24 @@ router.post('/roles', roles.create);
  *             properties:
  *                edit profile:
  *                  type: integer
+ *      roleUpdated:
+ *        type: object
+ *        properties:
+ *           status:
+ *             type: integer
+ *             example: 201
+ *           message:
+ *             type: string
+ *             example: Permissions updated successfully
+ *           failed permissions:
+ *             type: array
+ *             example: []
+ *           success:
+ *             type: object
+ *             properties:
+ *               edit profile:
+ *                 type: integer
+ *                 example: 1
  */
 router.put('/roles/update', roles.updatePermissions);
 
@@ -134,8 +226,8 @@ router.put('/roles/update', roles.updatePermissions);
  *
  * /api/v1/admin/roles:
  *    delete:
- *      summary: A route that allows the super admin to delete roles
- *      tags: [Super admin]
+ *      summary: A route that allows the super administrator to delete roles
+ *      tags: [Super administrator]
  *      requestBody:
  *        required: true
  *        content:
@@ -143,8 +235,12 @@ router.put('/roles/update', roles.updatePermissions);
  *            schema:
  *              $ref: '#/components/schemas/deleteRole'
  *      responses:
- *        "201":
- *          description: Role deleted successfully
+ *        "200":
+ *          description: Role deteted successfully
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/deletedRole'
  *        "400":
  *          description: \"role\" is required
  *        "404":
@@ -161,7 +257,18 @@ router.put('/roles/update', roles.updatePermissions);
  *        properties:
  *           role:
  *             type: string
- *           
+ *      deletedRole:
+ *        type: object
+ *        properties:
+ *           status:
+ *             type: integer
+ *             example: 200
+ *           message:
+ *             type: string
+ *             example: Role deleted successfully
+ *           role:
+ *             type: string
+ *             example: role name      
  */
 
 router.delete('/roles', roles.deleteRoles);
@@ -175,8 +282,8 @@ router.delete('/roles', roles.deleteRoles);
  * /api/v1/admin/users/?page=1&limit=5:
  *    get:
  *      summary: A route that shows all users of Barefoot nomad
- *      description: This is the page that allow the admin to see all users of the system
- *      tags: [Super admin]
+ *      description: This is the page that allow the administrator to see all users of the system
+ *      tags: [Super administrator]
  *      responses:
  *        "200":
  *          description: Returns first 5 retrieved users
@@ -186,6 +293,8 @@ router.delete('/roles', roles.deleteRoles);
  *                $ref: '#/components/schemas/adminUsers'
  *        "404":
  *          description: No user found on page 1
+ *        "500":
+ *          description: Failed to fetch users, try again!
  *
  * components:
  *    schemas:
@@ -245,9 +354,9 @@ router.get('/users', users.findThem);
  *
  * /api/v1/admin/users:
  *    put:
- *      summary: A route that allows the super admin to update one's role
- *      description: This is the page that allows the admin to update/change all user roles or assign the new roles
- *      tags: [Super admin]
+ *      summary: A route that allows the super administrator to update one's role
+ *      description: This is the page that allows the administrator to update/change all user roles or assign the new roles
+ *      tags: [Super administrator]
  *      requestBody:
  *        required: true
  *        content:
@@ -257,6 +366,10 @@ router.get('/users', users.findThem);
  *      responses:
  *        "201":
  *          description: The user is updated
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/updatedUser'
  *        "400":
  *          description: \"role\" and \"email\" are required
  *        "403":
@@ -278,10 +391,76 @@ router.get('/users', users.findThem);
  *          email:
  *            type: string
  *            example: string@gmail.com
+ *      updatedUser:
+ *        type: object
+ *        properties:
+ *           status:
+ *             type: integer
+ *             example: 201
+ *           message:
+ *             type: string
+ *             example: The user updated to \"Role\"
  * 
  */
 router.put('/users', users.updateHim);
+// when you change a requester as a manager, then add him also to the line_manager table and also change so that we will update the primary key not the name of the role
 
+
+/**
+ * @swagger
+ *
+ * /api/v1/admin/users/line-manager:
+ *    put:
+ *      summary: A route that allows the super administrator to change or give a user his line-manager
+ *      tags: [Super administrator]
+ *      requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/addLineManager'
+ *      responses:
+ *        "201":
+ *          description: Line manager is assigned successfully
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/addedLineManager'
+ *        "400":
+ *          description: \"manager_id\" and \"email\" are required
+ *        "403":
+ *          description: Can not assign line manager to administrator!
+ *        "404":
+ *          description: The user or line-manager not found
+ *        "500":
+ *          description: Failed to assign this line manager, try again!
+ *
+ * components:
+ *    schemas:
+ *      addLineManager:
+ *        type: object
+ *        required:
+ *          - manager_id
+ *          - email
+ *        properties:
+ *          manager_id:
+ *            type: integer
+ *            example: 1
+ *          email:
+ *            type: string
+ *            example: string@gmail.com
+ *      addedLineManager:
+ *        type: object
+ *        properties:
+ *           status:
+ *             type: integer
+ *             example: 201
+ *           message:
+ *             type: string
+ *             example: Line manager is assigned successfully
+ * 
+ */
+router.put('/users/line-manager', users.assignLineManager);
 
 /* delete one user */
 
@@ -290,10 +469,10 @@ router.put('/users', users.updateHim);
  * @swagger
  *
  * /api/v1/admin/users:
- *    put:
- *      summary: A route that allows the super admin to delete one's account
- *      description: This is the page that allows the admin to delete user accounts
- *      tags: [Super admin]
+ *    delete:
+ *      summary: A route that allows the super administrator to delete one's account
+ *      description: This is the page that allows the administrator to delete user accounts
+ *      tags: [Super administrator]
  *      requestBody:
  *        required: true
  *        content:
@@ -303,16 +482,22 @@ router.put('/users', users.updateHim);
  *      responses:
  *        "200":
  *          description: The user is deleted successfully!
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/deletedUser'
  *        "400":
  *          description: \"email\" is required
  *        "403":
- *          description: Forbidden
+ *          description: Can not delete the administrator!
  *        "404":
- *          description: The user does not exist
+ *          description: The user does not exist!
+ *        "500":
+ *          description: Failed to delete this user! Try again
  *
  * components:
  *    schemas:
- *      updateUser:
+ *      deleteUser:
  *        type: object
  *        required:
  *          - email
@@ -320,6 +505,15 @@ router.put('/users', users.updateHim);
  *          email:
  *            type: string
  *            example: string@gmail.com
+ *      deletedUser:
+ *        type: object
+ *        properties:
+ *           status:
+ *             type: integer
+ *             example: 200
+ *           message:
+ *             type: string
+ *             example: The user is deleted successfully!
  * 
  */
 
@@ -327,7 +521,7 @@ router.delete('/users', users.deleteOne);
 
 /* a delete route to show how to use this middleware of permissions*
  *for this to pass you have to send exact permission(s) as parameter(s)*/
-router.delete('/locations', permit(['delete locations']), dlt);
+router.delete('/locations', permit(['delete locations','update locations','create locations','edit profile']), dlt);
 
 
 

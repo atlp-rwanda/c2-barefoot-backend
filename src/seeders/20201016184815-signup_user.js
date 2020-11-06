@@ -8,10 +8,7 @@ module.exports = {
       password: 'barefoot.Admin:)',
       address: 'Kigali',
       language: 'English',
-      profile_picture: 'admin.png',
-      verified: true,
-      user_role_id:1,
-      manager_id: 1
+      profile_picture: 'admin.png'
     },
     {
       first_name: 'Ineza',
@@ -20,10 +17,34 @@ module.exports = {
       password: '12345678',
       address: 'Kigali',
       language: 'English',
-      verified: false,
-      profile_picture: 'image.png',
-      user_role_id: 2,
-      manager_id: 1
+      profile_picture: 'user.png'
+    },
+    {
+      first_name: 'Rene',
+      last_name: 'Promesse',
+      email: 'renepromesse@gmail.com',
+      password: '12345678',
+      address: 'Kigali',
+      language: 'English',
+      profile_picture: 'user.png'
+    },
+    {
+      first_name: 'Jackson',
+      last_name: 'Mugabo',
+      email: 'jackson@gmail.com',
+      password: '12345678',
+      address: 'Kigali',
+      language: 'English',
+      profile_picture: 'user.png'
+    },
+    {
+      first_name: 'James',
+      last_name: 'Bond',
+      email: 'james@gmail.com',
+      password: '12345678',
+      address: 'Kigali',
+      language: 'English',
+      profile_picture: 'user.png'
     }], {});
   },
 

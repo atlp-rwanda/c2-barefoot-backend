@@ -19,8 +19,20 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   line_managers.init({
-    first_name: DataTypes.STRING,
-    last_name: DataTypes.STRING
+    first_name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true
+      }
+    },
+    last_name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true
+      }
+    }
   }, {
     sequelize,
     modelName: 'line_managers',

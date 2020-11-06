@@ -85,7 +85,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     user_role_id: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
       defaultValue: 2,
       validate: {
         notEmpty: true
@@ -93,7 +93,10 @@ module.exports = (sequelize, DataTypes) => {
     },
     manager_id: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: true,
+      validate: {
+        notEmpty: true
+      }
     }
   }, {
     sequelize,
