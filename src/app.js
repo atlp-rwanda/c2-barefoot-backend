@@ -42,7 +42,7 @@ sequelize.authenticate()
 
 app.use((err, req, res, next) => {
   const status = err.status || 500;
-  res.status(status).json({ status, error: err.message, statck: err.stack });
+  res.status(status).json({ status, error: err.message });
 });
 
 app.listen(port, () => {
