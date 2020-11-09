@@ -91,4 +91,8 @@ module.exports = (sequelize, DataTypes) => {
     modelName: 'user',
   });
   return user;
+<<<<<<< HEAD
 };
+=======
+};
+>>>>>>> 26a3f8ba8f1ba8a277154a5a2dea2cbfa7e81bc0
