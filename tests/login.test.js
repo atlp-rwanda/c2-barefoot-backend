@@ -22,6 +22,12 @@ describe('authentication', () => {
     expect(res.body).to.have.property('error');
     expect(res.body.error).to.equal('You don\'t have an account with this email: habajeun@gmail.com');
   });
+  it('it should log user in', async () => {
+    const res = await request(app).post('/api/v1/user/login').send({ email: 'superadmin@gmail.com', password: 'Superadmin' });
+    expect(res).to.have.status(200);
+    expect(res.body).to.have.property('message');
+    expect(res.body.message).to.equal('login successful');
+  });
 });
 describe('/logout', () => {
   it('it should logout user', async () => {
