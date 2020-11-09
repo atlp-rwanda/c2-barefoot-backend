@@ -19,7 +19,6 @@
     "seed-undo": "npx sequelize-cli db:seed:undo",
     "seed-undo-all": "npx sequelize-cli db:seed:undo:all"
   },
-  
   "repository": {
     "type": "git",
     "url": "git+https://github.com/atlp-rwanda/c2-barefoot-backend.git"

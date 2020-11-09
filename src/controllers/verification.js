@@ -12,8 +12,8 @@ const verification = async (req, res, next) => {
       if (!record) {
         throw new signUpError('Account does not exist', 404);
       }
-
-      if (record.verified === false) {
+  console.log(record.verified);
+    if (record.verified === false) {
         models.User.update({ verified: true }, { where: { email: user } });
         return res.status(200).json({ Status: 200, Message: 'Email has been verified' });
       }
