@@ -3,6 +3,8 @@ import signup from '../../controllers/signup';
 import signupValidation from '../../middlewares/signupValidation';
 import sendVerificationEmail from '../../middlewares/sendEmail';
 import verification from '../../controllers/verification';
+import { resetPassword, verifyResetPassword } from '../../controllers/resetPassword';
+import validateResetEmail from '../../validations/emailValidation';
 
 const router = express.Router();
 
@@ -137,5 +139,9 @@ router.post('/signup', signupValidation, signup, sendVerificationEmail);
  */
 
 router.patch('/verification/', verification);
+
+router.post('/resetPassword/request', validateResetEmail, resetPassword);
+// router.patch('/ResetPassword',resetLink)
+router.post('/resetPassword/verify', verifyResetPassword);
 
 export default router;
