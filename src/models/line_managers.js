@@ -1,41 +1,23 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class line_managers extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
-      line_managers.hasMany(models.user,{
-        foreignKey: 'manager_id',
-        as: 'users',
-        onDelete: 'CASCADE',
-      })
-    }
-  };
-  line_managers.init({
-    first_name: {
-      type: DataTypes.STRING,
+  const Line_manager = sequelize.define('Line_manager', {
+
+    id: {
       allowNull: false,
-      validate: {
-        notEmpty: true
-      }
+      primaryKey: true,
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
     },
-    last_name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
-    }
-  }, {
-    sequelize,
-    modelName: 'line_managers',
-  });
-  return line_managers;
+    first_name: DataTypes.STRING,
+    last_name: DataTypes.STRING,
+  }, {});
+
+  Line_manager.associate = (models) => {
+    Line_manager.hasMany(models.User, {
+        foreignKey: 'manager_id',
+        as: 'Line_manager',
+        onDelete: 'CASCADE',
+      });
+  };
+return Line_manager;
 };

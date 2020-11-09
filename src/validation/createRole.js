@@ -43,7 +43,7 @@ exports.deleteValidationEmail = (data) => {
 exports.assignLineManager = (data) => {
   const schema =  Joi.object({
     email: Joi.string().email().min(5).max(50).required(),
-    manager_id: Joi.number().integer().positive().required()
+    manager_id: Joi.string().min(36).max(36).required()
   });
   return schema.validate(data);
 }

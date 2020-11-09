@@ -123,13 +123,13 @@ exports.deleteOne = async (req, res, next) =>{
             if(findRoleById.name === "manager"){
                 const findManager = await usersService.findManager({first_name: findUser.first_name, last_name: findUser.last_name});
                 if(findManager){
-                    const deleteManager = await usersService.deleteManager({first_name: findUser.first_name, last_name: findUser.last_name});
-                    if(deleteManager){
-                        await usersService.changeRole({change: null,manager_id: findManager.id});
+                    const changeRole = await usersService.changeRole({change: null,manager_id: findManager.id});
+                    if(changeRole){
+                        const deleteManager = await usersService.deleteManager({first_name: findUser.first_name, last_name: findUser.last_name});
+
                     }
                 }
             }
-            
             
             const deleted = await usersService.deleteUser(userEmail);
             if(deleted){
@@ -156,22 +156,28 @@ exports.assignLineManager = async (req, res, next) => {
         const { email, manager_id } = req.body;
         const findUser = await usersService.getUser({email: email});
         if(findUser){
-            if(findUser.last_name === 'Administrator'){
-                throw new accessDenied("Can not assign line manager to administrator!");
+            // if(findUser.last_name === 'Administrator'){
+            //     throw new accessDenied("Can not assign line manager to administrator!");
+            // }
+            const findRoleById = await roleServices.findRoleById({id: findUser.user_role_id});
+            if(findRoleById){
+                if(findRoleById.name !== 'requester' && findRoleById.name !== 'manager'){
+                    throw new accessDenied(`Cannot assign line manager to this user! ${findRoleById.name}`,403);
+                }
+                
             }
-        
-        const findLineManager = await usersService.findLineManager(manager_id);
-        if(findLineManager){
-            const updateUser = await usersService.updateUser({email:email, manager_id:manager_id});
-            if(updateUser){
-                 res.status(201).json({status:201, message: "Line manager is assigned successfully"});
+            const findLineManager = await usersService.findLineManager(manager_id);
+            if(findLineManager){
+                const updateUser = await usersService.updateUser({email:email, manager_id:manager_id});
+                if(updateUser){
+                    res.status(201).json({status:201, message: "Line manager is assigned successfully"});
+                }
+                else{
+                    throw new applicationError("Failed to assign this line manager, try again!");
+                }
+            }else{
+                throw new notFound("The line manager does not exist",404);
             }
-            else{
-                throw new applicationError("Failed to assign this line manager, try again!");
-            }
-        }else{
-            throw new notFound("The line manager does not exist",404);
-        }
         }else{
             throw new notFound("No user found!",404);
         }

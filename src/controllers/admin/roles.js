@@ -204,18 +204,20 @@ exports.deleteRoles = async (req, res, next)=>{
                 const dataJson = JSON.stringify(roles, null, 2);
                 const findRole = await roleServices.findRole({name:requestRole});
                 if(findRole){
+                    if(requestRole ==='manager'){
+                        await roleServices.changeRole({change: null,role_id: findRole.id});
+                    }
                     const deletedRole = await roleServices.deleteOne(findRole.id);
                     if(deletedRole){
-                       if(requestRole ==='manager'){
-                           await roleServices.changeRole({change: null,role_id: findRole.id});
-                       }
-                       /* save changes */
-                       // fs.writeFileSync('./permissions/index.json', dataJson);    
-                       roleServices.saveInFile(dataJson);
-                       return res.status(200).json({status:200,message: "Role deleted successfully", role: requestRole});
+                    
+                    /* save changes */
+                    // fs.writeFileSync('./permissions/index.json', dataJson);    
+                    roleServices.saveInFile(dataJson);
+                    return res.status(200).json({status:200,message: "Role deleted successfully", role: requestRole});
                     }else{
                         throw new applicationError('Failed to delete this role, try again!', 500);
-                     }
+                    }
+                    
                 }else{
                     throw new notFound('Role not found!', 404);     
                 } 
