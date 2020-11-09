@@ -1,17 +1,11 @@
 import { expect, request, use } from 'chai';
 import chaiHttp from 'chai-http';
-import jwt from 'jsonwebtoken';
 import app from '../src/app';
 import 'dotenv/config';
+import { userToken } from './dummyData';
 
 use(chaiHttp);
 describe('authentication', () => {
-  const user = {
-    email: 'habajeunes2@gmail.com',
-    password: '1234567890'
-  };
-  const userToken = jwt.sign(user, process.env.TOKEN_SECRET);
-
   it('it not login without email', async () => {
     const res = await request(app).post('/api/v1/user/login').send({ password: '1234567890' });
     expect(res).to.have.status(400);
@@ -30,11 +24,6 @@ describe('authentication', () => {
   });
 });
 describe('/logout', () => {
-  const user = {
-    email: 'habajeunes2@gmail.com',
-    password: '1234567890'
-  };
-  const userToken = jwt.sign(user, process.env.TOKEN_SECRET);
   it('it should logout user', async () => {
     const res = await request(app).post('/api/v1/user/logout').set('Authorization', `Bearer ${userToken}`);
     expect(res).to.have.status(200);
