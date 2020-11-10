@@ -27,7 +27,8 @@ describe("Travel Requests", ()=>{
     //     expect(res.body).to.have.deep.property("message").equals("session has expired")
     // })
     it("Should get travel requests if you are logged in", async ()=>{
-        var User = await request(app).post("/api/v1/login").send(user)
+        var User = await request(app).post("/api/v1/user/login").send(user)
+        console.log("=======================" + JSON.stringify(User))
         const res = await request(app)
         .get("/api/v1/requests")
         .set("Authorization", User.body.data)
@@ -35,7 +36,7 @@ describe("Travel Requests", ()=>{
         expect(res.body).to.be.an("array")
     })
     it("Should get a single travel requests if you are logged in", async ()=>{
-        var User = await request(app).post("/api/v1/login").send(user)
+        var User = await request(app).post("/api/v1/user/login").send(user)
         const res = await request(app)
         .get("/api/v1/requests/7")
         .set("Authorization", User.body.data)

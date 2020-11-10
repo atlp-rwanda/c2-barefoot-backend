@@ -16,7 +16,7 @@ describe("Travel Requests", ()=>{
             {
                 originCity:"Kigali", 
                 destination:"Cairo",
-                tripDate:"12/12/2020",
+                tripDate:"12-12-2020",
                 returnDate:"01/01/2020",
                 accommodationId:"1234567",
                 reason:"enjoying"
@@ -40,7 +40,7 @@ describe("Travel Requests", ()=>{
     //     expect(res.body).to.have.deep.property("message").equals("session has expired")
     // })
     it("Should make a travel request if you are logged in and have a manager", async ()=>{
-        var User = await request(app).post("/api/v1/login").send(user)
+        var User = await request(app).post("/api/v1/user/login").send(user)
         const res = await request(app)
         .post("/api/v1/requests/request")
         .set("Authorization", User.body.data)

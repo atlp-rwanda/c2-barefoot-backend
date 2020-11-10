@@ -10,7 +10,7 @@ describe("Travel Requests", ()=>{
             email: 'jackswalter7@gmail.com',
             password: '12345678',
             };
-    it("Should not get direct travel request if not token has expired", async ()=>{
+    it("Should not get direct travel request if token has expired", async ()=>{
         const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZmlyc3RfbmFtZSI6Ik0iLCJsYXN0X25hbWUiOiJKYWNrc29uIiwiZW1haWwiOiJqYWNrc3dhbHRlcjdAZ21haWwuY29tIiwiYWRkcmVzcyI6IktpZ2FsaSIsImxhbmd1YWdlIjoiS2lueWFyd2FuZGEiLCJwcm9maWxlX3BpY3R1cmUiOiJtZS5qcGciLCJpYXQiOjE2MDM4OTg0NDMsImV4cCI6MTYwMzkwNTY0M30.RoVwDUPXmnC9O9CCeexBeNhVbSiFobmXXXCm1tbTPM8"
         const res = await request(app)
         .get("/api/v1/requests/direct-reports/1")
@@ -19,8 +19,9 @@ describe("Travel Requests", ()=>{
         expect(res.body).to.have.deep.property("message").equals("session has expired")
     })
     it("Should not get direct travel request if you are not an approved manager", async ()=>{
-        var User = await request(app).post("/api/v1/login").send(user)
+        var User = await request(app).post("/api/v1/user/login").send(user)
         const result = await request(app)
+        console.log("-------------- " + User.body.data)
         .get("/api/v1/requests/direct-reports/4")
         .set("Authorization", await User.body.data)
         await expect(result).to.have.status(401)

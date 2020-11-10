@@ -19,7 +19,7 @@ const router = express.Router();
 router.get('/', welcome);
 // --------------------Signup Route ---------------
 
-router.post('/signup', signupValidation, signup);
+// router.post('/signup', signupValidation, signup);
 
 // ------------------Email verification Route --------------
 

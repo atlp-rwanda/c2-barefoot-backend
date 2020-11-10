@@ -21,8 +21,9 @@ const login = async (req, res, next) => {
         email: isUser.email,
         address: isUser.address,
         language: isUser.language,
-        manager_id: isUser.managerId,
-        profile_picture: isUser.profile_picture
+        manager_id: isUser.manager_id,
+        profile_picture: isUser.profile_picture,
+        user_role_id: isUser.user_role_id
       };
       const userToken = jwt.sign(userData, process.env.TOKEN_SECRET, { expiresIn: '2h' });
       const refreshToken = jwt.sign(userData, process.env.TOKEN_SECRET, { expiresIn: '7d' });

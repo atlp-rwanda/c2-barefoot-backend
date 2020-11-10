@@ -6,7 +6,7 @@ export const getDirectReport = async (req, res, next) => {
     const decoded = await getDataFromToken(req, res, next)
     try{
         const managerId = decoded.id.toString()
-        const role = decoded.user_role
+        const role = decoded.user_role_id
         const roleType = role == 2
         const offset = req.query.from
         const limit = req.query.to
@@ -20,12 +20,7 @@ export const getDirectReport = async (req, res, next) => {
             res.status(401).json({message:"you are not an approved manager"})
         }
     }catch(err){
-        if(err instanceof TypeError){
-            next(err)
-        }
-        else{
-            next(err)
-        }
+        next(err)
         // console.log(err.message)
         
     }

@@ -27,6 +27,28 @@ const router = express.Router()
  * 
  * components:
  *    schemas:
+ *      travelReaquest:
+ *        type: object
+ *        required:
+ *          - originCity
+ *          - destination
+ *          - tripDate
+ *          - accommodationId
+ *          - reason
+ *        properties:
+ *           originCity:
+ *             type: string
+ *           destination:
+ *             type: string
+ *           tripDate:
+ *             type: Date
+ *           returnDate:
+ *             type: Date
+ *           accommodationId:
+ *             type: integer
+ *           reason:
+ *             type: string
+ * 
  *      travelRequestSucces:
  *        type: object
  *        properties:
@@ -41,15 +63,9 @@ const router = express.Router()
  *          data:
  *            type: object
  *            description: Object returned
- *            properties:
- *              {originCity: Kigali,
- *              destination: Cairo,
- *              tripDate: 11/12/2020,
- *              returnDate: 11/12/2021,
- *              accommodationId: 1234567,
- *              reason: tripping}
- *            example: 
- *              {"originCity":Kigali, "destination":Cairo, "tripDate":11/12/2020, "returnDate":11/12/2021, "accommodationId":1234567, "reason":tripping}
+ *              
+ *        example: 
+ *          {"travelId":12,status: "pending", "accommodationId": 123, "reason":tripping, "trip":{"originCity":Kigali, "destination":Cairo, "tripDate":11/12/2020, "returnDate":11/12/2021, "accommodationId":1234567, "reason":tripping}}
  */
 router.post('/requests/request', isLogedIn, isSchemaValid, travelRequest) //make a request
 
@@ -90,7 +106,7 @@ router.post('/requests/request', isLogedIn, isSchemaValid, travelRequest) //make
  *              accommodationId: 1234567,
  *              reason: tripping}
  *            example: 
- *              [{"originCity":Kigali, "destination":Cairo, "tripDate":11/12/2020, "returnDate":11/12/2021, "accommodationId":1234567, "reason":tripping}]
+ *              [{"travelId":12,status: "pending", "accommodationId": 123, "reason":tripping, "trip":{"originCity":Kigali, "destination":Cairo, "tripDate":11/12/2020, "returnDate":11/12/2021, "accommodationId":1234567, "reason":tripping}}]
  */
 router.get('/requests', isLogedIn, getTravelRequest) // view all requests
 
@@ -125,15 +141,23 @@ router.get('/requests/:requestId', isLogedIn, getTravelRequest) //Get single req
  *            example: 200
  *          data:
  *            type: array
- *            properties:
- *              {originCity: Kigali,
- *              destination: Cairo,
- *              tripDate: 11/12/2020,
- *              returnDate: 11/12/2021,
- *              accommodationId: 1234567,
- *              reason: tripping}
+ *            items:
+ *              type: object
+ *              properties:
+ *                 originCity: 
+ *                   type: string
+ *                 destination:
+ *                   type: string
+ *                 tripDate:
+ *                   type: Date
+ *                 returnDate:
+ *                   type: Date
+ *                 accommodationId:
+ *                   type: integer
+ *                 reason:
+ *                   type: string
  *            example: 
- *              [{"originCity":Kigali, "destination":Cairo, "tripDate":11/12/2020, "returnDate":11/12/2021, "accommodationId":1234567, "reason":tripping}]
+ *              [{"travelId":12,status: "pending", "accommodationId": 123, "reason":tripping, "trip":{"originCity":Kigali, "destination":Cairo, "tripDate":11/12/2020, "returnDate":11/12/2021, "accommodationId":1234567, "reason":tripping}}]
  */
 
 router.get('/requests/direct-reports/:managerId', isLogedIn, getDirectReport) // view direct reports
