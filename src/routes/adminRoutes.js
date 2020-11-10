@@ -521,7 +521,7 @@ router.delete('/users', users.deleteOne);
 
 /* a delete route to show how to use this middleware of permissions*
  *for this to pass you have to send exact permission(s) as parameter(s)*/
-router.delete('/locations', permit(['delete locations','update locations','create locations','edit profile']), dlt);
+router.delete('/locations', permit(["all"]), dlt);
 
 
 

@@ -94,9 +94,7 @@ exports.getAll = async (req, res, next) => {
 
         if(allRoles){
         
-            if(!allRoles.rows.length){
-                throw new notFound(`No role found`);
-            }
+            if(!allRoles.rows.length){  throw new notFound(`No role found`); }
            return res.status(200).json({status:200, roles: allRoles}); 
         }
         else{

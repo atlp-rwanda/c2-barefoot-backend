@@ -20,16 +20,14 @@ exports.findThem = async (req, res, next) =>{
         const users = await usersService.findUsers({
             offset: skip,
             limit:limit,
-            attributes:["id","first_name","last_name","email","user_role_id","address","language","profile_picture","manager_id"]
+            attributes:["id","first_name","last_name","username","bio","email","user_role_id","address","language","profile_picture","manager_id"]
             
         });
 
 
         if(users){
         
-            if(!users.rows.length){
-                throw new notFound(`No user found on page ${page}`);
-            }
+            if(!users.rows.length){ throw new notFound(`No user found on page ${page}`); }
             const findLineManagers = await roleServices.findLineManagers({});
             if(findLineManagers){users.allLineManagers = findLineManagers;}
            return res.status(200).json({status:200, users: users}); 
@@ -116,10 +114,7 @@ exports.deleteOne = async (req, res, next) =>{
         if(findUser){
 
             const findRoleById = await roleServices.findRoleById({id:findUser.user_role_id});
-            if(findRoleById.name === "administrator"){
-                
-                throw new accessDenied('Can not delete the administrator!');
-            }
+            if(findRoleById.name === "administrator"){  throw new accessDenied('Can not delete the administrator!'); }
             if(findRoleById.name === "manager"){
                 const findManager = await usersService.findManager({first_name: findUser.first_name, last_name: findUser.last_name});
                 if(findManager){
