@@ -43,7 +43,7 @@ app.listen(port, () => {
 
 app.use((err, req, res, next) => {
   const statusCode = err.status || 500;
-  res.status(statusCode).json({ Status: statusCode, Error: err.message });
+  res.status(statusCode).json({ Status: statusCode, Error: err.message, stack: err.stack });
 });
 
 export default app;
