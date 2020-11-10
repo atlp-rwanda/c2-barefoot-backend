@@ -1,9 +1,9 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-
+import 'dotenv/config';
 
 const salt = bcrypt.genSaltSync(parseInt(process.env.SALT_ROUNDS, 10));
-const secret = process.env.SECRET_KEY;
+const secret = process.env.TOKEN_SECRET;
 
 /**
    * Generate JWT
@@ -11,9 +11,14 @@ const secret = process.env.SECRET_KEY;
    * @param {String} expiresIn jwt expiry date
    * @returns {String} - jwt token
    */
-export const generateToken = (payload, expiresIn = '7 days') => {
+export const generateToken = (payload, expiresIn = '7d') => {
   const token = jwt.sign({ ...payload }, secret, { expiresIn });
   return token;
+};
+
+export const comparePassword = (password, userPassword) => {
+  const result = bcrypt.compareSync(password, userPassword);
+  return result;
 };
 
 /**
@@ -22,12 +27,12 @@ export const generateToken = (payload, expiresIn = '7 days') => {
  * @returns {Object} decoded object
  */
 export const verifyToken = async (token) => {
-  const decoded = await jwt.verify(token, process.env.SECRET_KEY);
+  const decoded = await jwt.verify(token, process.env.TOKEN_SECRET);
   return decoded;
 };
 
 export const verifyResetPasswordToken = async (token) => {
-  const decoded = await jwt.verify(token, process.env.SECRET_KEY, (error) => {
+  const decoded = await jwt.verify(token, process.env.TOKEN_SECRET, (error) => {
     if (error) {
       return { messages: "your token exired " };
     }
