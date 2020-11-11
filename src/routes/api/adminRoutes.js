@@ -1,7 +1,7 @@
 import express from 'express';
 import index from '../../controllers/admin';
-import roles from '../../controllers/admin/roles';
-import users from '../../controllers/admin/users';
+import valid from '../../middlewares/validation/createRole';
+import usersRoles from '../../controllers/admin/users_roles';
 
 const router = express.Router();
 
@@ -96,7 +96,7 @@ router.get('/', index);
  *                  
  */
 
-router.get('/roles', roles.getAll);
+router.get('/roles', usersRoles.getAll);
 
 /* create a new role  */
 
@@ -148,7 +148,7 @@ router.get('/roles', roles.getAll);
  *             example: Role created successfully
  */
 
-router.post('/roles', roles.create);
+router.post('/roles',valid.roleValidation, usersRoles.create);
 
 /* update role's permissions */
 
@@ -211,7 +211,7 @@ router.post('/roles', roles.create);
  *                 type: integer
  *                 example: 1
  */
-router.put('/roles/update', roles.updatePermissions);
+router.put('/roles/update',valid.updateValidation, usersRoles.updatePermissions);
 
 
 
@@ -268,7 +268,7 @@ router.put('/roles/update', roles.updatePermissions);
  *             example: role name      
  */
 
-router.delete('/roles', roles.deleteRoles);
+router.delete('/roles',valid.deleteValidation, usersRoles.deleteRoles);
 
 /* retrieve all users */
 
@@ -341,7 +341,7 @@ router.delete('/roles', roles.deleteRoles);
  *                    example: string
  * 
  */
-router.get('/users', users.findThem);
+router.get('/users', usersRoles.findThem);
 
 /* update a user role */
 
@@ -399,7 +399,7 @@ router.get('/users', users.findThem);
  *             example: The user updated to \"Role\"
  * 
  */
-router.put('/users', users.updateHim);
+router.put('/users',valid.updateUserRoleValidation, usersRoles.updateHim);
 // when you change a requester as a manager, then add him also to the line_manager table and also change so that we will update the primary key not the name of the role
 
 
@@ -457,7 +457,7 @@ router.put('/users', users.updateHim);
  *             example: Line manager is assigned successfully
  * 
  */
-router.put('/users/line-manager', users.assignLineManager);
+router.put('/users/line-manager',valid.assignLineManager, usersRoles.assignLineManager);
 
 /* delete one user */
 
@@ -514,7 +514,7 @@ router.put('/users/line-manager', users.assignLineManager);
  * 
  */
 
-router.delete('/users', users.deleteOne);
+router.delete('/users',valid.deleteValidationEmail, usersRoles.deleteOne);
 
 /* a delete route to show how to use this middleware of permissions*
  *for this to pass you have to send exact permission(s) as parameter(s)*/
