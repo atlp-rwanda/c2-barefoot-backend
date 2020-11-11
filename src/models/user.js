@@ -30,9 +30,18 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
 
   User.associate = (models) => {
-    User.hasOne(models.User, {
+    // User.hasOne(models.User, {
+    //   foreignKey: 'manager_id',
+    //   as: 'manager',
+    // });
+    User.belongsTo(models.Line_manager, {
       foreignKey: 'manager_id',
-      as: 'manager',
+      as: 'Line_manager',
+    });
+
+    User.belongsTo(models.Role, {
+      foreignKey: 'user_role_id',
+      as: 'Role',
     });
 
     // user.hasMany(Travel_request, {

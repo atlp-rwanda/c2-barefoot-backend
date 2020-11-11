@@ -1,34 +1,35 @@
+'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Roles', {
+    await queryInterface.createTable('Line_managers', {
       id: {
         allowNull: false,
         default: Sequelize.fn('uuid_generate_v4'),
         primaryKey: true,
-        type: Sequelize.UUID
-
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4
       },
-      name: {
+      first_name: {
         type: Sequelize.STRING,
         allowNull: false
       },
-      description: {
+      last_name: {
         type: Sequelize.STRING,
-        allowNull: true
+        allowNull: false
       },
       createdAt: {
-        allowNull: true,
+        allowNull: false,
         type: Sequelize.DATE,
         defaultValue: Sequelize.fn('NOW')
       },
       updatedAt: {
-        allowNull: true,
+        allowNull: false,
         type: Sequelize.DATE,
         defaultValue: Sequelize.fn('NOW')
-      },
+      }
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Roles');
+    await queryInterface.dropTable('Line_managers');
   }
 };

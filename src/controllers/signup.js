@@ -13,8 +13,7 @@ const signup = async (req, res, next) => {
     throw new signUpError('Account already exists', 400);
   }
   // Hash password
-  req.body.password = await bcrypt.hash(req.body.password, 10);
-
+  // req.body.password = hashPassword(req.body.password);
   // create the user
   try {
     const createUser = await models.User.create(req.body);

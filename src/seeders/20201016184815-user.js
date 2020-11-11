@@ -38,7 +38,7 @@ export default {
       address: 'Kigali',
       language: 'English',
       user_role_id: roles.MANAGER,
-      manager_id: '0ce36391-2c08-4703-bddb-a4ea8cccbbc5'
+      manager_id: roles.LINE_MANAGER
     }, {
       id: '0ce36391-2c08-4703-bddb-a4ea8cccbbc5',
       first_name: 'Manager',
@@ -50,7 +50,7 @@ export default {
       address: 'Kigali',
       language: 'English',
       user_role_id: roles.MANAGER,
-      manager_id: 'fb94de4d-47ff-4079-89e8-b0186c0a3be8',
+      // manager_id: 'fb94de4d-47ff-4079-89e8-b0186c0a3be8',
     }, {
       id: '83b2a3e7-9ba4-4d3f-b3a3-d31940ee2edc',
       first_name: 'Requester',
@@ -58,21 +58,8 @@ export default {
       username: 'requesterOne',
       email: 'sequester@gmail.com',
       password: hashPassword('password'),
-      manager_id: '0ce36391-2c08-4703-bddb-a4ea8cccbbc5',
+      // manager_id: roles.LINE_MANAGER,
       user_role_id: roles.REQUESTER,
-      address: 'Kigali',
-      language: 'English',
-      verified: true
-    },
-    {
-      id: '99b693fa-e349-4089-af3c-68546efc0d3f',
-      first_name: 'Travel',
-      last_name: 'Admin',
-      username: 'travelAdmin',
-      email: 'travelAdmin@gmail.com',
-      password: hashPassword('password'),
-      manager_id: '0ce36391-2c08-4703-bddb-a4ea8cccbbc5',
-      user_role_id: roles.TRAVEL_ADMIN,
       address: 'Kigali',
       language: 'English',
       verified: true
