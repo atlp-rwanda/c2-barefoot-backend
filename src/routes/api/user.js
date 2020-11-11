@@ -8,6 +8,7 @@ import logedIn from '../../helper/isLogedIn';
 import login from '../../controllers/login';
 import logout from '../../controllers/logout';
 import refreshToken from '../../controllers/refreshToken';
+import verifiedUser from '../../controllers/getVerifiedUsers';
 
 const router = express.Router();
 
@@ -245,4 +246,35 @@ router.post('/logout', logedIn, logout);
  *               example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzEsImZpcnN0X25hbWUiOiJBbWl
  */
 router.post('/refresh-token', refreshToken);
+
+/**
+ * @swagger
+ * /api/v1/user/verified-users:
+ *   get:
+ *     tags:
+ *       - Verified Users
+ *     summary: manager should get all verified users
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: success data
+ *         schema:
+ *           data:
+ *           type: object
+ *           properties:
+ *             status:
+ *               type: integer
+ *               description: The http status code
+ *               example: 200
+ *             message:
+ *               type: string
+ *               description: success message
+ *               example: verified users
+ *             verifiedUsers:
+ *               type: array
+ *               description: retrieved data users
+ *
+ */
+router.get('/verified-users', verifiedUser);
 export default router;
