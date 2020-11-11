@@ -13,7 +13,6 @@ exports.findThem = async (req, res, next) =>{
         const page = req.query.page || 1;
         const limit = req.query.limit || 3;
         const skip = ((page - 1) === -1) ? 0 : (page -1) * limit;
-        // const skip = (page <= 0) ? throw new notFound(`Page ${page} does not exist`) : (page -1 ) * limit ;
 
 
         //find users using services
@@ -151,9 +150,6 @@ exports.assignLineManager = async (req, res, next) => {
         const { email, manager_id } = req.body;
         const findUser = await usersService.getUser({email: email});
         if(findUser){
-            // if(findUser.last_name === 'Administrator'){
-            //     throw new accessDenied("Can not assign line manager to administrator!");
-            // }
             const findRoleById = await roleServices.findRoleById({id: findUser.user_role_id});
             if(findRoleById){
                 if(findRoleById.name !== 'requester' && findRoleById.name !== 'manager'){

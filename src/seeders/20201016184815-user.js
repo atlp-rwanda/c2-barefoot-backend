@@ -38,7 +38,7 @@ export default {
       address: 'Kigali',
       language: 'English',
       user_role_id: roles.MANAGER,
-      // manager_id: '0ce36391-2c08-4703-bddb-a4ea8cccbbc5'
+      manager_id: roles.LINE_MANAGER
     }, {
       id: '0ce36391-2c08-4703-bddb-a4ea8cccbbc5',
       first_name: 'Manager',
@@ -58,7 +58,7 @@ export default {
       username: 'requesterOne',
       email: 'sequester@gmail.com',
       password: hashPassword('password'),
-      // manager_id: '0ce36391-2c08-4703-bddb-a4ea8cccbbc5',
+      // manager_id: roles.LINE_MANAGER,
       user_role_id: roles.REQUESTER,
       address: 'Kigali',
       language: 'English',

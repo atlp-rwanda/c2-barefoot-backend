@@ -1,10 +1,7 @@
 import express from 'express';
-import index from '../controllers/admin';
-import roles from '../controllers/admin/roles';
-import users from '../controllers/admin/users';
-
-import dlt from '../controllers/admin/delete';
-import permit from '../controllers/admin/accessControl';
+import index from '../../controllers/admin';
+import roles from '../../controllers/admin/roles';
+import users from '../../controllers/admin/users';
 
 const router = express.Router();
 
@@ -521,7 +518,7 @@ router.delete('/users', users.deleteOne);
 
 /* a delete route to show how to use this middleware of permissions*
  *for this to pass you have to send exact permission(s) as parameter(s)*/
-router.delete('/locations', permit(["all"]), dlt);
+// router.delete('/locations', permit(["all"]), dlt);
 
 
 

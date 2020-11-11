@@ -1,9 +1,9 @@
 import {use, request, expect} from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../src/app';
+import {token, reqTest,testPerm, updateRole, line_manager, deleteReq} from './dummyData';
 
 use(chaiHttp);
-const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN1cGVyYWRtaW5AZ21haWwuY29tIiwidXNlcl9yb2xlX2lkIjoiZWZhY2U0M2MtMmU0OS00NzNiLWJiZTItMzA1ZDFhNTE5MGYxIiwiaWF0IjoxNjA1MDE0NDU1LCJleHAiOjE2MDU2MTkyNTV9.k9hwTx7rvGIfv8MGqhVBCox0l6MEyA3ZBvZurk1Bh-4";
 
 /*------------- test of GET /api/v1/admin/ ---------------*/
 
@@ -36,12 +36,9 @@ describe('Testing the route of retrieving all roles', ()=>{
 /*---------------test of POST /api/v1/admin/roles ------------*/
 
 describe('Testing the route of creating a new role', ()=>{
-    const req = {
-        "role":"test",
-        "description":"this is a test"
-    };
+    
     it('should return a success message for success', async () => {
-        const res= await request(app).post('/api/v1/admin/roles').send(req).set('Authorization',token);
+        const res= await request(app).post('/api/v1/admin/roles').send(reqTest).set('Authorization',token);
         expect(res.type).to.equal('application/json');
         
         expect(res).to.have.status(201);
@@ -60,7 +57,7 @@ describe('Testing the route of creating a new role', ()=>{
     });
 
     it('should return an error if the role exist', async () => {
-        const res= await request(app).post('/api/v1/admin/roles').send(req).set('Authorization',token);
+        const res= await request(app).post('/api/v1/admin/roles').send(reqTest).set('Authorization',token);
         expect(res.type).to.equal('application/json');
         
         expect(res).to.have.status(400);
@@ -75,9 +72,8 @@ describe('Testing the route of creating a new role', ()=>{
 
 
 describe('Testing the route of updating roles permissions', ()=>{
-    const req = { role:"test", permissions:{ "edit profile":0}};
     it('should return a success message on success update', async ()=>{
-        const res = await request(app).put('/api/v1/admin/roles/update').send(req).set('Authorization',token);
+        const res = await request(app).put('/api/v1/admin/roles/update').send(testPerm).set('Authorization',token);
         expect(res.type).to.equal('application/json');
 
         expect(res).to.have.status(201);
@@ -136,12 +132,9 @@ describe('Testing the route of updating roles permissions', ()=>{
 /*------------------------test of DELETE /api/v1/admin/roles ------------------*/
 
 describe('Testing the route of deleting a role', ()=>{
-    const req = {
-        "role":"test"
-    };
 
     it('should return a success message on success delete', async ()=>{
-        const res = await request(app).delete('/api/v1/admin/roles').send(req).set('Authorization',token);
+        const res = await request(app).delete('/api/v1/admin/roles').send({role:"test"}).set('Authorization',token);
         expect(res.type).to.equal('application/json');
 
         expect(res).to.have.status(200);
@@ -190,26 +183,15 @@ describe('Testing the route of retrieving all users', ()=>{
 /*----------------------- test of PUT /api/v1/admin/users----------------*/
 
 describe("Testing how to update someone's role",()=>{
-    const req ={
-        email:'sequester@gmail.com',
-        role:'manager'
-    };
-    const nonExistingUser ={
-        email:'notexist@gmail.com',
-        role:'manager'
-    };
-    const nonExistingRole ={
-        email:'sequester@gmail.com',
-        role:'notExistRole'
-    };
+    
     it('should update this user role', async ()=>{
-        const res = await request(app).put('/api/v1/admin/users').send(req).set('Authorization',token);
+        const res = await request(app).put('/api/v1/admin/users').send(updateRole.req).set('Authorization',token);
         
         expect(res.type).to.equal('application/json');
         expect(res).to.have.status(201);
         expect(res.body).to.have.property('status');
         expect(res.body).to.have.property('message');
-        expect(res.body.message).to.equal(`The user role is updated to ${req.role}`);
+        expect(res.body.message).to.equal(`The user role is updated to ${updateRole.req.role}`);
     });
 
     it('should handle invalid data', async ()=>{
@@ -221,7 +203,7 @@ describe("Testing how to update someone's role",()=>{
         expect(res.body).to.have.property('error');
     });
     it('should handle invalid non existing users', async ()=>{
-        const res = await request(app).put('/api/v1/admin/users').send(nonExistingUser).set('Authorization',token);
+        const res = await request(app).put('/api/v1/admin/users').send(updateRole.nonExistingUser).set('Authorization',token);
         
         expect(res.type).to.equal('application/json');
         expect(res).to.have.status(404);
@@ -229,7 +211,7 @@ describe("Testing how to update someone's role",()=>{
         expect(res.body).to.have.property('error');
     });
     it('should handle invalid non existing roles', async ()=>{
-        const res = await request(app).put('/api/v1/admin/users').send(nonExistingRole).set('Authorization',token);
+        const res = await request(app).put('/api/v1/admin/users').send(updateRole.nonExistingRole).set('Authorization',token);
         
         expect(res.type).to.equal('application/json');
         expect(res).to.have.status(404);
@@ -237,12 +219,54 @@ describe("Testing how to update someone's role",()=>{
         expect(res.body).to.have.property('error');
     });
 });
+
+/*------------------------test of PUT /api/v1/admin/users/line-manager ------------------*/
+
+describe('Testing the route of assigning someone a line-manager', ()=>{
+    
+    it('should return a message for success', async ()=>{
+        const res = await request(app).put('/api/v1/admin/users/line-manager').send(line_manager.req).set('Authorization',token);
+
+        expect(res.type).to.equal('application/json');
+        expect(res).to.have.status(201);
+        expect(res.body).to.have.property('status');
+        expect(res.body).to.have.property('message'); 
+        expect(res.body.message).to.equal('Line manager is assigned successfully'); 
+    });
+    it('should handle non existing Line managers', async ()=>{
+        const res = await request(app).put('/api/v1/admin/users/line-manager').send(line_manager.invalidManager).set('Authorization',token);
+
+        expect(res.type).to.equal('application/json');
+        expect(res).to.have.status(404);
+        expect(res.body).to.have.property('status');
+        expect(res.body).to.have.property('error'); 
+        expect(res.body.error).to.equal('The line manager does not exist'); 
+    });
+    it('should handle non existing Users', async ()=>{
+        const res = await request(app).put('/api/v1/admin/users/line-manager').send(line_manager.invalidUser).set('Authorization',token);
+
+        expect(res.type).to.equal('application/json');
+        expect(res).to.have.status(404);
+        expect(res.body).to.have.property('status');
+        expect(res.body).to.have.property('error'); 
+        expect(res.body.error).to.equal('No user found!'); 
+    });
+    it('should handle invalid inputs', async ()=>{
+        const res = await request(app).put('/api/v1/admin/users/line-manager').send(line_manager.invalidInput).set('Authorization',token);
+
+        expect(res.type).to.equal('application/json');
+        expect(res).to.have.status(400);
+        expect(res.body).to.have.property('status');
+        expect(res.body).to.have.property('error'); 
+    });
+    
+});
+
 /*------------------------test of DELETE /api/v1/admin/users ------------------*/
 
 describe('Testing the route of deleting a user', ()=>{
-    const req={email:"sequester@gmail.com"};
     it('should return a success message for success', async ()=>{
-        const res = await request(app).delete('/api/v1/admin/users').send(req).set('Authorization',token);
+        const res = await request(app).delete('/api/v1/admin/users').send(deleteReq).set('Authorization',token);
 
         expect(res.type).to.equal('application/json');
         expect(res).to.have.status(200);
@@ -272,49 +296,3 @@ describe('Testing the route of deleting a user', ()=>{
 });
 
 
-
-/*------------------------test of PUT /api/v1/admin/users/line-manager ------------------*/
-
-// describe('Testing the route that requires permissions', ()=>{
-//     const req = { email: "test2", manager_id:"edit profile"};
-//     it('should return a message for success', async ()=>{
-//         const res = await request(app).delete('/admin/user').send(req);
-
-//         expect(res.type).to.equal('application/json');
-//         expect(res).to.have.status(200);
-//         expect(res.body).to.have.property('status');
-//         expect(res.body).to.have.property('message'); 
-//         expect(res.body.message).to.equal('Allowed to test this endpoint!'); 
-//     });
-//     it('should handle non existing roles', async ()=>{
-//         const res = await request(app).delete('/admin/user').send({role:"testing",task:"edit profile"});
-
-//         expect(res.type).to.equal('application/json');
-//         expect(res).to.have.status(403);
-//         expect(res.body).to.have.property('status');
-//         expect(res.body).to.have.property('error'); 
-//         expect(res.body).to.have.property('stack'); 
-//         expect(res.body.error).to.equal('Access denied, not allowed!'); 
-//     });
-//     it('should handle non existing permissions', async ()=>{
-//         const res = await request(app).delete('/admin/user').send({role:"test2",task:"notExist profile"});
-
-//         expect(res.type).to.equal('application/json');
-//         expect(res).to.have.status(403);
-//         expect(res.body).to.have.property('status');
-//         expect(res.body).to.have.property('error'); 
-//         expect(res.body).to.have.property('stack'); 
-//         expect(res.body.error).to.equal('Access denied, permission does not exist!'); 
-//     });
-//     it('should handle no permissions allowed', async ()=>{
-//         const res = await request(app).delete('/admin/user').send({role:"test2",task:"delete locations"});
-
-//         expect(res.type).to.equal('application/json');
-//         expect(res).to.have.status(403);
-//         expect(res.body).to.have.property('status');
-//         expect(res.body).to.have.property('error'); 
-//         expect(res.body).to.have.property('stack'); 
-//         expect(res.body.error).to.equal("You don't have permissions to perform this task"); 
-//     });
-
-// });

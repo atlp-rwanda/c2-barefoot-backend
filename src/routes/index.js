@@ -1,7 +1,7 @@
 import express from 'express';
 import landingPage from './api/landingPageRoute';
 import userRoute from './api/user';
-import adminRoutes from './adminRoutes';
+import adminRoutes from './api/adminRoutes';
 import permit from '../controllers/admin/accessControl';
 
 const routes = express.Router();

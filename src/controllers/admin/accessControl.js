@@ -13,16 +13,10 @@ import ApplicationError from '../../utils/applicationError';
 export default  function  permit(permission) {
 
   return async (req, res, next) => {
-    // const { role } = req.body;
-    
-
-
-
+ 
     try{
-      // const userToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEyMmEwZDg2LThiNzgtNGJiOC1iMjhmLThlNWY3ODExYzQ1NiIsImVtYWlsIjoic3VwZXJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE2MDUwMDk2OTUsImV4cCI6MTYwNTYxNDQ5NX0.-KuiKGUdOlBLr6Uep4Q4nBWEpUWi5Fe0RIRl0l5VLrk";
-      // const userToken = req.cookies;
+      
       const userToken = req.header('authorization');
-      // res.json({userToken});
       if(!userToken){
         throw new accessDenied('No token found',403);
       }
@@ -33,7 +27,7 @@ export default  function  permit(permission) {
         
         /* check if this role exist */
         if (!rolesData.hasOwnProperty(role)) {
-          throw new notFound('Access denied, role does not exist');
+          throw new notFound('Role does not exist');
         }
         let allowed = permission.length ? true : false;
         if(permission[0]==="all"){
@@ -54,7 +48,7 @@ export default  function  permit(permission) {
         for(let i = 0; i< permission.length; i++){
           /* check if this task does not exist */
           if (!rolesData[role].hasOwnProperty(permission[i])) {
-            throw new notFound(`Access denied, permission does not exist! ["${permission[i]}"]`);
+            throw new notFound(`Permission does not exist! ["${permission[i]}"]`);
           }
 
           /* check if rolesData[role][permission[i]] is 1 or 0 
