@@ -8,7 +8,6 @@ module.exports = {
         managerId: '0ce36391-2c08-4703-bddb-a4ea8cccbbc5', 
         userId: '83b2a3e7-9ba4-4d3f-b3a3-d31940ee2edc'
       },
-      // {title: 'Course 2', description: 'description 2', id: 2}
     ], {});
 
     const travelRequests = await queryInterface.sequelize.query(
@@ -24,7 +23,7 @@ module.exports = {
         destination: 'Cairo', 
         tripDate: '2020-10-10', 
         returnDate: '2021-10-10', 
-        accommodationId:'1234567', //'fb94de4d-47ff-4079-89e8-b0186c0a3be8', 
+        accommodationId:'b94de4d-47ff-4079-89e8-b0186c0a3be8', 
         reason: "Trippin",
         travelId:'0ce36391-2c08-3074-bddb-a4ea8cccbbc5'
       },
@@ -34,7 +33,7 @@ module.exports = {
         destination: 'Kampala', 
         tripDate: '2020-10-10', 
         returnDate: '2021-10-10', 
-        accommodationId:'1234567', //'fb94de4d-47ff-4079-89e8-b0186c0a3be8', 
+        accommodationId:'1234567', 
         reason: "Trippin",
         travelId:'0ce36391-2c08-3074-bddb-a4ea8cccbbc5'
       },

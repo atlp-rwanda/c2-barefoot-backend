@@ -16,10 +16,6 @@ module.exports = {
         allowNull: false,
         type:DataTypes.UUID
       },
-      // tripId: {
-      //   allowNull: false,
-      //   type:DataTypes.INTEGER
-      // },
       status: {
         allowNull: false,
         defaultValue: "pending",

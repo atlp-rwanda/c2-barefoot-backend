@@ -28,10 +28,6 @@ export function findTravelRequest(res,query, next, pagination){
             }else{
                     res.status(404).json({message:"Travel request(s) Not Found"})
                 }
-            try{
-                
-                // res.json(tRequestData)
-            }catch(err){next(err); console.log(err.message)}
         })
         .catch(err => {
             console.log(err)

@@ -1,11 +1,11 @@
-import jwt from 'jsonwebtoken'
 import isUserExist from '../services/findUser';
+import { verifyToken } from '../utils/auth';
 export async function getDataFromToken(req, res, next){
     if(req.headers && req.headers.authorization){
         const authorization = req.headers.authorization
         var decoded ='';
         try {
-            decoded = jwt.verify(authorization, process.env.TOKEN_SECRET);
+            user = verifyToken(authorization)
             const user = isUserExist(decoded.email)
             return user
         } catch (e) {
