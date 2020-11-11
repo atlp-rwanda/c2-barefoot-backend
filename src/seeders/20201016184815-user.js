@@ -64,6 +64,19 @@ export default {
       language: 'English',
       verified: true
     },
+    {
+      id: '99b693fa-e349-4089-af3c-68546efc0d3f',
+      first_name: 'Travel',
+      last_name: 'Admin',
+      username: 'travelAdmin',
+      email: 'travelAdmin@gmail.com',
+      password: hashPassword('password'),
+      manager_id: '0ce36391-2c08-4703-bddb-a4ea8cccbbc5',
+      user_role_id: roles.TRAVEL_ADMIN,
+      address: 'Kigali',
+      language: 'English',
+      verified: true
+    },
 
   ], {}),
   down: (queryInterface, Sequelize) => queryInterface.bulkDelete('Users', null, {})
