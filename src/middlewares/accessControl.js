@@ -1,12 +1,12 @@
-import accessDenied from '../../utils/errorHandling/accessDenied';
-import notFound from '../../utils/errorHandling/notFound';
-import roleServices from '../../services/roles';
-import jwt from 'jsonwebtoken';
-import ApplicationError from '../../utils/applicationError';
+import accessDenied from '../utils/errorHandling/accessDenied';
+import notFound from '../utils/errorHandling/notFound';
+import roleServices from '../services/roles';
+// import jwt from 'jsonwebtoken';
+import ApplicationError from '../utils/applicationError';
+import {verifyToken} from '../utils/auth';
 
 
-
-  /* read permissions file */
+  /* import index.json file */
   const roles =  roleServices.readFile();
   let rolesData = {};
   rolesData = JSON.parse(roles);
@@ -20,7 +20,7 @@ export default  function  permit(permission) {
       if(!userToken){
         throw new accessDenied('No token found',403);
       }
-      const tokenVerify = jwt.verify(userToken, process.env.TOKEN_SECRET);
+      const tokenVerify = await verifyToken(userToken); //jwt.verify(userToken, process.env.TOKEN_SECRET);
       const findRoleById = await roleServices.findRoleById({id:tokenVerify.user_role_id});
       if(findRoleById){
         const role = findRoleById.name;

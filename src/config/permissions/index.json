@@ -33,7 +33,7 @@
     "book accommodations": 0,
     "create locations": 0,
     "update locations": 0,
-    "delete locations": 1
+    "delete locations": 0
   },
   "travel admin": {
     "edit profile": 1,
