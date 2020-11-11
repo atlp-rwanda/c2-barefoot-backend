@@ -10,6 +10,7 @@ module.exports = {
       accommodationID: {
         allowNull: true,
         type: Sequelize.UUID,
+        unique: true,
         references: {
           model: 'Accommodation',
           key: 'id',
