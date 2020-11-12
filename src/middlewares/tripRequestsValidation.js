@@ -8,10 +8,10 @@ export default function (req, res, next) {
                 originCity: Joi.string().required(),
                 destination: Joi.string().required(),
                 tripDate: Joi.date().iso().required().messages({
-                    "date.format":`'Date is not a correct iso 8601 format'`
+                    "date.format":`'Trip Date is not a correct iso 8601 format'`
                 }),
                 returnDate: Joi.date().iso().messages({
-                    "date.format":`'Date is not a correct iso 8601 format'`
+                    "date.format":`'Returning Date is not a correct iso 8601 format'`
                 }),
                 accommodationId: Joi.string().required(),
                 reason: Joi.string().required()
