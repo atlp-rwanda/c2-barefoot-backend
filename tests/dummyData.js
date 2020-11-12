@@ -57,7 +57,7 @@ export const testPerm = { role:"test", permissions:{ "edit profile":0}};
 
 export const updateRole={
   req:{
-    email:'sequester@gmail.com',
+    email:'manager_id@gmail.com',
     role:'manager'
   },
   nonExistingUser:{
@@ -65,18 +65,20 @@ export const updateRole={
     role: 'manager'
   },
   nonExistingRole:{
-    email:'sequester@gmail.com',
+    email:'manager_id@gmail.com',
     role:'notExistRole'
   }
 }
 
 export const line_manager = {
-  req: { email: "sequester@gmail.com", manager_id:Roles.LINE_MANAGER},
-  invalidManager: { email:"sequester@gmail.com", manager_id: Roles.MANAGER},
+  req: { email: "manager_id@gmail.com", manager_id:Roles.LINE_MANAGER},
+  invalidManager: { email:"manager_id@gmail.com", manager_id: Roles.MANAGER},
   invalidUser: {email : "invalidUser@gmail.com", manager_id: Roles.LINE_MANAGER},
   invalidInput: {email:"invalidInput@gmail.com", manager_id: "123456"}
 }
 
 export const deleteReq ={
-  email: 'sequester@gmail.com'
+  email: 'manager_id@gmail.com'
 }
+
+
