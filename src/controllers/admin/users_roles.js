@@ -334,10 +334,14 @@ exports.deleteRoles = async (req, res, next)=>{
                 const dataJson = JSON.stringify(roles, null, 2);
                 const findRole = await roleServices.findRole({name:requestRole});
                 if(findRole){
-                    if(requestRole ==='manager'){
-                        await roleServices.changeRole({change: null,role_id: findRole.id});
+                    // 
+                    const changeRole = await roleServices.changeRole({change: null,role_id: findRole.id});
+                    // }
+                    var deletedRole;
+                    if(changeRole){
+                        deletedRole = await roleServices.deleteOne(findRole.id);
                     }
-                    const deletedRole = await roleServices.deleteOne(findRole.id);
+                    
                     if(deletedRole){
                     
                     /* save changes */
