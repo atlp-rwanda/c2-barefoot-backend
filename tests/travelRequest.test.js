@@ -16,9 +16,9 @@ describe("Travel Requests", ()=>{
             {
                 originCity:"Kigali", 
                 destination:"Cairo",
-                tripDate:"12-12-2020",
-                returnDate:"01/01/2020",
-                accommodationId:"1234567",
+                tripDate:"2020-12-12",
+                returnDate:"2020-01-01",
+                accommodationId:"7edd7f2c-6a67-4c85-ade2-abc6c962017b",
                 reason:"enjoying"
             }
         ]
