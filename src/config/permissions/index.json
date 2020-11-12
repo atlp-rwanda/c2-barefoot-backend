@@ -1,7 +1,7 @@
 {
   "administrator": {
     "edit profile": 1,
-    "assign requesters to manager": 1,
+    "assign requesters to manager": 0,
     "create travel requests": 1,
     "view travel requests": 1,
     "edit travel requests": 1,
@@ -35,7 +35,7 @@
     "update locations": 0,
     "delete locations": 0
   },
-  "travel admin": {
+  "manager": {
     "edit profile": 1,
     "assign requesters to manager": 0,
     "create travel requests": 0,
@@ -53,7 +53,7 @@
     "update locations": 0,
     "delete locations": 0
   },
-  "manager": {
+  "travel-admin": {
     "edit profile": 1,
     "assign requesters to manager": 0,
     "create travel requests": 0,

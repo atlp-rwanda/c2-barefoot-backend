@@ -222,45 +222,45 @@ describe("Testing how to update someone's role",()=>{
 
 /*------------------------test of PUT /api/v1/admin/users/line-manager ------------------*/
 
-describe('Testing the route of assigning someone a line-manager', ()=>{
+// describe('Testing the route of assigning someone a line-manager', ()=>{
     
-    it('should return a message for success', async ()=>{
-        const res = await request(app).put('/api/v1/admin/users/line-manager').send(line_manager.req).set('Authorization',token);
+//     it('should return a message for success', async ()=>{
+//         const res = await request(app).put('/api/v1/admin/users/line-manager').send(line_manager.req).set('Authorization',token);
 
-        expect(res.type).to.equal('application/json');
-        expect(res).to.have.status(201);
-        expect(res.body).to.have.property('status');
-        expect(res.body).to.have.property('message'); 
-        expect(res.body.message).to.equal('Line manager is assigned successfully'); 
-    });
-    it('should handle non existing Line managers', async ()=>{
-        const res = await request(app).put('/api/v1/admin/users/line-manager').send(line_manager.invalidManager).set('Authorization',token);
+//         expect(res.type).to.equal('application/json');
+//         expect(res).to.have.status(201);
+//         expect(res.body).to.have.property('status');
+//         expect(res.body).to.have.property('message'); 
+//         expect(res.body.message).to.equal('Line manager is assigned successfully'); 
+//     });
+//     it('should handle non existing Line managers', async ()=>{
+//         const res = await request(app).put('/api/v1/admin/users/line-manager').send(line_manager.invalidManager).set('Authorization',token);
 
-        expect(res.type).to.equal('application/json');
-        expect(res).to.have.status(404);
-        expect(res.body).to.have.property('status');
-        expect(res.body).to.have.property('error'); 
-        expect(res.body.error).to.equal('The line manager does not exist'); 
-    });
-    it('should handle non existing Users', async ()=>{
-        const res = await request(app).put('/api/v1/admin/users/line-manager').send(line_manager.invalidUser).set('Authorization',token);
+//         expect(res.type).to.equal('application/json');
+//         expect(res).to.have.status(404);
+//         expect(res.body).to.have.property('status');
+//         expect(res.body).to.have.property('error'); 
+//         expect(res.body.error).to.equal('The line manager does not exist'); 
+//     });
+//     it('should handle non existing Users', async ()=>{
+//         const res = await request(app).put('/api/v1/admin/users/line-manager').send(line_manager.invalidUser).set('Authorization',token);
 
-        expect(res.type).to.equal('application/json');
-        expect(res).to.have.status(404);
-        expect(res.body).to.have.property('status');
-        expect(res.body).to.have.property('error'); 
-        expect(res.body.error).to.equal('No user found!'); 
-    });
-    it('should handle invalid inputs', async ()=>{
-        const res = await request(app).put('/api/v1/admin/users/line-manager').send(line_manager.invalidInput).set('Authorization',token);
+//         expect(res.type).to.equal('application/json');
+//         expect(res).to.have.status(404);
+//         expect(res.body).to.have.property('status');
+//         expect(res.body).to.have.property('error'); 
+//         expect(res.body.error).to.equal('No user found!'); 
+//     });
+//     it('should handle invalid inputs', async ()=>{
+//         const res = await request(app).put('/api/v1/admin/users/line-manager').send(line_manager.invalidInput).set('Authorization',token);
 
-        expect(res.type).to.equal('application/json');
-        expect(res).to.have.status(400);
-        expect(res.body).to.have.property('status');
-        expect(res.body).to.have.property('error'); 
-    });
+//         expect(res.type).to.equal('application/json');
+//         expect(res).to.have.status(400);
+//         expect(res.body).to.have.property('status');
+//         expect(res.body).to.have.property('error'); 
+//     });
     
-});
+// });
 
 /*------------------------test of DELETE /api/v1/admin/users ------------------*/
 

@@ -14,10 +14,7 @@ exports.findRoles = (data) =>{
     const foundRoles = models.Role.findAndCountAll(data);
     return foundRoles;
 }
-exports.findLineManagers = (data) =>{
-    const foundManagers = models.Line_manager.findAll(data);
-    return foundManagers;
-}
+
 
 exports.findRoleById = (query)=>{
     const role = models.Role.findOne({where:{id: query.id}});

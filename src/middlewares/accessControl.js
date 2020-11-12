@@ -1,15 +1,13 @@
 import accessDenied from '../utils/errorHandling/accessDenied';
 import notFound from '../utils/errorHandling/notFound';
 import roleServices from '../services/roles';
-// import jwt from 'jsonwebtoken';
 import ApplicationError from '../utils/applicationError';
 import {verifyToken} from '../utils/auth';
+import readData from '../utils/readData';
 
 
   /* import index.json file */
-  const roles =  roleServices.readFile();
-  let rolesData = {};
-  rolesData = JSON.parse(roles);
+  const rolesData = readData.getPermissionsObject();
 export default  function  permit(permission) {
 
   return async (req, res, next) => {
@@ -20,7 +18,7 @@ export default  function  permit(permission) {
       if(!userToken){
         throw new accessDenied('No token found',403);
       }
-      const tokenVerify = await verifyToken(userToken); //jwt.verify(userToken, process.env.TOKEN_SECRET);
+      const tokenVerify = await verifyToken(userToken); 
       const findRoleById = await roleServices.findRoleById({id:tokenVerify.user_role_id});
       if(findRoleById){
         const role = findRoleById.name;
@@ -32,7 +30,7 @@ export default  function  permit(permission) {
         let allowed = permission.length ? true : false;
         if(permission[0]==="all"){
           permission=[
-            "edit profile","assign requesters to manager",
+            "edit profile",
             "create travel requests","view travel requests",
             "edit travel requests","cancel travel requests",
             "approve direct reports travel requests",

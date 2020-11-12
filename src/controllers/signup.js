@@ -12,8 +12,6 @@ const signup = async (req, res, next) => {
   if (userExist) {
     throw new signUpError('Account already exists', 400);
   }
-  // Hash password
-  // req.body.password = hashPassword(req.body.password);
   // create the user
   try {
     const createUser = await models.User.create(req.body);

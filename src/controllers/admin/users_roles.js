@@ -26,7 +26,8 @@ exports.findThem = async (req, res, next) =>{
         const users = await usersService.findUsers({
             offset: skip,
             limit:limit,
-            attributes:["id","first_name","last_name","username","bio","email","user_role_id","address","language","profile_picture","manager_id"]
+            attributes:["id","first_name","last_name","username","bio","email","address","language","profile_picture","user_role_id","manager_id","verified"],
+            where:{ verified:true}
             
         });
 
@@ -34,8 +35,7 @@ exports.findThem = async (req, res, next) =>{
         if(users){
         
             if(!users.rows.length){ throw new notFound(`No user found on page ${page}`); }
-            const findLineManagers = await roleServices.findLineManagers({});
-            if(findLineManagers){users.allLineManagers = findLineManagers;}
+
            return res.status(200).json({status:200, users: users}); 
         }
         else{
@@ -52,12 +52,7 @@ exports.updateHim = async (req, res, next) =>{
         
         const { email, role } = req.body;
 
-        /* read data from index.json file */
-
-        // const existingData = roleServices.readFile();
-
-        /* converting the data from buffer to json format */
-        const roles = readData.getPermissionsObject();//JSON.parse(existingData);
+        const roles = readData.getPermissionsObject();
 
         /* check if role exist */
         if (!roles.hasOwnProperty(role)){throw new notFound("Role not exist!")}
@@ -65,25 +60,13 @@ exports.updateHim = async (req, res, next) =>{
         
         /* check if the user exist*/
         const findUser = await usersService.getUser({email: email});
-        if(findUser){
+        if(findUser && (findUser.verified ===true)){
             const findRole = await roleServices.findRole({name: role});
             if(findRole){
                 /* update the user role*/
                 const upDate = await usersService.updateUserRole({email:email, user_role_id: findRole.id});
                 if(upDate){
-                    //if the role is manager add him to line_managers
-                    if(role === 'manager'){
-                        const findManager = await usersService.findManager({first_name: findUser.first_name, last_name: findUser.last_name});
-                        if(!findManager){
-                            const addLineManager = await usersService.addLineManager({first_name: findUser.first_name,last_name: findUser.last_name});
-                            if(addLineManager){
-                               return res.status(201).json({status:201, message: `The user role is updated to ${role}`});
-                            }else{
-                               throw new applicationError('Failed to update this role, try again!',500);
-                            }
-                        }
-                        
-                    }
+                    
                     res.status(201).json({status:201, message: `The user role is updated to ${role}`});
                    
                 }else{
@@ -95,7 +78,7 @@ exports.updateHim = async (req, res, next) =>{
 
             
         }else{
-            throw new notFound(`${email} does not exist!`);
+            throw new notFound(`${email} does not exist or not verified!`);
         }
 
     }
@@ -115,14 +98,9 @@ exports.deleteOne = async (req, res, next) =>{
             const findRoleById = await roleServices.findRoleById({id:findUser.user_role_id});
             if(findRoleById.name === "administrator"){  throw new accessDenied('Can not delete the administrator!'); }
             if(findRoleById.name === "manager"){
-                const findManager = await usersService.findManager({first_name: findUser.first_name, last_name: findUser.last_name});
-                if(findManager){
-                    const changeRole = await usersService.changeRole({change: null,manager_id: findManager.id});
-                    if(changeRole){
-                        const deleteManager = await usersService.deleteManager({first_name: findUser.first_name, last_name: findUser.last_name});
-
-                    }
-                }
+                
+                await usersService.changeRole({change: null,manager_id: findUser.user_role_id});
+                    
             }
             
             const deleted = await usersService.deleteUser(userEmail);
@@ -154,15 +132,21 @@ exports.assignLineManager = async (req, res, next) => {
                 }
                 
             }
-            const findLineManager = await usersService.findLineManager(manager_id);
-            if(findLineManager){
-                const updateUser = await usersService.updateUser({email:email, manager_id:manager_id});
-                if(updateUser){
-                    res.status(201).json({status:201, message: "Line manager is assigned successfully"});
+            const findManagerById = await usersService.findManagerById(manager_id);
+            if(findManagerById){
+                const findRoleById = await roleServices.findRoleById({id: findManagerById.user_role_id});
+                if(findRoleById && (findRoleById.name === 'manager')){
+                    const updateUser = await usersService.updateUser({email:email, manager_id:manager_id});
+                    if(updateUser){
+                        res.status(201).json({status:201, message: "Line manager is assigned successfully"});
+                    }
+                    else{
+                        throw new applicationError("Failed to assign this line manager, try again!");
+                    }
+                }else{
+                    throw new notFound("Line manager does not exist!");
                 }
-                else{
-                    throw new applicationError("Failed to assign this line manager, try again!");
-                }
+                
             }else{
                 throw new notFound("The line manager does not exist",404);
             }
@@ -210,13 +194,7 @@ exports.create = async (req, res, next) => {
             this['delete locations'] = 0;
         }
 
-        /* read data from index.json file */
-
-        // const existingData = roleServices.readFile(); 
-
-        /* converting the data from buffer to json format */
-        // let roles = {};
-        const roles = readData.getPermissionsObject();//JSON.parse(existingData);
+        const roles = readData.getPermissionsObject();
 
         let existProp = false;
         /* check if index.json has this requested role */
@@ -283,13 +261,8 @@ exports.updatePermissions = (req, res, next)=>{
     try{
         
         let requestData = req.body;
-        /* read data from index.json file */
-
-        // const existingData = roleServices.readFile();
-
-        /* converting the data from buffer to json format */
-        // let roles = {};
-        const roles = readData.getPermissionsObject();//JSON.parse(existingData);
+      
+        const roles = readData.getPermissionsObject();
 
         let existProp = true;
         /* check if index.json does not have this requested role */
@@ -347,13 +320,7 @@ exports.deleteRoles = async (req, res, next)=>{
         
         let requestRole = req.body.role;
 
-        /* read data from index.json file */
-
-        // const existingData = roleServices.readFile();
-
-        /* converting the data from buffer to json format */
-        // let roles = {};
-        const roles = readData.getPermissionsObject();//JSON.parse(existingData);
+        const roles = readData.getPermissionsObject();
 
         let existProp = true;
         /* check if index.json does not have this requested role */
@@ -374,7 +341,6 @@ exports.deleteRoles = async (req, res, next)=>{
                     if(deletedRole){
                     
                     /* save changes */
-                    // fs.writeFileSync('./permissions/index.json', dataJson);    
                     roleServices.saveInFile(dataJson);
                     return res.status(200).json({status:200,message: "Role deleted successfully", role: requestRole});
                     }else{

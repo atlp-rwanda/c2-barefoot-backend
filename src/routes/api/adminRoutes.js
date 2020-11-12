@@ -1,6 +1,7 @@
 import express from 'express';
 import valid from '../../middlewares/validation/createRole';
 import usersRoles from '../../controllers/admin/users_roles';
+import permit from '../../middlewares/accessControl';
 
 const router = express.Router();
 
@@ -456,7 +457,7 @@ router.put('/users',valid.updateUserRoleValidation, usersRoles.updateHim);
  *             example: Line manager is assigned successfully
  * 
  */
-router.put('/users/line-manager',valid.assignLineManager, usersRoles.assignLineManager);
+router.put('/users/line-manager',permit(["assign requesters to manager"]),valid.assignLineManager, usersRoles.assignLineManager);
 
 /* delete one user */
 

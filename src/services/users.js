@@ -1,7 +1,7 @@
 import models from '../models';
 
 exports.findUsers = (query) =>{
-    query.include = [{ model: models.Role, as: 'Role'},{ model: models.Line_manager, as: 'Line_manager'}];
+    query.include = [{ model: models.Role, as: 'user_role'},{ model: models.User, as: 'line_manager', attributes:['id','first_name','last_name']}];
     const users= models.User.findAndCountAll(query);
 
     return users;
@@ -27,18 +27,11 @@ exports.deleteUser = (data)=>{
 }
 
 
-exports.addLineManager = (query) =>{
-    const added = models.Line_manager.create(query);
-    return added;
-}
-exports.findLineManager = (query) =>{
-    const found = models.Line_manager.findByPk(query);
+exports.findManagerById = (query) =>{
+    const found = models.User.findByPk(query);
     return found;
 }
-exports.findManager = (query) =>{
-    const found = models.Line_manager.findOne({where:{first_name: query.first_name, last_name: query.last_name}});
-    return found;
-}
+
 
 exports.updateUser = (query) =>{
     
@@ -55,9 +48,5 @@ exports.changeRole = (query) =>{
 
 }
 
-exports.deleteManager = (data)=>{
-    const deleting = models.Line_manager.destroy({where: {first_name: data.first_name, last_name: data.last_name}});
-    return deleting;
-}
 
 
