@@ -16,7 +16,7 @@ const getTravelRequest = async (req, res) => {
         }
         findTravelRequest(res, query, pagination)
     }catch(err){
-        console.log("session error")
+        return res.status(401).json({message:'session has expired, please login'});
     }
 }
 export default getTravelRequest

@@ -7,7 +7,6 @@ export async function getDataFromToken(req, res, next){
         var decoded ='';
         try {
             const user =  await verifyToken(authorization)
-            console.log(user.email+ "----")
             const userInfo = isUserExist(user.email)
             return userInfo
         } catch (e) {
