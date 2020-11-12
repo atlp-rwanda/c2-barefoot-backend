@@ -6,8 +6,8 @@ export async function getDataFromToken(req, res, next){
         const authorization = req.headers.authorization
         var decoded ='';
         try {
-            const user = jwt.verify(authorization, process.env.TOKEN_SECRET);
-            console.log(user.email)
+            const user =  await verifyToken(authorization)
+            console.log(user.email+ "----")
             const userInfo = isUserExist(user.email)
             return userInfo
         } catch (e) {
