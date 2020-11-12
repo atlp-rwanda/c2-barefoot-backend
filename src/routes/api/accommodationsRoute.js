@@ -6,12 +6,13 @@ import {
   updateAccommodation,
   deleteAccommodation
 } from '../../controllers/accommodations';
+import permit from '../../middlewares/accessControl';
 
 const router = express.Router();
-router.get('/', getAccommodations);
-router.get('/:id', getOneAccommodation);
-router.patch('/:id', updateAccommodation);
-router.delete('/:id', deleteAccommodation);
-router.post('/createAccommodation', createAccommodation);
+router.get('/', permit(['view accommodations']), getAccommodations);
+router.get('/:id', permit(['view accommodations']), getOneAccommodation);
+router.patch('/:id', permit(['update accommodations']), updateAccommodation);
+router.delete('/:id', permit(['delete accommodations']), deleteAccommodation);
+router.post('/createAccommodation', permit(['create accommodations']), createAccommodation);
 
 export default router;

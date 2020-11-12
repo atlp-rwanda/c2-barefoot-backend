@@ -15,7 +15,7 @@ export default function permit(permission) {
     try {
       const userToken = req.header('authorization');
       if (!userToken) {
-        throw new accessDenied('No token found', 403);
+        throw new accessDenied('You are not authorized', 403);
       }
       const tokenVerify = await verifyToken(userToken); // jwt.verify(userToken, process.env.TOKEN_SECRET);
       const findRoleById = await roleServices.findRoleById({ id: tokenVerify.user_role_id });
@@ -34,9 +34,9 @@ export default function permit(permission) {
             'edit travel requests', 'cancel travel requests',
             'approve direct reports travel requests',
             'view direct reports travel requests',
-            'reject direct reports travel requests',
+            'reject direct reports travel requests', 'view accommodations',
             'create accommodations', 'update accommodations',
-            'delete accommodations', 'book accommodations',
+            'delete accommodations', 'book accommodations', 'view locations',
             'create locations', 'update locations', 'delete locations'
           ];
         }

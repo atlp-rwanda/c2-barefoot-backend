@@ -6,7 +6,6 @@ const router = express.Router();
 
 /* a welcome route */
 
-
 /**
  * @swagger
  *
@@ -41,8 +40,6 @@ const router = express.Router();
 router.get('/', usersRoles.welcome);
 
 /* retrieve all roles created */
-
-
 
 /**
  * @swagger
@@ -92,7 +89,7 @@ router.get('/', usersRoles.welcome);
  *                  description:
  *                    type: string
  *                    example: string
- *                  
+ *
  */
 
 router.get('/roles', usersRoles.getAll);
@@ -147,7 +144,7 @@ router.get('/roles', usersRoles.getAll);
  *             example: Role created successfully
  */
 
-router.post('/roles',valid.roleValidation, usersRoles.create);
+router.post('/roles', valid.roleValidation, usersRoles.create);
 
 /* update role's permissions */
 
@@ -170,7 +167,7 @@ router.post('/roles',valid.roleValidation, usersRoles.create);
  *          content:
  *            application/json:
  *              schema:
- *                $ref: '#/components/schemas/roleUpdated' 
+ *                $ref: '#/components/schemas/roleUpdated'
  *        "400":
  *          description: These permissions or values are not allowed
  *        "404":
@@ -210,12 +207,9 @@ router.post('/roles',valid.roleValidation, usersRoles.create);
  *                 type: integer
  *                 example: 1
  */
-router.put('/roles/update',valid.updateValidation, usersRoles.updatePermissions);
+router.put('/roles/update', valid.updateValidation, usersRoles.updatePermissions);
 
-
-
-/* delete a role */ 
-
+/* delete a role */
 
 /**
  * @swagger
@@ -264,13 +258,12 @@ router.put('/roles/update',valid.updateValidation, usersRoles.updatePermissions)
  *             example: Role deleted successfully
  *           role:
  *             type: string
- *             example: role name      
+ *             example: role name
  */
 
-router.delete('/roles',valid.deleteValidation, usersRoles.deleteRoles);
+router.delete('/roles', valid.deleteValidation, usersRoles.deleteRoles);
 
 /* retrieve all users */
-
 
 /**
  * @swagger
@@ -338,12 +331,11 @@ router.delete('/roles',valid.deleteValidation, usersRoles.deleteRoles);
  *                  manager_id:
  *                    type: string
  *                    example: string
- * 
+ *
  */
 router.get('/users', usersRoles.findThem);
 
 /* update a user role */
-
 
 /**
  * @swagger
@@ -396,11 +388,10 @@ router.get('/users', usersRoles.findThem);
  *           message:
  *             type: string
  *             example: The user updated to \"Role\"
- * 
+ *
  */
-router.put('/users',valid.updateUserRoleValidation, usersRoles.updateHim);
+router.put('/users', valid.updateUserRoleValidation, usersRoles.updateHim);
 // when you change a requester as a manager, then add him also to the line_manager table and also change so that we will update the primary key not the name of the role
-
 
 /**
  * @swagger
@@ -454,12 +445,11 @@ router.put('/users',valid.updateUserRoleValidation, usersRoles.updateHim);
  *           message:
  *             type: string
  *             example: Line manager is assigned successfully
- * 
+ *
  */
-router.put('/users/line-manager',valid.assignLineManager, usersRoles.assignLineManager);
+router.put('/users/line-manager', valid.assignLineManager, usersRoles.assignLineManager);
 
 /* delete one user */
-
 
 /**
  * @swagger
@@ -510,15 +500,13 @@ router.put('/users/line-manager',valid.assignLineManager, usersRoles.assignLineM
  *           message:
  *             type: string
  *             example: The user is deleted successfully!
- * 
+ *
  */
 
-router.delete('/users',valid.deleteValidationEmail, usersRoles.deleteOne);
+router.delete('/users', valid.deleteValidationEmail, usersRoles.deleteOne);
 
 /* a delete route to show how to use this middleware of permissions*
- *for this to pass you have to send exact permission(s) as parameter(s)*/
+ *for this to pass you have to send exact permission(s) as parameter(s) */
 // router.delete('/locations', permit(["all"]), dlt);
-
-
 
 export default router;
