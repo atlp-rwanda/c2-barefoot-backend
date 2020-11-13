@@ -27,7 +27,8 @@ export const getOneAccommodation = async (req, res, next) => {
     if (!singleAccommodation) {
       throw new accommodationNotFound('Accommodation does not exist');
     }
-    res.status(200).json(singleAccommodation);
+    const amenities = await models.Amenity.findOne({ where: { accommodationID: id } });
+    res.status(200).json({ singleAccommodation, amenities });
   } catch (error) {
     next(error);
   }
