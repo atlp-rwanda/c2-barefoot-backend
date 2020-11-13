@@ -5,6 +5,7 @@ import premissions from '../config/permissions/index.json';
 
 const isManager = async (req, res, next) => {
   const bearerToken = req.headers.authorization;
+  if (!bearerToken) return res.status(401).json({ status: 401, message: 'Unauthorized' });
   const token = bearerToken.split(' ')[1];
   const decoded = await verifyToken(token);
   // const user = await findUser(decoded.email);

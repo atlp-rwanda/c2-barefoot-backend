@@ -12,6 +12,7 @@ import refreshToken from '../../controllers/refreshToken';
 import verifiedUser from '../../controllers/getVerifiedUsers';
 import managerPermissions from '../../helper/managerPermissions';
 import isManager from '../../helper/isManager';
+import assignUsersToManagers from '../../controllers/assignUsersToManager';
 
 const router = express.Router();
 
@@ -281,4 +282,5 @@ router.post('/refresh-token', refreshToken);
  */
 router.get('/verified-users', isManager, verifiedUser);
 router.get('/verified-users/managers', isManager, managerUsers);
+router.patch('/verified-users/:id', isManager, managerPermissions, assignUsersToManagers);
 export default router;
