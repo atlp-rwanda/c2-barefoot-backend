@@ -1,5 +1,6 @@
 import express from 'express';
 import landingPage from './api/landingPageRoute';
+import userProfile from './api/userprofile';
 import userRoute from './api/user';
 import adminRoutes from './api/adminRoutes';
 import permit from '../middlewares/accessControl';
@@ -14,5 +15,6 @@ routes.use('/directReports', directreportsRoutes)
 routes.use('/', landingPage);
 routes.use('/admin', permit(["all"]), adminRoutes);
 
+routes.use('/', userProfile);
 
 export default routes;
