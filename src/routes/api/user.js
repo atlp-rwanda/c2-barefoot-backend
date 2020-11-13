@@ -1,4 +1,5 @@
 import express from 'express';
+import managerUsers from '../../controllers/managers';
 import signup from '../../controllers/signup';
 import signupValidation from '../../middlewares/signupValidation';
 import sendVerificationEmail from '../../middlewares/sendEmail';
@@ -9,6 +10,8 @@ import login from '../../controllers/login';
 import logout from '../../controllers/logout';
 import refreshToken from '../../controllers/refreshToken';
 import verifiedUser from '../../controllers/getVerifiedUsers';
+import managerPermissions from '../../helper/managerPermissions';
+import isManager from '../../helper/isManager';
 
 const router = express.Router();
 
@@ -276,5 +279,6 @@ router.post('/refresh-token', refreshToken);
  *               description: retrieved data users
  *
  */
-router.get('/verified-users', verifiedUser);
+router.get('/verified-users', isManager, verifiedUser);
+router.get('/verified-users/managers', isManager, managerUsers);
 export default router;

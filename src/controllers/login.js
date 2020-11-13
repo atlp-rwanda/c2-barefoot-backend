@@ -20,14 +20,16 @@ const login = async (req, res, next) => {
 
   try {
     const userData = {
-      id: isUser.id,
+      role: isUser.user_role_id,
       email: isUser.email
     };
     const userToken = await generateToken(userData);
     // updating user refresh token in database
     await isUser.update({ refreshtoken: userToken });
     res.cookie('make', userToken, { httpOnly: false, path: '/api/v1/user/refresh-token' });
-    return res.status(200).json({ status: 200, message: 'login successful', data: userToken });
+    return res.status(200).json({
+      status: 200, message: 'login successful', data: userToken, profile: isUser
+    });
   } catch (err) {
     next(err);
   }
