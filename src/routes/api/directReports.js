@@ -2,7 +2,12 @@ import express from 'express';
 import isLogedIn from '../../helper/isLogedIn';
 import getDirectReport from '../../controllers/directReport.controller';
 
-const router = express.Router();
+import express from 'express'
+import isLogedIn from "../../helper/isLogedIn";
+import { getDirectReport,approve_reject_TravelRequest } from "../../controllers/directReport.controller";
+import travelRequestsValidation from '../../middlewares/travelRequestsValidation';
+
+const router = express.Router()
 
 // ----------------------- View direct report (Manager only) --------------------
 /**
@@ -51,7 +56,8 @@ const router = express.Router();
  *              [{"travelId":12,status: "pending", "accommodationId": 123, "reason":tripping, "trip":{"originCity":Kigali, "destination":Cairo, "tripDate":11/12/2020, "returnDate":11/12/2021, "accommodationId":1234567, "reason":tripping}}]
  */
 
-router.get('/', isLogedIn, getDirectReport);
-router.get('/:travelId', isLogedIn, getDirectReport); // view direct reports
+router.get('/', isLogedIn, getDirectReport) 
+router.get('/:travelId', isLogedIn, getDirectReport) // view direct reports
+router.put('/',isLogedIn,travelRequestsValidation, approve_reject_TravelRequest)
 
 export default router;
