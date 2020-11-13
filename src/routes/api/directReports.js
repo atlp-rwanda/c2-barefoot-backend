@@ -1,7 +1,8 @@
 
 import express from 'express'
 import isLogedIn from "../../helper/isLogedIn";
-import { getDirectReport } from "../../controllers/directReport.controller";
+import { getDirectReport,approve_reject_TravelRequest } from "../../controllers/directReport.controller";
+import travelRequestsValidation from '../../middlewares/travelRequestsValidation';
 
 const router = express.Router()
 
@@ -54,5 +55,6 @@ const router = express.Router()
 
 router.get('/', isLogedIn, getDirectReport) 
 router.get('/:travelId', isLogedIn, getDirectReport) // view direct reports
+router.put('/',isLogedIn,travelRequestsValidation, approve_reject_TravelRequest)
 
 export default router
