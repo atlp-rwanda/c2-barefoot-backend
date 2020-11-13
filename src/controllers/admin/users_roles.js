@@ -26,8 +26,7 @@ exports.findThem = async (req, res, next) =>{
         const users = await usersService.findUsers({
             offset: skip,
             limit:limit,
-            attributes:["id","first_name","last_name","username","bio","email","address","language","profile_picture","user_role_id","manager_id","verified"],
-            where:{ verified:true}
+            attributes:["id","first_name","last_name","username","bio","email","address","language","profile_picture","user_role_id","manager_id","verified"]
             
         });
 
@@ -94,14 +93,18 @@ exports.deleteOne = async (req, res, next) =>{
         const userEmail = req.body.email;
         const findUser = await usersService.getUser({email: userEmail});
         if(findUser){
-
-            const findRoleById = await roleServices.findRoleById({id:findUser.user_role_id});
-            if(findRoleById.name === "administrator"){  throw new accessDenied('Can not delete the administrator!'); }
-            if(findRoleById.name === "manager"){
-                
-                await usersService.changeRole({change: null,manager_id: findUser.user_role_id});
-                    
+            //user with a role
+            if(findUser.user_role_id !== null){
+                const findRoleById = await roleServices.findRoleById({id:findUser.user_role_id});
+                if(findRoleById.name === "administrator"){  throw new accessDenied('Can not delete the administrator!'); } 
+                const changeRole =    await usersService.changeRole({change: null,manager_id: findUser.id});
+                                
             }
+            //user with relationships      
+            const findRelations = await usersService.findRelations({id:findUser.id}); 
+            if(findRelations){
+                const changeRole =    await usersService.changeRole({change: null,manager_id: findUser.id});
+            }    
             
             const deleted = await usersService.deleteUser(userEmail);
             if(deleted){
@@ -194,6 +197,7 @@ exports.create = async (req, res, next) => {
             this['delete locations'] = 0;
         }
 
+        //import existing data in index.json
         const roles = readData.getPermissionsObject();
 
         let existProp = false;
@@ -329,14 +333,13 @@ exports.deleteRoles = async (req, res, next)=>{
             throw new notFound("Role not exist!");
         }
 
+        if(requestRole === "administrator"){  throw new accessDenied('Can not delete the administrator role!'); } 
         if(existProp){
             if(delete roles[requestRole]){
                 const dataJson = JSON.stringify(roles, null, 2);
                 const findRole = await roleServices.findRole({name:requestRole});
                 if(findRole){
-                    // 
                     const changeRole = await roleServices.changeRole({change: null,role_id: findRole.id});
-                    // }
                     var deletedRole;
                     if(changeRole){
                         deletedRole = await roleServices.deleteOne(findRole.id);

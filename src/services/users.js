@@ -44,8 +44,14 @@ exports.updateUser = (query) =>{
 exports.changeRole = (query) =>{
     
     const changes = models.User.update({manager_id: query.change},{where: {manager_id: query.manager_id}});
-    return changes;
+    const changeAlso = models.User.update({manager_id: query.change},{where:{id:query.manager_id}});
+    return changes, changeAlso;
 
+}
+
+exports.findRelations = (query) =>{
+    const relations = models.User.findOne({where:{manager_id:query.id}});
+    return relations;
 }
 
 
