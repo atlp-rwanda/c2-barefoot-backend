@@ -5,6 +5,7 @@ import accommodationNotFound from '../utils/notFoundRequestError';
 export const createAccommodation = async (req, res, next) => {
   try {
     const accommodation = await models.Accommodation.create(req.body);
+    const amenity = await models.Amenity.create({ accommodationID: accommodation.id });
     res.status(200).json({ accommodation });
   } catch (error) {
     next(error);

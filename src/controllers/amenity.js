@@ -20,4 +20,11 @@ export const updateAmenity = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+
+  try {
+    const update = await models.Amenity.update(req.body, { where: { id: req.params.id } });
+    res.status(201).json({ status: 201, message: 'Amenity successfully updated' });
+  } catch (error) {
+    next(error);
+  }
 };
