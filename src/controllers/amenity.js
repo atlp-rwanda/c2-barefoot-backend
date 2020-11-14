@@ -2,16 +2,7 @@ import models from '../models';
 import 'express-async-errors';
 import amenityNotFound from '../utils/notFoundRequestError';
 
-export const createAmenity = async (req, res, next) => {
-  try {
-    const amenity = await models.Amenity.create(req.body);
-    res.status(200).json({ amenity });
-  } catch (error) {
-    next(error);
-  }
-};
-
-export const updateAmenity = async (req, res, next) => {
+const updateAmenity = async (req, res, next) => {
   try {
     const amenityExist = await models.Amenity.findOne({ where: { id: req.params.id } });
     if (!amenityExist) {
@@ -28,3 +19,5 @@ export const updateAmenity = async (req, res, next) => {
     next(error);
   }
 };
+
+export default updateAmenity;
