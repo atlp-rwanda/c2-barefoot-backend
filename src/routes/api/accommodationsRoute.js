@@ -13,6 +13,6 @@ router.get('/', permit(['view accommodations']), getAccommodations);
 router.get('/:id', permit(['view accommodations']), getOneAccommodation);
 router.patch('/:id', permit(['update accommodations']), updateAccommodation);
 router.delete('/:id', permit(['delete accommodations']), deleteAccommodation);
-router.post('/createAccommodation', permit(['create accommodations']), createAccommodation);
+router.post('/', permit(['create accommodations']), createAccommodation);
 
 export default router;

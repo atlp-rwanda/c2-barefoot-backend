@@ -9,6 +9,6 @@ router.get('/', permit(['view locations']), getLocations);
 router.get('/:id', permit(['view locations']), getOneLocation);
 router.patch('/:id', permit(['update locations']), updateLocation);
 router.delete('/:id', permit(['delete locations']), deleteLocation);
-router.post('/createLocation', permit(['create locations']), createLocation);
+router.post('/', permit(['create locations']), createLocation);
 
 export default router;
