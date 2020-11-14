@@ -1,6 +1,7 @@
 import models from '../models';
 import 'express-async-errors';
 import accommodationNotFound from '../utils/notFoundRequestError';
+import retrieveAccommodations from '../services/getAccommodations';
 
 export const createAccommodation = async (req, res, next) => {
   try {
@@ -13,9 +14,14 @@ export const createAccommodation = async (req, res, next) => {
 };
 
 export const getAccommodations = async (req, res, next) => {
+  const page = Number(req.query.page);
+
   try {
-    const accommodation = await models.Accommodation.findAndCountAll({});
-    res.status(200).json(accommodation);
+    const accommodations = await retrieveAccommodations(page);
+    if (!accommodations) {
+      throw new accommodationNotFound('There are no accommodations available');
+    }
+    res.status(200).json({ status: 200, page, accommodations });
   } catch (error) {
     next(error);
   }
@@ -24,11 +30,11 @@ export const getAccommodations = async (req, res, next) => {
 export const getOneAccommodation = async (req, res, next) => {
   const { id } = req.params;
   try {
-    const singleAccommodation = await models.Accommodation.findOne({ where: { id } });
+    const singleAccommodation = await models.Accommodation.findOne({ where: { id }, attributes: { exclude: ['createdAt', 'updatedAt'] } });
     if (!singleAccommodation) {
       throw new accommodationNotFound('Accommodation does not exist');
     }
-    const amenities = await models.Amenity.findOne({ where: { accommodationID: id } });
+    const amenities = await models.Amenity.findOne({ where: { accommodationID: id }, attributes: { exclude: ['createdAt', 'updatedAt'] } });
     res.status(200).json({ singleAccommodation, amenities });
   } catch (error) {
     next(error);
@@ -65,6 +71,7 @@ export const deleteAccommodation = async (req, res, next) => {
 
   try {
     const dltAccommodation = await models.Accommodation.destroy({ where: { id: req.params.id } });
+    const dltAmenity = await models.Amenity.destroy({ where: { accommodationID: req.params.id } });
     res.status(201).json({ status: 201, message: 'Accommodation has been deleted' });
   } catch (error) {
     next(error);

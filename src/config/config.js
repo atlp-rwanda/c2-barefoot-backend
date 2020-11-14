@@ -14,6 +14,12 @@ module.exports = {
     password: process.env.CI_DB_PASSWORD,
     username: process.env.CI_DB_USERNAME,
     dialect: 'postgres',
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false
+      }
+    }
 
   },
   production: {
