@@ -4,8 +4,8 @@ import findManager from '../services/findManager';
 
 const assignUsers = async (req, res) => {
   try {
-    const page = parseInt(req.query.page);
-    const storedRole = await role({ attributes: ['id', 'name'] });
+    const page = parseInt(req.query.page, 10);
+    const storedRole = await role();
     storedRole.filter(async (rol) => {
       if (rol.name === 'manager') {
         // console.log(rol.id);

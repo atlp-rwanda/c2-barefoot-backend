@@ -3,6 +3,7 @@ import managerUsers from '../../controllers/managers';
 import signup from '../../controllers/signup';
 import signupValidation from '../../middlewares/signupValidation';
 import sendVerificationEmail from '../../middlewares/sendEmail';
+import assignUsersToManagerValidation from '../../middlewares/assignUaserToManager';
 import verification from '../../controllers/verification';
 import loginValidation from '../../middlewares/loginValidation';
 import logedIn from '../../helper/isLogedIn';
@@ -281,6 +282,79 @@ router.post('/refresh-token', refreshToken);
  *
  */
 router.get('/verified-users', isManager, verifiedUser);
+
+/**
+ * @swagger
+ * /api/v1/user/verified-users/managers?page=1:
+ *   get:
+ *     tags:
+ *       - Verified Manager
+ *     summary: manager should get all verified Manager
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: success data
+ *         schema:
+ *           data:
+ *           type: object
+ *           properties:
+ *             status:
+ *               type: integer
+ *               description: The http status code
+ *               example: 200
+ *             message:
+ *               type: string
+ *               description: success message
+ *               example: verified users
+ *             verifiedUsers:
+ *               type: array
+ *               description: retrieved data users
+ *
+ */
 router.get('/verified-users/managers', isManager, managerUsers);
-router.patch('/verified-users/:id', isManager, managerPermissions, assignUsersToManagers);
+
+/**
+ * @swagger
+ * /api/v1/user/verified-users/:id:
+ *   patch:
+ *     tags:
+ *       - Assign Verified users Manager
+ *     summary: manager should get all verified Manager
+ *     parameters:
+ *       - in: body
+ *         name: manager_id
+ *         required: true
+ *         schema:
+ *          type: object
+ *          required:
+ *             - manager
+ *          properties:
+ *            manager_id:
+ *              type: string
+ *              description: manager id that will be assigned to user
+ *              example: 38eb202c-3f67-4eed-b7ac-9c31bc226e0c
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: success data
+ *         schema:
+ *           data:
+ *           type: object
+ *           properties:
+ *             status:
+ *               type: integer
+ *               description: The http status code
+ *               example: 200
+ *             message:
+ *               type: string
+ *               description: success message
+ *               example: verified users
+ *             verifiedUsers:
+ *               type: array
+ *               description: retrieved data users
+ *
+ */
+router.patch('/verified-users/:id', isManager, managerPermissions, assignUsersToManagerValidation, assignUsersToManagers);
 export default router;

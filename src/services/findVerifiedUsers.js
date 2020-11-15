@@ -1,10 +1,11 @@
 import models from '../models';
 
 const isUserVerified = async (page = 1) => {
-  const page_size = 2;
-  const skip = (page - 1) * page_size;
+  const pageSize = 2;
+  const skip = parseInt((page - 1) * pageSize, 10);
+  console.log(skip);
   const verifiedUser = await models.User.findAndCountAll({
-    limit: page_size, offset: skip, where: { verified: true }, attributes: { exclude: ['password', 'refreshtoken'] }, required: false
+    limit: pageSize, offset: skip, where: { verified: true }, attributes: { exclude: ['password', 'refreshtoken'] }, required: false
   });
   return verifiedUser;
 };
