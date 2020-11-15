@@ -10,7 +10,6 @@ const assignUsersToManager = async (req, res) => {
     if (!user) {
       throw new NotFoundRequestError(`User with this ${userId} is not exist`, 404);
     }
-    // return res.status(404).json({ status: 404, message: `User with this ${userId} is not exist` });
     models.User.update({ manager_id }, { where: { email: user.email } });
     return res.status(200).json({ status: 200, message: `user was assigned to manager with this Id ${manager_id}` });
   } catch (error) {

@@ -1,7 +1,5 @@
 import { verifyToken } from '../utils/auth';
-import findUser from '../services/findUser';
 import findRoles from '../services/findRoles';
-import premissions from '../config/permissions/index.json';
 
 const isManager = async (req, res, next) => {
   const bearerToken = req.headers.authorization;
