@@ -1,9 +1,9 @@
 import express from 'express'
 import isLogedIn from "../../helper/isLogedIn";
 import travelRequest from "../../controllers/travelRequest.controller";
-import getTravelRequest from "../../controllers/viewTravelRequest";
+import {editTravelRequest, getTravelRequest} from "../../controllers/viewTravelRequest";
 import { getDirectReport } from "../../controllers/directReport.controller";
-import isSchemaValid from '../../middlewares/tripRequestsValidation'
+import { createTripValidation, editTripValidation} from '../../middlewares/tripRequestsValidation'
 import { cancel_travelRequest,approve_reject_TravelRequest } from "../../controllers/directReport.controller";
 import travelRequestsValidation from '../../middlewares/travelRequestsValidation';
 
@@ -69,7 +69,7 @@ const router = express.Router();
  *        example:
  *          {"travelId":12,status: "pending", "accommodationId": 123, "reason":tripping, "trip":{"originCity":Kigali, "destination":Cairo, "tripDate":11/12/2020, "returnDate":11/12/2021, "accommodationId":1234567, "reason":tripping}}
  */
-router.post('/request', isLogedIn, isSchemaValid, travelRequest); // make a request
+router.post('/request', isLogedIn, createTripValidation, travelRequest) //make a request
 
 
 // ----------------------- View travelrequest --------------------
@@ -116,7 +116,8 @@ router.get('/', isLogedIn, getTravelRequest); // view all requests
 router.put('/',isLogedIn, travelRequestsValidation, cancel_travelRequest);
 
 // ----------------- View a particular travelrequest --------------------
-router.get('/:requestId', isLogedIn, getTravelRequest); // Get single request
+router.get('/:requestId', isLogedIn, getTravelRequest) //Get single request
+router.put('/:requestId', isLogedIn, editTripValidation,editTravelRequest)
 
 export default router;
 
