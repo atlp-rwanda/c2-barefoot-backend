@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
     },
-    accommodationID: {
+    AccommodationId: {
       allowNull: true,
       type: DataTypes.UUID
     },
@@ -43,6 +43,10 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: false
     }
   });
+
+  Amenity.associate = (models) => {
+    Amenity.belongsTo(models.Accommodation);
+  };
 
   return Amenity;
 };

@@ -6,7 +6,7 @@ import retrieveAccommodations from '../services/getAccommodations';
 export const createAccommodation = async (req, res, next) => {
   try {
     const accommodation = await models.Accommodation.create(req.body);
-    const amenity = await models.Amenity.create({ accommodationID: accommodation.id });
+    const amenity = await models.Amenity.create({ AccommodationId: accommodation.id });
     res.status(201).json({ accommodation });
   } catch (error) {
     next(error);
@@ -34,7 +34,7 @@ export const getOneAccommodation = async (req, res, next) => {
     if (!singleAccommodation) {
       throw new accommodationNotFound('Accommodation does not exist');
     }
-    const amenities = await models.Amenity.findOne({ where: { accommodationID: id }, attributes: { exclude: ['createdAt', 'updatedAt'] } });
+    const amenities = await models.Amenity.findOne({ where: { AccommodationId: id }, attributes: { exclude: ['createdAt', 'updatedAt'] } });
     res.status(200).json({ singleAccommodation, amenities });
   } catch (error) {
     next(error);
@@ -70,8 +70,8 @@ export const deleteAccommodation = async (req, res, next) => {
   }
 
   try {
+    const dltAmenity = await models.Amenity.destroy({ where: { AccommodationId: req.params.id } });
     const dltAccommodation = await models.Accommodation.destroy({ where: { id: req.params.id } });
-    const dltAmenity = await models.Amenity.destroy({ where: { accommodationID: req.params.id } });
     res.status(201).json({ status: 201, message: 'Accommodation has been deleted' });
   } catch (error) {
     next(error);

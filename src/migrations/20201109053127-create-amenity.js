@@ -7,13 +7,14 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.UUID
       },
-      accommodationID: {
+      AccommodationId: {
         allowNull: true,
         type: Sequelize.UUID,
         unique: true,
         references: {
           model: 'Accommodation',
           key: 'id',
+          onDelete: 'restrict'
         },
       },
       wifi: {
