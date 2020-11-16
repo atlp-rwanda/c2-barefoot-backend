@@ -8,6 +8,15 @@ exports.findItById = (query) =>{
 }
 
 exports.updateStatus = (query) => {
-    const change = models.TravelRequest.update({status: query.status}, {where:{travelId:query.travelId}});
+    const change = models.TravelRequest.update(query.status, {where:{travelId:query.travelId}});
     return change;
+}
+
+exports.findTrip = (query) => {
+    const search = models.Trip.findOne({where:{tripId: query.tripId, travelId: query.travelId}});
+    return search;
+}
+exports.updateTrip = (query) => {
+    const updates = models.Trip.update(query.changes,{where:{tripId: query.tripId}});
+    return updates;
 }

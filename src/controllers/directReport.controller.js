@@ -35,23 +35,31 @@ export const getDirectReport = async (req, res, next) => {
 
 export const approve_reject_TravelRequest = async (req, res, next) =>{
     const { travel_request_id, action } = req.body;
+    const decoded = await getDataFromToken(req, res, next)
     try{
         if(action === 'approve' || action === 'reject'){
             const findTravelRequest = await travelRequestServices.findItById({travelId:travel_request_id});
             if(findTravelRequest){
-                //travel request can be approve if it is pending or rejected
-                //and can be rejected if it is pending only
-                if(findTravelRequest.status === 'pending' || (findTravelRequest.status === 'rejected' && action !== 'reject')){
-                    const changes = (action === 'approve') ? 'approved': 'rejected';
-                    const updateStatus = await travelRequestServices.updateStatus({travelId:travel_request_id, status:changes});
-                    if(updateStatus){
-                        return res.status(201).json({status: 201, message:`Operation performed successfully!`});
+                const userId = decoded.id;
+                if(findTravelRequest.managerId === userId){
+                    //travel request can be approve if it is pending or rejected
+                    //and can be rejected if it is pending only
+                    //also check if the manager is this one who's logged in
+                    if(findTravelRequest.status === 'pending' || (findTravelRequest.status === 'rejected' && action !== 'reject')){
+                        const changes = (action === 'approve') ? 'approved': 'rejected';
+                        const updateStatus = await travelRequestServices.updateStatus({travelId:travel_request_id, status:{status:changes}});
+                        if(updateStatus){
+                            return res.status(201).json({status: 201, message:`Operation performed successfully!`});
+                        }else{
+                            throw new ApplicationError("Failed to approve this travel request, try again!",500);
+                        }
                     }else{
-                        throw new ApplicationError("Failed to approve this travel request, try again!",500);
+                        throw new BadRequestError(`The travel request is already ${findTravelRequest.status}`,400);
                     }
                 }else{
-                    throw new BadRequestError(`The travel request is already ${findTravelRequest.status}`,400);
+                    throw new ApplicationError("Failed to access this travel request!",500);
                 }
+                
             }else{
                 throw new NotFoundRequestError("The travel request does not exist!",404);
             }
@@ -78,7 +86,7 @@ export const cancel_travelRequest = async (req, res, next) =>{
 
                     const changes = 'canceled';
                     if(findTravelRequest.status === 'pending'){
-                        const updateStatus = await travelRequestServices.updateStatus({travelId:travel_request_id, status:changes});
+                        const updateStatus = await travelRequestServices.updateStatus({travelId:travel_request_id, status:{status:changes}});
                         if(updateStatus){
                             return res.status(201).json({status: 201, message:`Travel request canceled successfully!`});
                         }else{
@@ -94,6 +102,8 @@ export const cancel_travelRequest = async (req, res, next) =>{
             }else{
                 throw new NotFoundRequestError("The travel request does not exist!",404);
             }
+        }else{
+            throw new BadRequestError("Can not perform this operation!",400);
         }
         
     }
