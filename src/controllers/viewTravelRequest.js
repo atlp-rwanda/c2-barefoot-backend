@@ -1,8 +1,8 @@
 import { findTravelRequest } from "../services/travelRequestSearch";
 import { getDataFromToken } from '../helper/tokenToData';
 
-const getTravelRequest = async (req, res) => {
-    const decoded = await getDataFromToken(req, res)
+const getTravelRequest = async (req, res, next) => {
+    const decoded = await getDataFromToken(req, res, next)
     try{
         const id = req.params.requestId
         const userid = decoded.id.toString()
