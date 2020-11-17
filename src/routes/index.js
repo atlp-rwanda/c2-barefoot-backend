@@ -10,8 +10,8 @@ import directreportsRoutes from './api/directReports'
 const routes = express.Router();
 
 routes.use('/user', userRoute);
-routes.use('/requests/', travelRequestroutes)
-routes.use('/directReports', directreportsRoutes)
+routes.use('/requests/', travelRequestroutes);
+routes.use('/directReports', directreportsRoutes);
 routes.use('/', landingPage);
 routes.use('/admin', permit(["all"]), adminRoutes);
 
