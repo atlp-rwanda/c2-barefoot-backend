@@ -2,9 +2,9 @@ import { findTravelRequest } from '../services/travelRequestSearch';
 import getDataFromToken from '../helper/tokenToData';
 import roles from '../utils/roles';
 import travelRequestServices from '../services/directTravelRequest';
-import NotFoundRequestError from '../utils/notFoundRequestError';
-import ApplicationError from '../utils/applicationError';
-import BadRequestError from '../utils/badRequestError';
+import NotFoundRequestError from '../utils/Errors/notFoundRequestError';
+import ApplicationError from '../utils/Errors/applicationError';
+import BadRequestError from '../utils/Errors/badRequestError';
 
 export const getDirectReport = async (req, res, next) => {
   const decoded = await getDataFromToken(req, res, next);
@@ -27,23 +27,24 @@ export const getDirectReport = async (req, res, next) => {
     } else {
       res.status(401).json({ message: 'you are not an approved manager' });
     }
+}catch(e){
+    next(e);
 }
 }
 export const approve_reject_TravelRequest = async (req, res, next) =>{
-    const { travel_request_id, action } = req.body;
+    const { travelRequestId, action } = req.body;
     const decoded = await getDataFromToken(req, res, next)
     try{
         if(action === 'approve' || action === 'reject'){
-            const findTravelRequest = await travelRequestServices.findItById({travelId:travel_request_id});
+            const findTravelRequest = await travelRequestServices.findItById({travelId:travelRequestId});
             if(findTravelRequest){
                 const userId = decoded.id;
                 if(findTravelRequest.managerId === userId){
                     //travel request can be approve if it is pending or rejected
                     //and can be rejected if it is pending only
-                    //also check if the manager is this one who's logged in
                     if(findTravelRequest.status === 'pending' || (findTravelRequest.status === 'rejected' && action !== 'reject')){
                         const changes = (action === 'approve') ? 'approved': 'rejected';
-                        const updateStatus = await travelRequestServices.updateStatus({travelId:travel_request_id, status:{status:changes}});
+                        const updateStatus = await travelRequestServices.updateStatus({travelId:travelRequestId, status:{status:changes}});
                         if(updateStatus){
                             return res.status(201).json({status: 201, message:`Operation performed successfully!`});
                         }else{
@@ -61,45 +62,6 @@ export const approve_reject_TravelRequest = async (req, res, next) =>{
             }
         }else{
             throw new BadRequestError("Can not perform this action",400);
-        }
-        
-    }
-    catch(error){
-        next(error);
-    }
-    
-}
-export const cancel_travelRequest = async (req, res, next) =>{
-    const { travel_request_id, action } = req.body;
-    const decoded = await getDataFromToken(req, res, next)
-
-    try{
-        if(action === 'cancel'){
-            const userId = decoded.id;
-            const findTravelRequest = await travelRequestServices.findItById({travelId:travel_request_id});
-            if(findTravelRequest){
-                if(findTravelRequest.userId === userId){
-
-                    const changes = 'canceled';
-                    if(findTravelRequest.status === 'pending'){
-                        const updateStatus = await travelRequestServices.updateStatus({travelId:travel_request_id, status:{status:changes}});
-                        if(updateStatus){
-                            return res.status(201).json({status: 201, message:`Travel request canceled successfully!`});
-                        }else{
-                            throw new ApplicationError("Failed to cancel this travel request, try again!",500);
-                        }
-                    }else{
-                        throw new BadRequestError(`Can not cancel this travel request, because it is ${findTravelRequest.status}`,400);
-                    }
-                    
-                }else{
-                    throw new ApplicationError(`Not allowed to cancel this travel request`,403);
-                }
-            }else{
-                throw new NotFoundRequestError("The travel request does not exist!",404);
-            }
-        }else{
-            throw new BadRequestError("Can not perform this operation!",400);
         }
         
     }
