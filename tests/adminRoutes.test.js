@@ -5,25 +5,13 @@ import {adminCredentials, reqTest,testPerm, updateRole, line_manager, deleteReq}
 
 use(chaiHttp);
 let User = '';
-/*------------- test of GET /api/v1/admin/ ---------------*/
-
-describe('Testing the welcome admin route',async ()=>{
-    it('should return a welcome message', async () =>{
-        User = await request(app).post('/api/v1/user/login').send(adminCredentials);
-        const res = await request(app).get('/api/v1/admin').set('Authorization', `Bearer ${User.body.data}`);
-        expect(res).to.have.status(200);
-        expect(res.type).to.equal('application/json');
-        expect(res.body).to.have.property('status');
-        expect(res.body).to.have.property('message');
-        expect(res.body.message).to.equal('Welcome as an administrator of Barefoot nomad');
-    });
-});
-
 
 /*------------------------test of GET /api/v1/admin/roles ------------------*/
 
 describe('Testing the route of retrieving all roles', ()=>{
     it('should return all roles for success', async ()=>{
+        User = await request(app).post('/api/v1/user/login').send(adminCredentials);
+
         const res = await request(app).get('/api/v1/admin/roles').set('Authorization', `Bearer ${User.body.data}`);
 
         expect(res.type).to.equal('application/json');

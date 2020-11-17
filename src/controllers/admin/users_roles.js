@@ -7,13 +7,7 @@ import accessDenied from '../../utils/Errors/accessDenied';
 import readData from '../../utils/readData';
 
 
-exports.welcome =(req, res) =>{
-    res.status(200).json({ status: 200, message: 'Welcome as an administrator of Barefoot nomad' });
-}
-
-
-
-exports.findThem = async (req, res, next) =>{
+export const findUsers = async (req, res, next) =>{
     try{
 
 
@@ -46,7 +40,7 @@ exports.findThem = async (req, res, next) =>{
     }
 }
 
-exports.updateHim = async (req, res, next) =>{
+export const updateUserRole = async (req, res, next) =>{
     try{
         
         const { email, role } = req.body;
@@ -87,25 +81,12 @@ exports.updateHim = async (req, res, next) =>{
 }
 
 
-exports.deleteOne = async (req, res, next) =>{
+export const deleteOne = async (req, res, next) =>{
     try{
         
         const userEmail = req.body.email;
         const findUser = await usersService.getUser({email: userEmail});
-        if(findUser){
-            //user with a role
-            if(findUser.user_role_id !== null){
-                const findRoleById = await roleServices.findRoleById({id:findUser.user_role_id});
-                if(findRoleById.name === "administrator"){  throw new accessDenied('Can not delete the administrator!'); } 
-                const changeRole =    await usersService.changeRole({change: null,manager_id: findUser.id});
-                                
-            }
-            //user with relationships      
-            const findRelations = await usersService.findRelations({id:findUser.id}); 
-            if(findRelations){
-                const changeRole =    await usersService.changeRole({change: null,manager_id: findUser.id});
-            }    
-            
+        if(findUser){            
             const deleted = await usersService.deleteUser(userEmail);
             if(deleted){
                 res.status(200).json({status:200, message: "The user is deleted successfully!"});
@@ -122,7 +103,7 @@ exports.deleteOne = async (req, res, next) =>{
     }
 }
 
-exports.assignLineManager = async (req, res, next) => {
+export const assignLineManager = async (req, res, next) => {
     try{
         
         const { email, manager_id } = req.body;
@@ -166,7 +147,7 @@ exports.assignLineManager = async (req, res, next) => {
 /*------------------------------------------ROLES CONTROLLERS---------------------------*/
 
 
-exports.create = async (req, res, next) => {
+export const createRole = async (req, res, next) => {
     try{
 
         /** receives the body object from the request */
@@ -239,7 +220,7 @@ exports.create = async (req, res, next) => {
 };
 
 
-exports.getAll = async (req, res, next) => {
+export const getAllRoles = async (req, res, next) => {
     try{
         //find roles using services
         const allRoles = await roleServices.findRoles({});
@@ -261,7 +242,7 @@ exports.getAll = async (req, res, next) => {
 
 
 
-exports.updatePermissions = (req, res, next)=>{
+export const updatePermissions = (req, res, next)=>{
     try{
         
         let requestData = req.body;
@@ -319,7 +300,7 @@ exports.updatePermissions = (req, res, next)=>{
     }
 };
 
-exports.deleteRoles = async (req, res, next)=>{
+export const deleteRoles = async (req, res, next)=>{
     try{
         
         let requestRole = req.body.role;
