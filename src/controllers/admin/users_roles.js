@@ -1,9 +1,9 @@
 import usersService from '../../services/users';
-import applicationError from '../../utils/errorHandling/applicationError';
-import userBadRequest from '../../utils/errorHandling/userBadRequest';
-import notFound from '../../utils/errorHandling/notFound';
+import applicationError from '../../utils/Errors/applicationError';
+import userBadRequest from '../../utils/Errors/badRequestError';
+import notFound from '../../utils/Errors/notFoundRequestError';
 import roleServices from '../../services/roles';
-import accessDenied from '../../utils/errorHandling/accessDenied';
+import accessDenied from '../../utils/Errors/accessDenied';
 import readData from '../../utils/readData';
 
 

@@ -1,9 +1,10 @@
-import accessDenied from '../utils/errorHandling/accessDenied';
-import notFound from '../utils/errorHandling/notFound';
+import accessDenied from '../utils/Errors/accessDenied';
+import notFound from '../utils/Errors/notFoundRequestError';
 import roleServices from '../services/roles';
-import ApplicationError from '../utils/applicationError';
+import ApplicationError from '../utils/Errors/applicationError';
 import {verifyToken} from '../utils/auth';
 import readData from '../utils/readData';
+import getDataFromToken from '../helper/tokenToData';
 
 
   /* import index.json file */
@@ -14,11 +15,12 @@ export default  function  permit(permission) {
  
     try{
       
-      const userToken = req.header('authorization');
-      if(!userToken){
-        throw new accessDenied('No token found',403);
-      }
-      const tokenVerify = await verifyToken(userToken); 
+      // const userToken = req.header('authorization');
+      // if(!userToken){
+      //   throw new accessDenied('No token found',403);
+      // }
+      const tokenVerify = await getDataFromToken(req, res); 
+
       const findRoleById = await roleServices.findRoleById({id:tokenVerify.user_role_id});
       if(findRoleById){
         const role = findRoleById.name;

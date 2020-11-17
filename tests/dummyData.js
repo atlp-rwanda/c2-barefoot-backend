@@ -67,11 +67,11 @@ export const userToken = generateToken(loginUser);
 
 // super admin
 
-const adminCredentials ={
+export const adminCredentials ={
   email: 'superadmin@gmail.com',
-  user_role_id: Roles.SUPER_ADMIN
+  password: 'Superadmin'
 } 
-export const token = generateToken(adminCredentials);
+// export const token = generateToken(adminCredentials);
 
 export const reqTest = {
   "role":"test",

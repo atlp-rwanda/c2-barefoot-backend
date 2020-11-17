@@ -1,16 +1,16 @@
 import {use, request, expect} from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../src/app';
-import {token, reqTest,testPerm, updateRole, line_manager, deleteReq} from './dummyData';
+import {adminCredentials, reqTest,testPerm, updateRole, line_manager, deleteReq} from './dummyData';
 
 use(chaiHttp);
-
+let User = '';
 /*------------- test of GET /api/v1/admin/ ---------------*/
 
-describe('Testing the welcome admin route', ()=>{
+describe('Testing the welcome admin route',async ()=>{
     it('should return a welcome message', async () =>{
-        const res = await request(app).get('/api/v1/admin').set('Authorization',token);
-
+        User = await request(app).post('/api/v1/user/login').send(adminCredentials);
+        const res = await request(app).get('/api/v1/admin').set('Authorization', `Bearer ${User.body.data}`);
         expect(res).to.have.status(200);
         expect(res.type).to.equal('application/json');
         expect(res.body).to.have.property('status');
@@ -24,7 +24,7 @@ describe('Testing the welcome admin route', ()=>{
 
 describe('Testing the route of retrieving all roles', ()=>{
     it('should return all roles for success', async ()=>{
-        const res = await request(app).get('/api/v1/admin/roles').set('Authorization',token);
+        const res = await request(app).get('/api/v1/admin/roles').set('Authorization', `Bearer ${User.body.data}`);
 
         expect(res.type).to.equal('application/json');
         expect(res).to.have.status(200);
@@ -37,8 +37,8 @@ describe('Testing the route of retrieving all roles', ()=>{
 
 describe('Testing the route of creating a new role', ()=>{
     
-    it('should return a success message for success', async () => {
-        const res= await request(app).post('/api/v1/admin/roles').send(reqTest).set('Authorization',token);
+    it('should return a success message for creating a role', async () => {
+        const res= await request(app).post('/api/v1/admin/roles').send(reqTest).set('Authorization', `Bearer ${User.body.data}`);
         expect(res.type).to.equal('application/json');
         
         expect(res).to.have.status(201);
@@ -49,7 +49,7 @@ describe('Testing the route of creating a new role', ()=>{
     });
 
     it ('should handle input validation', async ()=>{
-        const res = await request(app).post('/api/v1/admin/roles').send({role:"test"}).set('Authorization',token);
+        const res = await request(app).post('/api/v1/admin/roles').send({role:"test"}).set('Authorization', `Bearer ${User.body.data}`);
         expect(res.type).to.equal('application/json');
         expect(res).to.have.status(400);
         expect(res.body).to.have.property('status');
@@ -57,7 +57,7 @@ describe('Testing the route of creating a new role', ()=>{
     });
 
     it('should return an error if the role exist', async () => {
-        const res= await request(app).post('/api/v1/admin/roles').send(reqTest).set('Authorization',token);
+        const res= await request(app).post('/api/v1/admin/roles').send(reqTest).set('Authorization', `Bearer ${User.body.data}`);
         expect(res.type).to.equal('application/json');
         
         expect(res).to.have.status(400);
@@ -73,7 +73,7 @@ describe('Testing the route of creating a new role', ()=>{
 
 describe('Testing the route of updating roles permissions', ()=>{
     it('should return a success message on success update', async ()=>{
-        const res = await request(app).put('/api/v1/admin/roles/update').send(testPerm).set('Authorization',token);
+        const res = await request(app).put('/api/v1/admin/roles/update').send(testPerm).set('Authorization', `Bearer ${User.body.data}`);
         expect(res.type).to.equal('application/json');
 
         expect(res).to.have.status(201);
@@ -84,7 +84,7 @@ describe('Testing the route of updating roles permissions', ()=>{
     });
 
     it('should should handle invalid input', async () =>{
-        const res = await request(app).put('/api/v1/admin/roles/update').send({invalidTest:'invalidTest'}).set('Authorization',token);
+        const res = await request(app).put('/api/v1/admin/roles/update').send({invalidTest:'invalidTest'}).set('Authorization', `Bearer ${User.body.data}`);
 
         expect(res.type).to.equal('application/json');
         expect(res).to.have.status(400);
@@ -92,7 +92,7 @@ describe('Testing the route of updating roles permissions', ()=>{
         expect(res.body).to.have.property('error');
     });
     it('should should handle non existing roles', async () =>{
-        const res = await request(app).put('/api/v1/admin/roles/update').send({ role:"notExist", permissions:{ "edit profile":0}}).set('Authorization',token);
+        const res = await request(app).put('/api/v1/admin/roles/update').send({ role:"notExist", permissions:{ "edit profile":0}}).set('Authorization', `Bearer ${User.body.data}`);
 
         expect(res.type).to.equal('application/json');
         expect(res).to.have.status(404);
@@ -101,7 +101,7 @@ describe('Testing the route of updating roles permissions', ()=>{
         expect(res.body.error).to.have.equal('Role not exist!');
     });
     it('should should handle non existing permissions', async () =>{
-        const res = await request(app).put('/api/v1/admin/roles/update').send({ role:"test", permissions:{ "notExist":0}}).set('Authorization',token);
+        const res = await request(app).put('/api/v1/admin/roles/update').send({ role:"test", permissions:{ "notExist":0}}).set('Authorization', `Bearer ${User.body.data}`);
 
         expect(res.type).to.equal('application/json');
         expect(res).to.have.status(400);
@@ -113,7 +113,7 @@ describe('Testing the route of updating roles permissions', ()=>{
         expect(res.body.error.message).to.have.equal('These permissions or values are not allowed');
     });
     it('should should handle invalid permission values not 1 || 0', async () =>{
-        const res = await request(app).put('/api/v1/admin/roles/update').send({ role:"test", permissions:{ "edit profile":3}}).set('Authorization',token);
+        const res = await request(app).put('/api/v1/admin/roles/update').send({ role:"test", permissions:{ "edit profile":3}}).set('Authorization', `Bearer ${User.body.data}`);
 
         expect(res.type).to.equal('application/json');
         expect(res).to.have.status(400);
@@ -134,7 +134,7 @@ describe('Testing the route of updating roles permissions', ()=>{
 describe('Testing the route of deleting a role', ()=>{
 
     it('should return a success message on success delete', async ()=>{
-        const res = await request(app).delete('/api/v1/admin/roles').send({role:"test"}).set('Authorization',token);
+        const res = await request(app).delete('/api/v1/admin/roles').send({role:"test"}).set('Authorization', `Bearer ${User.body.data}`);
         expect(res.type).to.equal('application/json');
 
         expect(res).to.have.status(200);
@@ -145,7 +145,7 @@ describe('Testing the route of deleting a role', ()=>{
     });
 
     it ('should handle invalid input', async ()=>{
-        const res = await request(app).delete('/api/v1/admin/roles').send({invalid:"invalidInput"}).set('Authorization',token);
+        const res = await request(app).delete('/api/v1/admin/roles').send({invalid:"invalidInput"}).set('Authorization', `Bearer ${User.body.data}`);
 
         expect(res.type).to.equal('application/json');
         expect(res).to.have.status(400);
@@ -154,7 +154,7 @@ describe('Testing the route of deleting a role', ()=>{
     });
 
     it('should return an error if the role does not exist', async () => {
-        const res= await request(app).delete('/api/v1/admin/roles').send({role:"invalidRole"}).set('Authorization',token);
+        const res= await request(app).delete('/api/v1/admin/roles').send({role:"invalidRole"}).set('Authorization', `Bearer ${User.body.data}`);
 
         expect(res.type).to.equal('application/json');
         expect(res).to.have.status(404);
@@ -170,7 +170,7 @@ describe('Testing the route of deleting a role', ()=>{
 
 describe('Testing the route of retrieving all users', ()=>{
     it('should return all users for success', async ()=>{
-        const res = await request(app).get('/api/v1/admin/users').set('Authorization',token);
+        const res = await request(app).get('/api/v1/admin/users').set('Authorization', `Bearer ${User.body.data}`);
 
         expect(res.type).to.equal('application/json');
         expect(res).to.have.status(200);
@@ -185,7 +185,7 @@ describe('Testing the route of retrieving all users', ()=>{
 describe("Testing how to update someone's role",()=>{
     
     it('should update this user role', async ()=>{
-        const res = await request(app).put('/api/v1/admin/users').send(updateRole.req).set('Authorization',token);
+        const res = await request(app).put('/api/v1/admin/users').send(updateRole.req).set('Authorization', `Bearer ${User.body.data}`);
         
         expect(res.type).to.equal('application/json');
         expect(res).to.have.status(201);
@@ -195,7 +195,7 @@ describe("Testing how to update someone's role",()=>{
     });
 
     it('should handle invalid data', async ()=>{
-        const res = await request(app).put('/api/v1/admin/users').send({invalid:'invalid'}).set('Authorization',token);
+        const res = await request(app).put('/api/v1/admin/users').send({invalid:'invalid'}).set('Authorization', `Bearer ${User.body.data}`);
         
         expect(res.type).to.equal('application/json');
         expect(res).to.have.status(400);
@@ -203,7 +203,7 @@ describe("Testing how to update someone's role",()=>{
         expect(res.body).to.have.property('error');
     });
     it('should handle invalid non existing users', async ()=>{
-        const res = await request(app).put('/api/v1/admin/users').send(updateRole.nonExistingUser).set('Authorization',token);
+        const res = await request(app).put('/api/v1/admin/users').send(updateRole.nonExistingUser).set('Authorization', `Bearer ${User.body.data}`);
         
         expect(res.type).to.equal('application/json');
         expect(res).to.have.status(404);
@@ -211,7 +211,7 @@ describe("Testing how to update someone's role",()=>{
         expect(res.body).to.have.property('error');
     });
     it('should handle invalid non existing roles', async ()=>{
-        const res = await request(app).put('/api/v1/admin/users').send(updateRole.nonExistingRole).set('Authorization',token);
+        const res = await request(app).put('/api/v1/admin/users').send(updateRole.nonExistingRole).set('Authorization', `Bearer ${User.body.data}`);
         
         expect(res.type).to.equal('application/json');
         expect(res).to.have.status(404);
@@ -266,7 +266,7 @@ describe("Testing how to update someone's role",()=>{
 
 describe('Testing the route of deleting a user', ()=>{
     it('should return a success message for success', async ()=>{
-        const res = await request(app).delete('/api/v1/admin/users').send(deleteReq).set('Authorization',token);
+        const res = await request(app).delete('/api/v1/admin/users').send(deleteReq).set('Authorization', `Bearer ${User.body.data}`);
 
         expect(res.type).to.equal('application/json');
         expect(res).to.have.status(200);
@@ -275,7 +275,7 @@ describe('Testing the route of deleting a user', ()=>{
         expect(res.body.message).to.equal('The user is deleted successfully!'); 
     });
     it('should handle invalid input', async ()=>{
-        const res = await request(app).delete('/api/v1/admin/users').send({invalidInput:"invalid Input"}).set('Authorization',token);
+        const res = await request(app).delete('/api/v1/admin/users').send({invalidInput:"invalid Input"}).set('Authorization', `Bearer ${User.body.data}`);
 
         expect(res.type).to.equal('application/json');
         expect(res).to.have.status(400);
@@ -284,7 +284,7 @@ describe('Testing the route of deleting a user', ()=>{
     });
 
     it('should should handle non existing users', async () =>{
-        const res = await request(app).delete('/api/v1/admin/users').send({email:"invalidemail@gmail.com"}).set('Authorization',token);
+        const res = await request(app).delete('/api/v1/admin/users').send({email:"invalidemail@gmail.com"}).set('Authorization', `Bearer ${User.body.data}`);
 
         expect(res.type).to.equal('application/json');
         expect(res).to.have.status(404);

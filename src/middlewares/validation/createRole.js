@@ -1,5 +1,5 @@
 import Joi from 'joi';
-import userBadRequest from '../../utils/errorHandling/userBadRequest';
+import userBadRequest from '../../utils/Errors/badRequestError';
 
 exports.roleValidation = (req, res, next) =>{
   const schema = Joi.object({

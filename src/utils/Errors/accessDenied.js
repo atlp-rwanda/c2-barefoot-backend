@@ -1,4 +1,4 @@
-import ApplicationError from './applicationError';
+import ApplicationError from '../Errors/applicationError';
 
 class accessDenied extends ApplicationError {
     constructor(message) {
