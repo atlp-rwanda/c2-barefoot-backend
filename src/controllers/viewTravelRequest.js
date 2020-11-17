@@ -15,7 +15,7 @@ const getTravelRequest = async (req, res, next) => {
     } else { // get all travel request
       query = { userId: userid };
     }
-    findTravelRequest(res, query, pagination, next);
+    findTravelRequest(res, query, next, pagination);
   } catch (err) {
     return res.status(401).json({ message: 'session has expired, please login' });
   }
