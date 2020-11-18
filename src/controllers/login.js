@@ -19,6 +19,21 @@ const login = async (req, res, next) => {
   if (!result) throw new BadRequestError('Password incorrect', 400);
 
   try {
+    const userProfile = {
+      id: isUser.id,
+      first_name: isUser.first_name,
+      last_name: isUser.last_name,
+      email: isUser.email,
+      username: isUser.username,
+      verified: isUser.verified,
+      user_role_id: isUser.user_role_id,
+      manager_id: isUser.manager_id,
+      profile_picture: isUser.profile_picture,
+      language: isUser.language,
+      address: isUser.address,
+      createdAt: isUser.createdAt,
+      updatedAt: isUser.updatedAt
+    };
     const userData = {
       role: isUser.user_role_id,
       email: isUser.email
@@ -27,7 +42,9 @@ const login = async (req, res, next) => {
     // updating user refresh token in database
     await isUser.update({ refreshtoken: userToken });
     res.cookie('make', userToken, { httpOnly: false, path: '/api/v1/user/refresh-token' });
-    return res.status(200).json({ status: 200, message: 'login successful', data: userToken });
+    return res.status(200).json({
+      status: 200, message: 'login successful', data: userToken, profile: userProfile
+    });
   } catch (err) {
     next(err);
   }
