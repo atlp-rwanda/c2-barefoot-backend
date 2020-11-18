@@ -1,5 +1,4 @@
 import { generateToken } from '../src/utils/auth';
-import Roles from '../src/utils/roles';
 import roles from '../src/utils/roles';
 // signup data
 
@@ -96,9 +95,9 @@ export const updateRole={
 }
 
 export const line_manager = {
-  req: { email: "manager_id@gmail.com", manager_id:Roles.LINE_MANAGER},
-  invalidManager: { email:"manager_id@gmail.com", manager_id: Roles.MANAGER},
-  invalidUser: {email : "invalidUser@gmail.com", manager_id: Roles.LINE_MANAGER},
+  req: { email: "manager_id@gmail.com", manager_id:roles.LINE_MANAGER},
+  invalidManager: { email:"manager_id@gmail.com", manager_id: roles.MANAGER},
+  invalidUser: {email : "invalidUser@gmail.com", manager_id: roles.LINE_MANAGER},
   invalidInput: {email:"invalidInput@gmail.com", manager_id: "123456"}
 }
 
