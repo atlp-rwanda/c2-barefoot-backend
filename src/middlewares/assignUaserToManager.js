@@ -1,5 +1,5 @@
 import Joi from 'joi';
-import BadRequestError from '../utils/badRequestError';
+import BadRequestError from '../utils/Errors/badRequestError';
 
 export default function (req, res, next) {
   const schema = Joi.object({

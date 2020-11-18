@@ -36,7 +36,7 @@ const login = async (req, res, next) => {
     };
     const userData = {
       role: isUser.user_role_id,
-      email: isUser.email
+      username: isUser.username
     };
     const userToken = await generateToken(userData);
     // updating user refresh token in database

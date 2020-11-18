@@ -10,6 +10,7 @@ const isManager = async (req, res, next) => {
   const decoded = await verifyToken(token);
   console.log(decoded);
   const roles = await findRoles(decoded.role);
+  console.log(roles);
   if (roles.name !== 'manager') throw new ForbidenRequestError('Access denied', 409);
   if (roles.name === 'manager') return next();
 };

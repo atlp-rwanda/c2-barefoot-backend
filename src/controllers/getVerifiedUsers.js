@@ -1,5 +1,5 @@
 import findVerifiedUser from '../services/findVerifiedUsers';
-import NotFoundRequestError from '../utils/notFoundRequestError';
+import NotFoundRequestError from '../utils/Errors/notFoundRequestError';
 
 const verifiedUser = async (req, res) => {
   const { page } = req.query;

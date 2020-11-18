@@ -1,6 +1,6 @@
 import findUser from '../services/findUserById';
 import models from '../models';
-import NotFoundRequestError from '../utils/notFoundRequestError';
+import NotFoundRequestError from '../utils/Errors/notFoundRequestError';
 
 const assignUsersToManager = async (req, res) => {
   const userId = req.params.id;

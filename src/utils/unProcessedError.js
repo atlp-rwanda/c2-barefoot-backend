@@ -1,5 +1,5 @@
 /* eslint-disable require-jsdoc */
-import ApplicationError from './applicationError';
+import ApplicationError from './Errors/applicationError';
 
 class UnProcessedError extends ApplicationError {
   constructor(message) {
