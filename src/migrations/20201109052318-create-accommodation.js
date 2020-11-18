@@ -29,7 +29,7 @@ module.exports = {
         references: {
           model: 'Locations',
           key: 'id',
-          onDelete: 'restrict'
+          onDelete: 'cascade'
         },
       },
       propertyType: {

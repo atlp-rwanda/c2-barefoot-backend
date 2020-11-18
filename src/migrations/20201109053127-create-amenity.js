@@ -14,7 +14,7 @@ module.exports = {
         references: {
           model: 'Accommodation',
           key: 'id',
-          onDelete: 'restrict'
+          onDelete: 'cascade'
         },
       },
       wifi: {

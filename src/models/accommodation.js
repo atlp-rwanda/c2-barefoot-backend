@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
     Accommodation.hasOne(models.Amenity, {
       foreignKey: 'AccommodationId',
       as: 'Amenity',
-      onDelete: 'restrict'
+      onDelete: 'cascade'
     });
   };
   return Accommodation;

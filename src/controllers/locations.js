@@ -1,6 +1,7 @@
 import models from '../models';
 import 'express-async-errors';
 import locationNotFound from '../utils/notFoundRequestError';
+import badRequest from '../utils/badRequestError';
 import retrieveLocations from '../services/getLocations';
 
 export const getLocations = async (req, res, next) => {
@@ -61,6 +62,15 @@ export const deleteLocation = async (req, res, next) => {
     const locationExist = await models.Location.findOne({ where: { id: req.params.id } });
     if (!locationExist) {
       throw new locationNotFound('Location does not exist');
+    }
+  } catch (error) {
+    next(error);
+  }
+
+  try {
+    const linkedAccommodation = await models.Accommodation.findOne({ where: { locationID: req.params.id } });
+    if (linkedAccommodation) {
+      throw new badRequest('This location can not be deleted with linked accomodations.');
     }
   } catch (error) {
     next(error);

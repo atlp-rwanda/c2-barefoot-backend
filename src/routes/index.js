@@ -11,9 +11,9 @@ const routes = express.Router();
 
 routes.use('/user', userRoute);
 routes.use('/', landingPage);
-routes.use('/location', locationsRoute);
-routes.use('/accommodation', accommodationRoute);
-routes.use('/amenity', amenityRoute);
+routes.use('/locations', locationsRoute);
+routes.use('/accommodations', accommodationRoute);
+routes.use('/amenities', amenityRoute);
 routes.use('/admin', permit(['all']), adminRoutes);
 
 export default routes;
