@@ -1,23 +1,21 @@
-import accessDenied from '../utils/errorHandling/accessDenied';
-import notFound from '../utils/errorHandling/notFound';
+import accessDenied from '../utils/Errors/accessDenied';
+import notFound from '../utils/Errors/notFoundRequestError';
 import roleServices from '../services/roles';
-// import jwt from 'jsonwebtoken';
-import ApplicationError from '../utils/applicationError';
-import { verifyToken } from '../utils/auth';
+import ApplicationError from '../utils/Errors/applicationError';
+import readData from '../utils/readData';
+import getDataFromToken from '../helper/tokenToData';
 
 /* import index.json file */
-const roles = roleServices.readFile();
-let rolesData = {};
-rolesData = JSON.parse(roles);
-
+const rolesData = readData.getPermissionsObject();
 export default function permit(permission) {
   return async (req, res, next) => {
     try {
-      const userToken = req.header('authorization');
-      if (!userToken) {
-        throw new accessDenied('You are not authorized', 403);
-      }
-      const tokenVerify = await verifyToken(userToken); // jwt.verify(userToken, process.env.TOKEN_SECRET);
+      // const userToken = req.header('authorization');
+      // if(!userToken){
+      //   throw new accessDenied('No token found',403);
+      // }
+      const tokenVerify = await getDataFromToken(req, res);
+
       const findRoleById = await roleServices.findRoleById({ id: tokenVerify.user_role_id });
       if (findRoleById) {
         const role = findRoleById.name;
@@ -29,14 +27,15 @@ export default function permit(permission) {
         let allowed = !!permission.length;
         if (permission[0] === 'all') {
           permission = [
-            'edit profile', 'assign requesters to manager',
+            'edit profile',
             'create travel requests', 'view travel requests',
             'edit travel requests', 'cancel travel requests',
             'approve direct reports travel requests',
             'view direct reports travel requests',
-            'reject direct reports travel requests', 'view accommodations',
+            'reject direct reports travel requests',
+            'view accommodations', 'view locations',
             'create accommodations', 'update accommodations',
-            'delete accommodations', 'book accommodations', 'view locations',
+            'delete accommodations', 'book accommodations',
             'create locations', 'update locations', 'delete locations'
           ];
         }

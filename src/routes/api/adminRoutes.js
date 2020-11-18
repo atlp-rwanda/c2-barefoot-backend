@@ -1,43 +1,14 @@
 import express from 'express';
-import valid from '../../middlewares/validation/createRole';
-import usersRoles from '../../controllers/admin/users_roles';
+import {
+  roleValidation, updateValidation, updateUserRoleValidation, deleteValidation, deleteValidationEmail, assignLineManagerValidation
+} from '../../middlewares/validation/createRole';
+import {
+  findUsers, updateUserRole, deleteOne, createRole, getAllRoles, updatePermissions, deleteRoles, assignLineManager
+} from '../../controllers/admin/users_roles';
+import { changeUserRole } from '../../middlewares/changeUserRole';
+import permit from '../../middlewares/accessControl';
 
 const router = express.Router();
-
-/* a welcome route */
-
-/**
- * @swagger
- *
- * /api/v1/admin:
- *    get:
- *      summary: A route that shows the landing page of the administrator
- *      description: This is the first page of the administrator.
- *      tags: [Super administrator]
- *      responses:
- *        "200":
- *          description: The index page has loaded
- *          content:
- *            application/json:
- *              schema:
- *                $ref: '#/components/schemas/indexAdmin'
- *
- * components:
- *    schemas:
- *      indexAdmin:
- *        type: object
- *        properties:
- *          status:
- *            type: integer
- *            description: The http status code
- *            example: 200
- *          message:
- *            type: string
- *            description: Success message
- *            example: Welcome as an administrator of Barefoot nomad
- */
-
-router.get('/', usersRoles.welcome);
 
 /* retrieve all roles created */
 
@@ -92,7 +63,7 @@ router.get('/', usersRoles.welcome);
  *
  */
 
-router.get('/roles', usersRoles.getAll);
+router.get('/roles', getAllRoles);
 
 /* create a new role  */
 
@@ -144,7 +115,7 @@ router.get('/roles', usersRoles.getAll);
  *             example: Role created successfully
  */
 
-router.post('/roles', valid.roleValidation, usersRoles.create);
+router.post('/roles', roleValidation, createRole);
 
 /* update role's permissions */
 
@@ -207,7 +178,7 @@ router.post('/roles', valid.roleValidation, usersRoles.create);
  *                 type: integer
  *                 example: 1
  */
-router.put('/roles/update', valid.updateValidation, usersRoles.updatePermissions);
+router.put('/roles/update', updateValidation, updatePermissions);
 
 /* delete a role */
 
@@ -261,7 +232,7 @@ router.put('/roles/update', valid.updateValidation, usersRoles.updatePermissions
  *             example: role name
  */
 
-router.delete('/roles', valid.deleteValidation, usersRoles.deleteRoles);
+router.delete('/roles', deleteValidation, deleteRoles);
 
 /* retrieve all users */
 
@@ -333,7 +304,7 @@ router.delete('/roles', valid.deleteValidation, usersRoles.deleteRoles);
  *                    example: string
  *
  */
-router.get('/users', usersRoles.findThem);
+router.get('/users', findUsers);
 
 /* update a user role */
 
@@ -390,7 +361,7 @@ router.get('/users', usersRoles.findThem);
  *             example: The user updated to \"Role\"
  *
  */
-router.put('/users', valid.updateUserRoleValidation, usersRoles.updateHim);
+router.put('/users', updateUserRoleValidation, updateUserRole);
 // when you change a requester as a manager, then add him also to the line_manager table and also change so that we will update the primary key not the name of the role
 
 /**
@@ -447,7 +418,7 @@ router.put('/users', valid.updateUserRoleValidation, usersRoles.updateHim);
  *             example: Line manager is assigned successfully
  *
  */
-router.put('/users/line-manager', valid.assignLineManager, usersRoles.assignLineManager);
+router.put('/users/line-manager', permit(['assign requesters to manager']), assignLineManagerValidation, assignLineManager);
 
 /* delete one user */
 
@@ -503,7 +474,7 @@ router.put('/users/line-manager', valid.assignLineManager, usersRoles.assignLine
  *
  */
 
-router.delete('/users', valid.deleteValidationEmail, usersRoles.deleteOne);
+router.delete('/users', deleteValidationEmail, changeUserRole, deleteOne);
 
 /* a delete route to show how to use this middleware of permissions*
  *for this to pass you have to send exact permission(s) as parameter(s) */

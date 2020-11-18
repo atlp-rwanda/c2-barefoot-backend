@@ -1,16 +1,12 @@
 import usersService from '../../services/users';
-import applicationError from '../../utils/errorHandling/applicationError';
-import userBadRequest from '../../utils/errorHandling/userBadRequest';
-import notFound from '../../utils/errorHandling/notFound';
+import applicationError from '../../utils/Errors/applicationError';
+import userBadRequest from '../../utils/Errors/badRequestError';
+import notFound from '../../utils/Errors/notFoundRequestError';
 import roleServices from '../../services/roles';
-import accessDenied from '../../utils/errorHandling/accessDenied';
+import accessDenied from '../../utils/Errors/accessDenied';
 import readData from '../../utils/readData';
 
-exports.welcome = (req, res) => {
-  res.status(200).json({ status: 200, message: 'Welcome as an administrator of Barefoot nomad' });
-};
-
-exports.findThem = async (req, res, next) => {
+export const findUsers = async (req, res, next) => {
   try {
     const page = req.query.page || 1;
     const limit = req.query.limit || 3;
@@ -20,14 +16,13 @@ exports.findThem = async (req, res, next) => {
     const users = await usersService.findUsers({
       offset: skip,
       limit,
-      attributes: ['id', 'first_name', 'last_name', 'username', 'bio', 'email', 'user_role_id', 'address', 'language', 'profile_picture', 'manager_id']
+      attributes: ['id', 'first_name', 'last_name', 'username', 'bio', 'email', 'address', 'language', 'profile_picture', 'user_role_id', 'manager_id', 'verified']
 
     });
 
     if (users) {
       if (!users.rows.length) { throw new notFound(`No user found on page ${page}`); }
-      const findLineManagers = await roleServices.findLineManagers({});
-      if (findLineManagers) { users.allLineManagers = findLineManagers; }
+
       return res.status(200).json({ status: 200, users });
     }
 
@@ -37,16 +32,11 @@ exports.findThem = async (req, res, next) => {
   }
 };
 
-exports.updateHim = async (req, res, next) => {
+export const updateUserRole = async (req, res, next) => {
   try {
     const { email, role } = req.body;
 
-    /* read data from index.json file */
-
-    // const existingData = roleServices.readFile();
-
-    /* converting the data from buffer to json format */
-    const roles = readData.getPermissionsObject();// JSON.parse(existingData);
+    const roles = readData.getPermissionsObject();
 
     /* check if role exist */
     if (!roles.hasOwnProperty(role)) { throw new notFound('Role not exist!'); }
@@ -54,23 +44,12 @@ exports.updateHim = async (req, res, next) => {
 
     /* check if the user exist */
     const findUser = await usersService.getUser({ email });
-    if (findUser) {
+    if (findUser && (findUser.verified === true)) {
       const findRole = await roleServices.findRole({ name: role });
       if (findRole) {
         /* update the user role */
         const upDate = await usersService.updateUserRole({ email, user_role_id: findRole.id });
         if (upDate) {
-          // if the role is manager add him to line_managers
-          if (role === 'manager') {
-            const findManager = await usersService.findManager({ first_name: findUser.first_name, last_name: findUser.last_name });
-            if (!findManager) {
-              const addLineManager = await usersService.addLineManager({ first_name: findUser.first_name, last_name: findUser.last_name });
-              if (addLineManager) {
-                return res.status(201).json({ status: 201, message: `The user role is updated to ${role}` });
-              }
-              throw new applicationError('Failed to update this role, try again!', 500);
-            }
-          }
           res.status(201).json({ status: 201, message: `The user role is updated to ${role}` });
         } else {
           throw new applicationError('Failed to update this role, try again!', 500);
@@ -79,30 +58,18 @@ exports.updateHim = async (req, res, next) => {
         throw new notFound(`${role} does not exist`);
       }
     } else {
-      throw new notFound(`${email} does not exist!`);
+      throw new notFound(`${email} does not exist or not verified!`);
     }
   } catch (err) {
     next(err);
   }
 };
 
-exports.deleteOne = async (req, res, next) => {
+export const deleteOne = async (req, res, next) => {
   try {
     const userEmail = req.body.email;
     const findUser = await usersService.getUser({ email: userEmail });
     if (findUser) {
-      const findRoleById = await roleServices.findRoleById({ id: findUser.user_role_id });
-      if (findRoleById.name === 'administrator') { throw new accessDenied('Can not delete the administrator!'); }
-      if (findRoleById.name === 'manager') {
-        const findManager = await usersService.findManager({ first_name: findUser.first_name, last_name: findUser.last_name });
-        if (findManager) {
-          const changeRole = await usersService.changeRole({ change: null, manager_id: findManager.id });
-          if (changeRole) {
-            const deleteManager = await usersService.deleteManager({ first_name: findUser.first_name, last_name: findUser.last_name });
-          }
-        }
-      }
-
       const deleted = await usersService.deleteUser(userEmail);
       if (deleted) {
         res.status(200).json({ status: 200, message: 'The user is deleted successfully!' });
@@ -117,7 +84,7 @@ exports.deleteOne = async (req, res, next) => {
   }
 };
 
-exports.assignLineManager = async (req, res, next) => {
+export const assignLineManager = async (req, res, next) => {
   try {
     const { email, manager_id } = req.body;
     const findUser = await usersService.getUser({ email });
@@ -128,13 +95,18 @@ exports.assignLineManager = async (req, res, next) => {
           throw new accessDenied(`Cannot assign line manager to this user! ${findRoleById.name}`, 403);
         }
       }
-      const findLineManager = await usersService.findLineManager(manager_id);
-      if (findLineManager) {
-        const updateUser = await usersService.updateUser({ email, manager_id });
-        if (updateUser) {
-          res.status(201).json({ status: 201, message: 'Line manager is assigned successfully' });
+      const findManagerById = await usersService.findManagerById(manager_id);
+      if (findManagerById) {
+        const findRoleById = await roleServices.findRoleById({ id: findManagerById.user_role_id });
+        if (findRoleById && (findRoleById.name === 'manager')) {
+          const updateUser = await usersService.updateUser({ email, manager_id });
+          if (updateUser) {
+            res.status(201).json({ status: 201, message: 'Line manager is assigned successfully' });
+          } else {
+            throw new applicationError('Failed to assign this line manager, try again!');
+          }
         } else {
-          throw new applicationError('Failed to assign this line manager, try again!');
+          throw new notFound('Line manager does not exist!');
         }
       } else {
         throw new notFound('The line manager does not exist', 404);
@@ -149,7 +121,7 @@ exports.assignLineManager = async (req, res, next) => {
 
 /* ------------------------------------------ROLES CONTROLLERS---------------------------*/
 
-exports.create = async (req, res, next) => {
+export const createRole = async (req, res, next) => {
   try {
     /** receives the body object from the request */
     const requestData = req.body;
@@ -181,13 +153,8 @@ exports.create = async (req, res, next) => {
       this['delete locations'] = 0;
     }
 
-    /* read data from index.json file */
-
-    // const existingData = roleServices.readFile();
-
-    /* converting the data from buffer to json format */
-    // let roles = {};
-    const roles = readData.getPermissionsObject();// JSON.parse(existingData);
+    // import existing data in index.json
+    const roles = readData.getPermissionsObject();
 
     let existProp = false;
     /* check if index.json has this requested role */
@@ -222,7 +189,7 @@ exports.create = async (req, res, next) => {
   }
 };
 
-exports.getAll = async (req, res, next) => {
+export const getAllRoles = async (req, res, next) => {
   try {
     // find roles using services
     const allRoles = await roleServices.findRoles({});
@@ -238,16 +205,11 @@ exports.getAll = async (req, res, next) => {
   }
 };
 
-exports.updatePermissions = (req, res, next) => {
+export const updatePermissions = (req, res, next) => {
   try {
     const requestData = req.body;
-    /* read data from index.json file */
 
-    // const existingData = roleServices.readFile();
-
-    /* converting the data from buffer to json format */
-    // let roles = {};
-    const roles = readData.getPermissionsObject();// JSON.parse(existingData);
+    const roles = readData.getPermissionsObject();
 
     let existProp = true;
     /* check if index.json does not have this requested role */
@@ -293,17 +255,11 @@ exports.updatePermissions = (req, res, next) => {
   }
 };
 
-exports.deleteRoles = async (req, res, next) => {
+export const deleteRoles = async (req, res, next) => {
   try {
     const requestRole = req.body.role;
 
-    /* read data from index.json file */
-
-    // const existingData = roleServices.readFile();
-
-    /* converting the data from buffer to json format */
-    // let roles = {};
-    const roles = readData.getPermissionsObject();// JSON.parse(existingData);
+    const roles = readData.getPermissionsObject();
 
     let existProp = true;
     /* check if index.json does not have this requested role */
@@ -312,18 +268,20 @@ exports.deleteRoles = async (req, res, next) => {
       throw new notFound('Role not exist!');
     }
 
+    if (requestRole === 'administrator') { throw new accessDenied('Can not delete the administrator role!'); }
     if (existProp) {
       if (delete roles[requestRole]) {
         const dataJson = JSON.stringify(roles, null, 2);
         const findRole = await roleServices.findRole({ name: requestRole });
         if (findRole) {
-          if (requestRole === 'manager') {
-            await roleServices.changeRole({ change: null, role_id: findRole.id });
+          const changeRole = await roleServices.changeRole({ change: null, role_id: findRole.id });
+          let deletedRole;
+          if (changeRole) {
+            deletedRole = await roleServices.deleteOne(findRole.id);
           }
-          const deletedRole = await roleServices.deleteOne(findRole.id);
+
           if (deletedRole) {
             /* save changes */
-            // fs.writeFileSync('./permissions/index.json', dataJson);
             roleServices.saveInFile(dataJson);
             return res.status(200).json({ status: 200, message: 'Role deleted successfully', role: requestRole });
           }

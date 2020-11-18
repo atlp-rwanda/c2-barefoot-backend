@@ -1,3 +1,4 @@
+import sequelizePaginate from 'sequelize-paginate';
 import roles from '../utils/roles';
 import { hashPassword } from '../utils/auth';
 
@@ -16,6 +17,8 @@ module.exports = (sequelize, DataTypes) => {
     email: DataTypes.STRING,
     password: DataTypes.STRING,
     username: DataTypes.STRING,
+    occupation: DataTypes.STRING,
+    bio: { allowNull: true, type: DataTypes.STRING, defaultValue: null },
     verified: { type: DataTypes.BOOLEAN, defaultValue: false },
     user_role_id: { allowNull: true, type: DataTypes.UUID, defaultValue: roles.REQUESTER, },
     manager_id: { allowNull: true, type: DataTypes.UUID },
@@ -25,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       defaultValue: 'https://www.cobdoglaps.sa.edu.au/wp-content/uploads/2017/11/placeholder-profile-sq.jpg'
     },
-    language: { type: DataTypes.STRING, allowNull: false, defaultValue: 'Eng' },
+    language: { type: DataTypes.STRING, allowNull: false, defaultValue: 'English' },
     address: { type: DataTypes.STRING, allowNull: false },
   }, {});
 
@@ -36,12 +39,11 @@ module.exports = (sequelize, DataTypes) => {
     // });
     User.belongsTo(models.Line_manager, {
       foreignKey: 'manager_id',
-      as: 'Line_manager',
+      as: 'line_manager',
     });
-
     User.belongsTo(models.Role, {
       foreignKey: 'user_role_id',
-      as: 'Role',
+      as: 'user_role'
     });
 
     // user.hasMany(Travel_request, {
@@ -69,5 +71,6 @@ module.exports = (sequelize, DataTypes) => {
   User.beforeBulkUpdate(({ attributes: user }) => {
     if (user.password) { user.password = hashPassword(user.password); }
   });
+  sequelizePaginate.paginate(User);
   return User;
 };

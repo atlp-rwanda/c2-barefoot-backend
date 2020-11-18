@@ -5,7 +5,6 @@ const roles = {
   TRAVEL_ADMIN: '4fd084a0-cdd6-47a5-aaf5-5fdc8b5629dd',
   TRAVEL_TEAM_MEMBER: '47e327b8-0073-4443-968b-ef8849ddfb49',
   ACCOMMODATION_SUPPLIER: '29df247e-c86e-4fc7-b2fd-26b57f975b88',
-  LINE_MANAGER: '0ce36391-2c08-4703-bddb-a4ea8cccbbc5'
 };
 
 export default roles;
