@@ -2,6 +2,7 @@ import express from 'express';
 import isLogedIn from '../../helper/isLogedIn';
 import { getDirectReport,approve_reject_TravelRequest } from "../../controllers/directReport.controller";
 import travelRequestsValidation from '../../middlewares/travelRequestsValidation';
+import permit from '../../middlewares/accessControl';
 
 const router = express.Router()
 
@@ -52,7 +53,7 @@ const router = express.Router()
  *              [{"travelId":12,status: "pending", "accommodationId": 123, "reason":tripping, "trip":{"originCity":Kigali, "destination":Cairo, "tripDate":11/12/2020, "returnDate":11/12/2021, "accommodationId":1234567, "reason":tripping}}]
  */
 
-router.get('/', isLogedIn, getDirectReport) 
+router.get('/', isLogedIn, permit(["view direct reports travel requests"]), getDirectReport) 
 
 /**
  * @swagger
@@ -100,7 +101,7 @@ router.get('/', isLogedIn, getDirectReport)
  *              [{"travelId":12,status: "pending", "accommodationId": 123, "reason":tripping, "trip":{"originCity":Kigali, "destination":Cairo, "tripDate":11/12/2020, "returnDate":11/12/2021, "accommodationId":1234567, "reason":tripping}}]
  */
 
-router.get('/:travelId', isLogedIn, getDirectReport) // view direct reports
+router.get('/:travelId', isLogedIn, permit(["view direct reports travel requests"]), getDirectReport) // view direct reports
 
 /**
  * @swagger
@@ -139,6 +140,6 @@ router.get('/:travelId', isLogedIn, getDirectReport) // view direct reports
  *             type: string
  *      
  */
-router.put('/',isLogedIn,travelRequestsValidation, approve_reject_TravelRequest)
+router.put('/',isLogedIn,travelRequestsValidation,permit(["approve direct reports travel requests","reject direct reports travel requests"]), approve_reject_TravelRequest)
 
 export default router;

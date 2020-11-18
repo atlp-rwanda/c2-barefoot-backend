@@ -4,7 +4,7 @@ import {travelRequest,cancel_travelRequest} from "../../controllers/travelReques
 import {editTravelRequest, getTravelRequest} from "../../controllers/viewTravelRequest";
 import { createTripValidation, editTripValidation} from '../../middlewares/tripRequestsValidation'
 import travelRequestsValidation from '../../middlewares/travelRequestsValidation';
-
+import permit from '../../middlewares/accessControl';
 
 const router = express.Router();
 
@@ -67,7 +67,7 @@ const router = express.Router();
  *        example:
  *          {"travelId":12,status: "pending", "accommodationId": 123, "reason":tripping, "trip":{"originCity":Kigali, "destination":Cairo, "tripDate":11/12/2020, "returnDate":11/12/2021, "accommodationId":1234567, "reason":tripping}}
  */
-router.post('/request', isLogedIn, createTripValidation, travelRequest) //make a request
+router.post('/request', isLogedIn, createTripValidation, permit(["create travel requests"]), travelRequest) //make a request
 
 
 // ----------------------- View travelrequest --------------------
@@ -109,7 +109,7 @@ router.post('/request', isLogedIn, createTripValidation, travelRequest) //make a
  *            example:
  *              [{"travelId":12,status: "pending", "accommodationId": 123, "reason":tripping, "trip":{"originCity":Kigali, "destination":Cairo, "tripDate":11/12/2020, "returnDate":11/12/2021, "accommodationId":1234567, "reason":tripping}}]
  */
-router.get('/', isLogedIn, getTravelRequest); // view all requests
+router.get('/', isLogedIn,permit(["view travel requests"]), getTravelRequest); // view all requests
 
 /**
  * @swagger
@@ -150,7 +150,7 @@ router.get('/', isLogedIn, getTravelRequest); // view all requests
  */
 
 
-router.put('/',isLogedIn, travelRequestsValidation, cancel_travelRequest);
+router.put('/',isLogedIn, travelRequestsValidation, permit(["cancel travel requests"]), cancel_travelRequest);
 
 // ----------------- View a particular travelrequest --------------------
 
@@ -192,7 +192,7 @@ router.put('/',isLogedIn, travelRequestsValidation, cancel_travelRequest);
  *            example: 
  *              [{"travelId":12,status: "pending", "accommodationId": 123, "reason":tripping, "trip":{"originCity":Kigali, "destination":Cairo, "tripDate":11/12/2020, "returnDate":11/12/2021, "accommodationId":1234567, "reason":tripping}}]
  */
-router.get('/:requestId', isLogedIn, getTravelRequest) //Get single request
+router.get('/:requestId', isLogedIn, permit(["view travel requests"]), getTravelRequest) //Get single request
 
 
 /**
@@ -233,7 +233,7 @@ router.get('/:requestId', isLogedIn, getTravelRequest) //Get single request
  *      
  */
 
-router.put('/:requestId', isLogedIn, editTripValidation,editTravelRequest)
+router.put('/:requestId', isLogedIn, editTripValidation,permit(["edit travel requests"]), editTravelRequest)
 
 export default router;
 

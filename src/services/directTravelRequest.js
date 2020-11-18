@@ -1,4 +1,3 @@
-import { approveTravelRequest } from '../controllers/directReport.controller';
 import models from '../models';
 
 exports.findItById = (query) =>{
