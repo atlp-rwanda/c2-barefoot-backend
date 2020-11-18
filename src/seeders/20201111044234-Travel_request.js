@@ -11,7 +11,7 @@ module.exports = {
     ], {});
 
     const travelRequests = await queryInterface.sequelize.query(
-      `SELECT "travelId" from "TravelRequests";`
+      'SELECT "travelId" from "TravelRequests";'
     );
 
     const travelRows = travelRequests[0];
