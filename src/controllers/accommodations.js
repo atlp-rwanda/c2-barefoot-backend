@@ -1,6 +1,6 @@
 import models from '../models';
 import 'express-async-errors';
-import accommodationNotFound from '../utils/notFoundRequestError';
+import accommodationNotFound from '../utils/Errors/notFoundRequestError';
 import retrieveAccommodations from '../services/getAccommodations';
 
 export const createAccommodation = async (req, res, next) => {

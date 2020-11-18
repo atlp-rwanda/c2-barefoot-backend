@@ -1,7 +1,7 @@
 import models from '../models';
 import 'express-async-errors';
-import locationNotFound from '../utils/notFoundRequestError';
-import badRequest from '../utils/badRequestError';
+import locationNotFound from '../utils/Errors/notFoundRequestError';
+import badRequest from '../utils/Errors/badRequestError';
 import retrieveLocations from '../services/getLocations';
 
 export const getLocations = async (req, res, next) => {

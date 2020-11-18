@@ -1,6 +1,6 @@
 import models from '../models';
 import 'express-async-errors';
-import amenityNotFound from '../utils/notFoundRequestError';
+import amenityNotFound from '../utils/Errors/notFoundRequestError';
 
 const updateAmenity = async (req, res, next) => {
   try {
