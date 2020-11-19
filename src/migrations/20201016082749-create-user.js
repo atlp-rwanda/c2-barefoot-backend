@@ -48,8 +48,7 @@ module.exports = {
         allowNull: true,
         type: Sequelize.UUID,
         references: {
-          // model: 'Users'
-          model: 'Line_managers',
+          model: 'Users',
           key: 'id',
         },
       },

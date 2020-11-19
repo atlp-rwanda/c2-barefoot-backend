@@ -47,11 +47,7 @@ export const updateAccommodation = async (req, res, next) => {
     if (!accommodationExist) {
       throw new accommodationNotFound('Accommodation does not exist');
     }
-  } catch (error) {
-    next(error);
-  }
 
-  try {
     const update = await models.Accommodation.update(req.body, { where: { id: req.params.id } });
     res.status(201).json({ status: 201, message: 'Accommodation successfully updated' });
   } catch (error) {
@@ -65,11 +61,12 @@ export const deleteAccommodation = async (req, res, next) => {
     if (!accommodationExist) {
       throw new accommodationNotFound('Accommodation does not exist');
     }
-  } catch (error) {
-    next(error);
-  }
 
-  try {
+    const checkTrips = await models.Trip.findOne({ where: { accommodationId: req.params.id } });
+    if (checkTrips) {
+      const updateTrips = await models.Trip.update({ accommodationId: null }, { where: { accommodationId: req.params.id } });
+    }
+
     const dltAmenity = await models.Amenity.destroy({ where: { AccommodationId: req.params.id } });
     const dltAccommodation = await models.Accommodation.destroy({ where: { id: req.params.id } });
     res.status(201).json({ status: 201, message: 'Accommodation has been deleted' });

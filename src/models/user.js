@@ -33,11 +33,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
 
   User.associate = (models) => {
-    // User.hasOne(models.User, {
-    //   foreignKey: 'manager_id',
-    //   as: 'manager',
-    // });
-    User.belongsTo(models.Line_manager, {
+    User.hasOne(models.User, {
       foreignKey: 'manager_id',
       as: 'line_manager',
     });
