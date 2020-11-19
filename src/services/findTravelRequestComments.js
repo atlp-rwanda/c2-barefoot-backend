@@ -2,7 +2,6 @@ import db from '../models'
 import dbDataNotFoundError from '../utils/dbDataNotFoundError';
 
 export function findTravelRequestComments(res,query, next, pagination){
-    const resultSet = [];
     try{
         db.TravelComments.findAndCountAll({where:query, ...pagination})
         .then(tRequestComments => {

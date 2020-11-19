@@ -18,7 +18,7 @@ describe("Travel Requests", ()=>{
         var User = await request(app).post("/api/v1/user/login").send(user)
         const res = await request(app)
         .post("/api/v1/comment/0ce36391-2c08-3074-bddb-a4ea8cccbbc5")
-        .set("Authorization", User.body.data)
+        .set("Authorization", `Bearer ${User.body.data}`)
         .send(Comment)
         expect(res).to.have.status(200)
         expect(res.body).to.have.deep.property("tCommentData")

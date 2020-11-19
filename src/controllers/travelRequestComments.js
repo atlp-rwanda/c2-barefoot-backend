@@ -1,7 +1,6 @@
 import BadRequestError from "../utils/badRequestError";
-
-const { getDataFromToken } = require("../helper/tokenToData");
-const { createTravelComment } = require("../services/createTravelRequestComment");
+import getDataFromToken from "../helper/tokenToData"
+import {createTravelComment} from "../services/createTravelRequestComment"
 
 export const TravelRequestComment = async (req, res, next) => {
     try{

@@ -1,7 +1,8 @@
 import db from '../models'
 import dbViolationError from '../utils/dbViolationError'
 export function createTravelComment(req, res, query, next) {
-    db.TravelComments.create(query)
+    try{
+        db.TravelComments.create(query)
         .then(tCommentData => {
             res.status(200).json({message:"comment created successfully", tCommentData})
         })
@@ -15,4 +16,7 @@ export function createTravelComment(req, res, query, next) {
             }
             
         })
+    }catch(err){
+        next(err)
+    }
 }
