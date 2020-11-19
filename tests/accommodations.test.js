@@ -71,4 +71,22 @@ describe('Testing the accommodations route', () => {
     expect(res.body).to.have.property('error');
     expect(res.body.error).to.equal('Accommodation does not exist');
   });
+
+  it('Should delete existing accommodation', async () => {
+    User = await request(app).post('/api/v1/user/login').send(travelAdmin);
+    const res = await request(app).delete(`/api/v1/accommodations/${validAccommodation.id}`).set('Authorization', `Bearer ${User.body.data}`);
+    expect(res.type).to.equal('application/json');
+    expect(res).to.have.status(201);
+    expect(res.body).to.have.property('message');
+    expect(res.body.message).to.equal('Accommodation has been deleted');
+  });
+
+  it('Should not delete non-existing accommodation', async () => {
+    User = await request(app).post('/api/v1/user/login').send(travelAdmin);
+    const res = await request(app).delete(`/api/v1/accommodations/${validAccommodation.id}`).set('Authorization', `Bearer ${User.body.data}`);
+    expect(res.type).to.equal('application/json');
+    expect(res).to.have.status(404);
+    expect(res.body).to.have.property('error');
+    expect(res.body.error).to.equal('Accommodation does not exist');
+  });
 });

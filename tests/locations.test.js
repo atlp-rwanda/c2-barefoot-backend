@@ -42,7 +42,7 @@ describe('Testing the Locations Route', () => {
     expect(res.type).to.equal('application/json');
     expect(res).to.have.status(200);
     expect(res.body).to.have.property('LocationName');
-    expect(res.body.LocationName).to.equal('Kigali');
+    expect(res.body.LocationName).to.equal('Capetown');
   });
 
   it('Should return error 404 when location does not exist', async () => {
@@ -92,9 +92,9 @@ describe('Testing the Locations Route', () => {
 
   it('Should not delete location with linked accommodations', async () => {
     User = await request(app).post('/api/v1/user/login').send(travelAdmin);
-    const res = await request(app).delete(`/api/v1/locations/${validLocation.id}`).set('Authorization', `Bearer ${User.body.data}`);
+    const res = await request(app).delete('/api/v1/locations/c6028e0d-ef88-4693-ab49-f37669891724').set('Authorization', `Bearer ${User.body.data}`);
     expect(res.type).to.equal('application/json');
-    expect(res).to.have.status(404);
+    expect(res).to.have.status(400);
     expect(res.body).to.have.property('error');
     expect(res.body.error).to.equal('This location can not be deleted with linked accomodations.');
   });
