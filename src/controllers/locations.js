@@ -45,11 +45,6 @@ export const updateLocation = async (req, res, next) => {
     if (!locationExist) {
       throw new locationNotFound('Location does not exist');
     }
-  } catch (error) {
-    next(error);
-  }
-
-  try {
     const update = await models.Location.update(req.body, { where: { id: req.params.id } });
     res.status(201).json({ status: 201, message: 'Location successfully updated' });
   } catch (error) {
@@ -63,20 +58,12 @@ export const deleteLocation = async (req, res, next) => {
     if (!locationExist) {
       throw new locationNotFound('Location does not exist');
     }
-  } catch (error) {
-    next(error);
-  }
 
-  try {
     const linkedAccommodation = await models.Accommodation.findOne({ where: { locationID: req.params.id } });
     if (linkedAccommodation) {
       throw new badRequest('This location can not be deleted with linked accomodations.');
     }
-  } catch (error) {
-    next(error);
-  }
 
-  try {
     const dltLocation = await models.Location.destroy({ where: { id: req.params.id } });
     res.status(201).json({ status: 201, message: 'Location has been deleted' });
   } catch (error) {

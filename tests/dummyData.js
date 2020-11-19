@@ -103,3 +103,28 @@ export const line_manager = {
 export const deleteReq = {
   email: 'manager_id@gmail.com'
 };
+
+export const travelAdmin = {
+  email: 'traveladmin@gmail.com',
+  password: 'password'
+};
+
+export const validLocation = {
+  LocationName: 'Capetown',
+  country: 'South Africa',
+  description: 'Some random description',
+  link: 'safari.com'
+};
+
+export const invalidLocation = {
+  LocationName: 'Capetown',
+  country: 'South Africa',
+  description: 'Some random description',
+};
+
+export const updateLocation = {
+  LocationName: 'Joburg',
+  country: 'South Africa',
+  description: 'Some random description',
+  link: 'safari.com'
+};
