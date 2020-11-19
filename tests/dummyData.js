@@ -164,3 +164,7 @@ export const invalidAccommodation = {
   description: 'A serene environment for relaxation',
   photos: 'image.png'
 };
+
+export const validAmenity = {
+  wifi: true
+};
