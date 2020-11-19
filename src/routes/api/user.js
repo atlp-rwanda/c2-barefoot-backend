@@ -1,7 +1,7 @@
 import express from 'express';
 import signup from '../../controllers/userController/signup';
 import signupValidation from '../../middlewares/signupValidation';
-import sendVerificationEmail from '../../middlewares/sendEmail';
+import {sendVerificationEmail} from '../../middlewares/sendEmail';
 import verification from '../../controllers/userController/verification';
 import loginValidation from '../../middlewares/loginValidation';
 import logedIn from '../../helper/isLogedIn';
@@ -10,6 +10,8 @@ import logout from '../../controllers/userController/logout';
 import refreshToken from '../../controllers/userController/refreshToken';
 import getAllUsers from '../../controllers/userController/users';
 import verifyUserToken from '../../middlewares/usertokenverification';
+import {validateResetEmail} from '../../middlewares/resetPasswordValidation';
+import { resetPassword , verifyResetPassword } from '../../controllers/userController/resetPassword';
 
 const router = express.Router();
 
@@ -343,4 +345,8 @@ router.post('/refresh-token', refreshToken);
  *          Error: page should be both positive and non zero
  */
 router.get('/all-users', verifyUserToken, getAllUsers);
+
+
+router.post('/resetPassword', validateResetEmail, resetPassword);
+
 export default router;
