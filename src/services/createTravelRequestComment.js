@@ -1,5 +1,4 @@
 import db from '../models'
-import dbViolationError from '../utils/dbViolationError'
 export function createTravelComment(req, res, query, next) {
     try{
         db.TravelComments.create(query)

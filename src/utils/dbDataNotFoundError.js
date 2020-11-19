@@ -1,5 +1,5 @@
 /* eslint-disable require-jsdoc */
-import ApplicationError from './ApplicationError';
+import ApplicationError from './Errors/ApplicationError';
 
 class dbDataNotFoundError extends ApplicationError {
   constructor(message) {

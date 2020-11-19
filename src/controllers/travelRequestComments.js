@@ -1,4 +1,4 @@
-import BadRequestError from "../utils/badRequestError";
+import BadRequestError from "../utils/Errors/badRequestError";
 import getDataFromToken from "../helper/tokenToData"
 import {createTravelComment} from "../services/createTravelRequestComment"
 

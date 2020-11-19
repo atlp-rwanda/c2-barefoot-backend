@@ -24,6 +24,16 @@ describe("Travel Requests", ()=>{
         expect(res.body).to.have.deep.property("tCommentData")
         expect(res.body).to.have.deep.property("message").equals("comment created successfully")
     })
+    it("Should fail on invalid trip request id", async ()=>{
+        var User = await request(app).post("/api/v1/user/login").send(user)
+        const res = await request(app)
+        .post("/api/v1/comment/0ce36391-2c08-3074-bddb-a4ea8cccbbb5")
+        .set("Authorization", `Bearer ${User.body.data}`)
+        .send(Comment)
+        expect(res).to.have.status(400)
+        // expect(res.body).to.have.deep.property("tCommentData")
+        expect(res.body).to.have.deep.property("message").equals("Travel request with this id does not exist.")
+    })
     after(()=>{
         // delete data inserted by the tests.
         const Comment = {

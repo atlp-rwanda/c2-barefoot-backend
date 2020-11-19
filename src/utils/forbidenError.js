@@ -1,10 +1,10 @@
 /* eslint-disable require-jsdoc */
 import ApplicationError from './Errors/applicationError';
 
-class AuthorizationError extends ApplicationError {
+class ForbidenRequestError extends ApplicationError {
   constructor(message) {
-    super(message, 401);
+    super(message, 409);
   }
 }
 
-export default AuthorizationError;
+export default ForbidenRequestError;
