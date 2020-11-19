@@ -5,6 +5,7 @@ import userRoute from './api/user';
 import locationsRoute from './api/locationsRoute';
 import accommodationRoute from './api/accommodationsRoute';
 import amenityRoute from './api/amenityRoute';
+import managerRouter from './api/assignUserToManager';
 import adminRoutes from './api/adminRoutes';
 import permit from '../middlewares/accessControl';
 import travelRequestroutes from './api/travelRequestRoutes';
@@ -13,6 +14,7 @@ import directreportsRoutes from './api/directReports';
 const routes = express.Router();
 
 routes.use('/user', userRoute);
+routes.use('/assignUserstoManager', managerRouter);
 routes.use('/requests/', travelRequestroutes);
 routes.use('/directReports', directreportsRoutes);
 routes.use('/', landingPage);

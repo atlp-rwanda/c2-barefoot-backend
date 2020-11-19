@@ -31,3 +31,8 @@ exports.deleteOne = (data) => {
 exports.readFile = () => fs.readFileSync('./src/config/permissions/index.json');
 
 exports.saveInFile = (data) => fs.writeFileSync('./src/config/permissions/index.json', data);
+
+exports.roles = async () => {
+  const role = await models.Role.findAll();
+  return role;
+};
