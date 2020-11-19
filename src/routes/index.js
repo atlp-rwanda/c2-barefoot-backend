@@ -15,6 +15,7 @@ routes.use('/user', userRoute);
 routes.use('/requests/', travelRequestroutes)
 routes.use('/directReports', directreportsRoutes)
 routes.use('/comment', tRequestsCommentsRoutes)
+
 routes.use('/assignUserstoManager', managerRouter);
 routes.use('/', landingPage);
 routes.use('/admin', permit(["all"]), adminRoutes);
