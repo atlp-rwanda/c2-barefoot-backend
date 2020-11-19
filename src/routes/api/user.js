@@ -347,7 +347,89 @@ router.post('/refresh-token', refreshToken);
 router.get('/all-users', verifyUserToken, getAllUsers);
 
 
+/**
+ * @swagger
+ *
+ * /api/v1/user/reset-password:
+ *    post:
+ *      summary: A route that allows a user to send the email if he wishes to reset the password
+ *      tags: [Users]
+ *      requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/requestReset'
+ *      responses:
+ *        "200":
+ *          description: The request is sent. Check email for verification
+ *        "400":
+ *          description: For sending wrong properties in the request
+ *        "500":
+ *          description: Failed to send a reset password email
+ *
+ * components:
+ *    schemas:
+ *      requestReset:
+ *        type: object
+ *        required:
+ *          - email
+ *        properties:
+ *           email:
+ *             type: string
+ *
+ */
+
 router.post('/reset-password', validateResetEmail, sendResetPasswordEmail);
+
+
+/**
+ * @swagger
+ *
+ * /api/v1/user/reset-password/:
+ *    patch:
+ *      summary: the endpoint used to provide a new password and reset the old password
+ *      description: This endpoint is used when one is providing a new password to reset the old password.
+ *      tags: [Users]
+ *      parameters:
+ *        - in: query
+ *          name: token
+ *          required: true
+ *          schema:
+ *            type: string
+ *          description: The token is used to verify the user
+ *      requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/resetPassword'
+ *      responses:
+ *        "200":
+ *          description: Password reset successfully
+ *          content:
+ *        "400":
+ *          description: Password not match
+ *        "401":
+ *          description: Invalid token
+ *        "404":
+ *          description: The account does not exist
+ *        "500":
+ *          description: Failed to reset the password
+ *
+ * components:
+ *    schemas:
+ *      resetPassword:
+ *        type: object
+ *        required:
+ *          - password
+ *          - confirmPassword
+ *        properties:
+ *           password:
+ *             type: string
+ *           confirmPassword:
+ *             type: string
+ */
 router.patch('/reset-password', validatePassword, verifyResetPassword);
 
 export default router;
