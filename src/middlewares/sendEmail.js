@@ -3,6 +3,7 @@ import 'express-async-errors';
 import { generateToken } from '../utils/auth';
 import ApplicationError from '../utils/Errors/applicationError';
 import sendEmail from '../helper/sendEmail';
+import userServices from '../services/user.service';
 
 
 export const sendVerificationEmail = async (req, res, next) => {
@@ -41,14 +42,14 @@ export const sendResetPasswordEmail = async (req, res, next) => {
 
     const userInfo = {
       email: email,
-      subject: 'Verify your email',
+      subject: 'Reset your password',
       html: `<p>Hello, you requested to reset your password on Barefoot Nomad, Click on the link below to enter new password.</p> <br> <a href='${process.env.FRONTEND_URL}/user/reset-password?token=${resetToken}'><b>Reset password Link</b></a>`
     };
 
     const sendmail = await sendEmail(userInfo);
 
     if(sendmail){
-      return res.status(200).json({ status: 200, message: 'Request sent successfully, please check your email ' });
+      return res.status(200).json({ status: 200, message: 'Request sent successfully, please check your email to reset your password' });
 
     }else{
       throw new ApplicationError("Failed to send the reset email, please try again!", 500);

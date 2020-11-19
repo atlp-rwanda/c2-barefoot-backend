@@ -1,7 +1,7 @@
 import express from 'express';
 import signup from '../../controllers/userController/signup';
 import signupValidation from '../../middlewares/signupValidation';
-import {sendVerificationEmail} from '../../middlewares/sendEmail';
+import {sendVerificationEmail, sendResetPasswordEmail} from '../../middlewares/sendEmail';
 import verification from '../../controllers/userController/verification';
 import loginValidation from '../../middlewares/loginValidation';
 import logedIn from '../../helper/isLogedIn';
@@ -10,8 +10,8 @@ import logout from '../../controllers/userController/logout';
 import refreshToken from '../../controllers/userController/refreshToken';
 import getAllUsers from '../../controllers/userController/users';
 import verifyUserToken from '../../middlewares/usertokenverification';
-import {validateResetEmail} from '../../middlewares/resetPasswordValidation';
-import { resetPassword , verifyResetPassword } from '../../controllers/userController/resetPassword';
+import {validateResetEmail, validatePassword} from '../../middlewares/resetPasswordValidation';
+import verifyResetPassword from '../../controllers/userController/updateResetPassword';
 
 const router = express.Router();
 
@@ -347,6 +347,7 @@ router.post('/refresh-token', refreshToken);
 router.get('/all-users', verifyUserToken, getAllUsers);
 
 
-router.post('/resetPassword', validateResetEmail, resetPassword);
+router.post('/reset-password', validateResetEmail, sendResetPasswordEmail);
+router.patch('/reset-password', validatePassword, verifyResetPassword);
 
 export default router;
