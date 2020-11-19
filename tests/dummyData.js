@@ -110,6 +110,7 @@ export const travelAdmin = {
 };
 
 export const validLocation = {
+  id: 'ae45da99-d1c5-493a-9e66-b0ffb72263fa',
   LocationName: 'Capetown',
   country: 'South Africa',
   description: 'Some random description',
@@ -127,4 +128,39 @@ export const updateLocation = {
   country: 'South Africa',
   description: 'Some random description',
   link: 'safari.com'
+};
+
+export const validAccommodation = {
+
+  id: '0ce36391-2c08-3074-bddb-a4ea8cccbbc8',
+  country: 'Rwanda',
+  city: 'Kigali',
+  state: 'Nyarugenge',
+  streetAddress: 'KN 22 ST',
+  locationID: null,
+  propertyType: 'Hostel',
+  numberOfRooms: 100,
+  typeOfBed: 'Double Decker',
+  title: 'Kigali Hostels',
+  description: 'A serene environment for relaxation',
+  photos: 'image.png'
+};
+
+export const updateAccommodation = {
+  state: 'Kicukiro',
+};
+
+export const invalidAccommodation = {
+
+  id: '0ce36391-2c08-3074-bddb-a4ea8cccbbc8',
+  city: 'Kigali',
+  state: 'Nyarugenge',
+  streetAddress: 'KN 22 ST',
+  locationID: null,
+  propertyType: 'Hostel',
+  numberOfRooms: 100,
+  typeOfBed: 'Double Decker',
+  title: 'Kigali Hostels',
+  description: 'A serene environment for relaxation',
+  photos: 'image.png'
 };
