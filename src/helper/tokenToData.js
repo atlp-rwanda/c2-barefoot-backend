@@ -7,17 +7,16 @@ const getDataFromToken = async (req, res, next) => {
     const authHeader = req.headers.authorization.split(' ');
     const [authString, token] = authHeader;
     const authorization = token;
+    console.log("Auth: " + authorization)
     try {
       const user = await verifyToken(authorization);
       const userInfo = UserServices.getUserByUserName(user.username);
       return userInfo;
     } catch (e) {
-      console.log(e);
       return res.status(401).json({ message: 'session has expired, please login' });
     }
-  }
-  else{
-    return res.status(404).json({ status: 404, message: 'No token found!'});
+  } else {
+    return res.status(404).json({ status: 404, message: 'No token found!' });
   }
 };
 

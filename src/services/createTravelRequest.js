@@ -1,4 +1,4 @@
-import db from '../models';
+import db from '../models'
 
 const createTravelRequest = async (req, res, request, next) => {
   db.TravelRequest.create(request)
@@ -14,7 +14,7 @@ const createTravelRequest = async (req, res, request, next) => {
                 const allData = { ...tRequestData.get({ plain: true }), tripData };
                 res.json({ message: 'Trip request sent successfully', data: allData });
               })
-              .catch((err) => { next(err); console.log(err.message); });
+              .catch((err) => { next(err); });
           }
         }
       } catch (err) {
