@@ -15,15 +15,9 @@ import amenityRoute from './api/amenityRoute';
 const routes = express.Router();
 
 routes.use('/user', userRoute);
-<<<<<<< HEAD
 routes.use('/requests/', travelRequestroutes);
 routes.use('/directReports', directreportsRoutes);
 routes.use('/comment', tRequestsCommentsRoutes);
-=======
-routes.use('/requests/', travelRequestroutes)
-routes.use('/directReports', directreportsRoutes)
-routes.use('/comment', tRequestsCommentsRoutes)
->>>>>>> develop
 
 routes.use('/assignUserstoManager', managerRouter);
 routes.use('/', landingPage);

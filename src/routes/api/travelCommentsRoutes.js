@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import express from 'express';
 import TravelRequestComment from '../../controllers/travelRequestComments';
 import getTravelRequestComments from '../../controllers/viewTravelRequestComments';
@@ -9,19 +8,6 @@ const router = express.Router();
 /**
  * @swagger
  *
-=======
-
-import express from 'express'
-import { TravelRequestComment } from '../../controllers/travelRequestComments';
-import getTravelRequestComments from '../../controllers/viewTravelRequestComments';
-import isLogedIn from "../../helper/isLogedIn";
-
-const router = express.Router()
-
-/**
- * @swagger
- * 
->>>>>>> develop
  * /api/v1/comment/:travelId:
  *    post:
  *      summary: A route used make comments on the travel request
@@ -34,11 +20,7 @@ const router = express.Router()
  *            application/json:
  *              schema:
  *                $ref: '#/components/schemas/RequestCommentSucces'
-<<<<<<< HEAD
  *
-=======
- * 
->>>>>>> develop
  * components:
  *    schemas:
  *      ReaquestComments:
@@ -48,11 +30,7 @@ const router = express.Router()
  *        properties:
  *           comment:
  *             type: string
-<<<<<<< HEAD
  *
-=======
- * 
->>>>>>> develop
  *      RequestCommentSucces:
  *        type: object
  *        properties:
@@ -67,13 +45,8 @@ const router = express.Router()
  *          data:
  *            type: object
  *            description: Object returned
-<<<<<<< HEAD
  *
  *        example:
-=======
- *              
- *        example: 
->>>>>>> develop
  *          {
  *              "commentId": "c7db29c2-56e6-41b5-b436-c0e8b2f726e4",
                 "userId": "83b2a3e7-9ba4-4d3f-b3a3-d31940ee2edc",
@@ -83,19 +56,11 @@ const router = express.Router()
                 "createdAt": "2020-11-16T07:42:53.061Z"
             }
  */
-<<<<<<< HEAD
 router.post('/:travelId', isLogedIn, TravelRequestComment); // create travel request comment
 
 /**
  * @swagger
  *
-=======
-router.post('/:travelId', isLogedIn, TravelRequestComment) // create travel request comment
-
-/**
- * @swagger
- * 
->>>>>>> develop
  * /api/v1/comment:
  *    get:
  *      summary: A route used to get travel request comments for a logged in user
@@ -108,11 +73,7 @@ router.post('/:travelId', isLogedIn, TravelRequestComment) // create travel requ
  *            application/json:
  *              schema:
  *                $ref: '#/components/schemas/tRequestCommentsList'
-<<<<<<< HEAD
  *
-=======
- * 
->>>>>>> develop
  * components:
  *    schemas:
  *      tRequestCommentsList:
@@ -124,15 +85,9 @@ router.post('/:travelId', isLogedIn, TravelRequestComment) // create travel requ
  *            example: 200
  *          data:
  *            type: object
-<<<<<<< HEAD
  *            properties:
  *              commentId: qwer
  *            example:
-=======
- *            properties: 
- *              commentId: qwer
- *            example: 
->>>>>>> develop
  *              [{
  *                   "commentId": "c7db29c2-56e6-41b5-b436-c0e8b2f726e4",
                     "userId": "83b2a3e7-9ba4-4d3f-b3a3-d31940ee2edc",
@@ -150,19 +105,11 @@ router.post('/:travelId', isLogedIn, TravelRequestComment) // create travel requ
                     "createdAt": "2020-11-16T07:42:53.061Z"
                 }]
  */
-<<<<<<< HEAD
 router.get('/', isLogedIn, getTravelRequestComments);
 
 /**
  * @swagger
  *
-=======
-router.get('/', isLogedIn, getTravelRequestComments) 
-
-/**
- * @swagger
- * 
->>>>>>> develop
  * /api/v1/comment/:requestId/:
  *    get:
  *      summary: A route used to get comments of a particular request
@@ -175,11 +122,7 @@ router.get('/', isLogedIn, getTravelRequestComments)
  *            application/json:
  *              schema:
  *                $ref: '#/components/schemas/tRequestCommentsList'
-<<<<<<< HEAD
  *
-=======
- * 
->>>>>>> develop
  * components:
  *    schemas:
  *      tRequestCommentsList:
@@ -191,11 +134,7 @@ router.get('/', isLogedIn, getTravelRequestComments)
  *            example: 200
  *          data:
  *            type: object
-<<<<<<< HEAD
  *            example:
-=======
- *            example: 
->>>>>>> develop
  *              [{
  *                   "commentId": "c7db29c2-56e6-41b5-b436-c0e8b2f726e4",
                     "userId": "83b2a3e7-9ba4-4d3f-b3a3-d31940ee2edc",
@@ -213,19 +152,11 @@ router.get('/', isLogedIn, getTravelRequestComments)
                     "createdAt": "2020-11-16T07:42:53.061Z"
                 }]
  */
-<<<<<<< HEAD
 router.get('/:requestId', isLogedIn, getTravelRequestComments);
 
 /**
  * @swagger
  *
-=======
-router.get('/:requestId', isLogedIn, getTravelRequestComments)
-
-/**
- * @swagger
- * 
->>>>>>> develop
  * /api/v1/comment/:requestId/:commentId:
  *    get:
  *      summary: A route used to get a particular comment of a particular request
@@ -238,11 +169,7 @@ router.get('/:requestId', isLogedIn, getTravelRequestComments)
  *            application/json:
  *              schema:
  *                $ref: '#/components/schemas/tRequestComment'
-<<<<<<< HEAD
  *
-=======
- * 
->>>>>>> develop
  * components:
  *    schemas:
  *      tRequestComment:
@@ -254,11 +181,7 @@ router.get('/:requestId', isLogedIn, getTravelRequestComments)
  *            example: 200
  *          data:
  *            type: object
-<<<<<<< HEAD
  *            example:
-=======
- *            example: 
->>>>>>> develop
  *              [{
  *                   "commentId": "c7db29c2-56e6-41b5-b436-c0e8b2f726e4",
                     "userId": "83b2a3e7-9ba4-4d3f-b3a3-d31940ee2edc",
@@ -268,12 +191,6 @@ router.get('/:requestId', isLogedIn, getTravelRequestComments)
                     "createdAt": "2020-11-16T07:42:53.061Z"
                 }]
  */
-<<<<<<< HEAD
 router.get('/:requestId/:commentId', isLogedIn, getTravelRequestComments);
 
 export default router;
-=======
-router.get('/:requestId/:commentId', isLogedIn, getTravelRequestComments) 
-
-export default router
->>>>>>> develop
