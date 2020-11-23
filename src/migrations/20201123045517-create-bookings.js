@@ -11,7 +11,7 @@ module.exports = {
         type: Sequelize.STRING,
         unique: true
       },
-      accommodationID: {
+      accommodationId: {
         allowNull: true,
         type: Sequelize.UUID,
         references: {
@@ -28,11 +28,13 @@ module.exports = {
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.fn('NOW')
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.fn('NOW')
       }
     });
   },
