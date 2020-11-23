@@ -1,10 +1,10 @@
 /* eslint-disable require-jsdoc */
 import ApplicationError from './applicationError';
 
-class travelRequestError extends ApplicationError {
+class AuthorizationError extends ApplicationError {
   constructor(message) {
-    super(message, 400);
+    super(message, 401);
   }
 }
 
-export default travelRequestError;
+export default AuthorizationError;
