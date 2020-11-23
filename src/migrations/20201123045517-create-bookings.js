@@ -3,7 +3,6 @@ module.exports = {
     await queryInterface.createTable('Bookings', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
         type: Sequelize.UUID,
         default: Sequelize.fn('uuid_generate_v4')
@@ -16,7 +15,7 @@ module.exports = {
         allowNull: true,
         type: Sequelize.UUID,
         references: {
-          model: 'Accomodation',
+          model: 'Accommodation',
           key: 'id',
           onDelete: 'cascade'
         }
