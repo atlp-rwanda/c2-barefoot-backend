@@ -47,7 +47,11 @@ module.exports = {
           key: 'id',
         },
       },
-      language: { type: Sequelize.STRING, allowNull: false, defaultValue: 'English' },
+      // language: { type: Sequelize.STRING, allowNull: false, defaultValue: 'English' },
+      locale_id: {
+        type: Sequelize.UUID,
+        allowNull: true,
+      },
       address: { type: Sequelize.STRING, allowNull: false },
       user_role_id: {
         allowNull: true,

@@ -1,5 +1,6 @@
 import roles from '../utils/roles';
 import { hashPassword } from '../utils/auth';
+import locales from '../utils/locales';
 
 'use strict';
 module.exports = (sequelize, DataTypes) => {
@@ -25,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       defaultValue: 'https://www.cobdoglaps.sa.edu.au/wp-content/uploads/2017/11/placeholder-profile-sq.jpg'
     },
-    language: { type: DataTypes.STRING, allowNull: false, defaultValue: 'Eng' },
+    // language: { type: DataTypes.STRING, allowNull: false, defaultValue: 'Eng' },
     address: { type: DataTypes.STRING, allowNull: false },
   }, {});
 

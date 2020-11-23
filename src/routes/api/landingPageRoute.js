@@ -1,5 +1,6 @@
 import express from 'express';
 import welcome from '../../controllers/welcome';
+import { getAllLocale, getLocale } from '../../controllers/manageLocale';
 
 const router = express.Router();
 
@@ -35,5 +36,7 @@ const router = express.Router();
  */
 
 router.get('/', welcome);
+router.get('/locales', getAllLocale);
+router.get('/locale', getLocale);
 
 export default router;

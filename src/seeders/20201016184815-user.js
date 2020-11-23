@@ -1,5 +1,6 @@
 import { hashPassword } from '../utils/auth';
 import roles from '../utils/roles';
+import locales from '../utils/locales';
 
 export default {
   up: (queryInterface, Sequelize) => queryInterface.bulkInsert('Users', [
@@ -9,7 +10,7 @@ export default {
       last_name: 'Manager',
       username: 'manager_id',
       address: 'Kigali',
-      language: 'English',
+      locale_id: locales.english,
       email: 'manager_id@gmail.com',
       password: hashPassword('manager_id'),
       verified: true,
@@ -21,7 +22,7 @@ export default {
       last_name: 'Admin',
       username: 'superadmin',
       address: 'Kigali',
-      language: 'English',
+      locale_id: locales.english,
       email: 'superadmin@gmail.com',
       password: hashPassword('Superadmin'),
       verified: true,
@@ -36,7 +37,7 @@ export default {
       verified: true,
       username: 'managertwo',
       address: 'Kigali',
-      language: 'English',
+      locale_id: locales.french,
       user_role_id: roles.MANAGER,
       manager_id: '0ce36391-2c08-4703-bddb-a4ea8cccbbc5'
     }, {
@@ -48,7 +49,7 @@ export default {
       verified: false,
       username: 'managerOne',
       address: 'Kigali',
-      language: 'English',
+      locale_id: locales.french,
       user_role_id: roles.MANAGER,
       manager_id: 'fb94de4d-47ff-4079-89e8-b0186c0a3be8',
     }, {
@@ -61,7 +62,7 @@ export default {
       manager_id: '0ce36391-2c08-4703-bddb-a4ea8cccbbc5',
       user_role_id: roles.REQUESTER,
       address: 'Kigali',
-      language: 'English',
+      locale_id: locales.english,
       verified: true
     },
 

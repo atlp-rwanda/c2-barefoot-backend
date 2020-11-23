@@ -9,10 +9,31 @@ import routes from './routes/index';
 import ApplicationError from './utils/applicationError';
 import swaggerConfigs from './config/swaggerDoc';
 
+const i18next = require('i18next');
+const i18nextMiddleware = require('i18next-http-middleware');
+const Backend = require('i18next-fs-backend');
+
 const app = express();
 app.use(cors());
 // app.use(express.json());
 app.use(cookieParser());
+
+// setup locales
+i18next
+  .use(Backend)
+  .use(i18nextMiddleware.LanguageDetector)
+  .init({
+    // debug: true,
+    backend: {
+      loadPath: `${__dirname}/locales/{{lng}}/{{ns}}.json`,
+      addPath: `${__dirname}/locales/{{lng}}/{{ns}}.missing.json`
+    },
+    fallbackLng: 'en',
+    preload: ['en', 'fr'],
+    saveMissing: true
+  });
+
+app.use(i18nextMiddleware.handle(i18next));
 
 const port = process.env.PORT || 3000;
 // routes
@@ -47,12 +68,12 @@ app.use((err, req, res, next) => {
 
 app.listen(port, () => {
   console.log(`CORS-enabled web server listening on port ${port}  ...`);
-}).on('error', function (err) {
-  if(err.errno === 'EADDRINUSE') {
-      console.log(`----- Port ${port} is busy, trying with port ${port + 1} -----`);
-      listen(port + 1)
+}).on('error', (err) => {
+  if (err.errno === 'EADDRINUSE') {
+    console.log(`----- Port ${port} is busy, trying with port ${port + 1} -----`);
+    listen(port + 1);
   } else {
-      console.log(err);
+    console.log(err);
   }
 });
 
