@@ -4,7 +4,8 @@ import {
   getAccommodations,
   getOneAccommodation,
   updateAccommodation,
-  deleteAccommodation
+  deleteAccommodation,
+  bookAccomodation
 } from '../../controllers/accommodations';
 import permit from '../../middlewares/accessControl';
 
@@ -413,5 +414,5 @@ router.delete('/:id', permit(['delete accommodations']), deleteAccommodation);
  */
 router.post('/', permit(['create accommodations']), createAccommodation);
 
-router.post('/book/:id', permit(['book accommodations']));
+router.post('/book/:id', permit(['book accommodations']), bookAccomodation);
 export default router;

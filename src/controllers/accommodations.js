@@ -2,6 +2,7 @@ import models from '../models';
 import 'express-async-errors';
 import accommodationNotFound from '../utils/Errors/notFoundRequestError';
 import accommodationService from '../services/accommodations';
+import getUserData from '../helper/tokenToData';
 
 export const createAccommodation = async (req, res, next) => {
   try {
@@ -70,6 +71,19 @@ export const deleteAccommodation = async (req, res, next) => {
     const dltAmenity = await models.Amenity.destroy({ where: { AccommodationId: req.params.id } });
     const dltAccommodation = await models.Accommodation.destroy({ where: { id: req.params.id } });
     res.status(201).json({ status: 201, message: 'Accommodation has been deleted' });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const bookAccomodation = async (req, res, next) => {
+  const user = await getUserData(req, res);
+  req.body.username = user.username;
+  req.body.accommodationId = req.params.id;
+  console.log(req.body);
+  try {
+    const booking = await models.Booking.create(req.body);
+    req.status(201).json({ message: 'Booking successfully made', data: booking });
   } catch (error) {
     next(error);
   }
