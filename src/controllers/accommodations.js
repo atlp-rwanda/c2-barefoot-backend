@@ -3,6 +3,7 @@ import 'express-async-errors';
 import accommodationNotFound from '../utils/Errors/notFoundRequestError';
 import accommodationService from '../services/accommodations';
 import getUserData from '../helper/tokenToData';
+import badRequest from '../utils/Errors/badRequestError';
 
 export const createAccommodation = async (req, res, next) => {
   try {
@@ -77,13 +78,18 @@ export const deleteAccommodation = async (req, res, next) => {
 };
 
 export const bookAccomodation = async (req, res, next) => {
-  const user = await getUserData(req, res);
-  req.body.username = user.username;
-  req.body.accommodationId = req.params.id;
-  console.log(req.body);
   try {
+    const accommodations = await accommodationService.getSingleAccommodation(req.params.id);
+    if (accommodations.numberOfRooms === 0) {
+      throw new badRequest('Accommodation is currently full');
+    }
+    const newRooms = accommodations.numberOfRooms - 1;
+    const user = await getUserData(req, res);
+    req.body.accommodationId = req.params.id;
+    req.body.username = user.username;
     const booking = await models.Booking.create(req.body);
-    req.status(201).json({ message: 'Booking successfully made', data: booking });
+    const update = await models.Accommodation.update({ numberOfRooms: newRooms }, { where: { id: req.params.id } });
+    res.status(201).json({ message: 'Booking successfully made', data: booking });
   } catch (error) {
     next(error);
   }
