@@ -11,6 +11,7 @@ import permit from '../middlewares/accessControl';
 import locationsRoute from './api/locationsRoute';
 import accommodationRoute from './api/accommodationsRoute';
 import amenityRoute from './api/amenityRoute';
+import reviewsRoutes from './api/ratesAndReviewsRoutes';
 
 const routes = express.Router();
 
@@ -18,6 +19,7 @@ routes.use('/user', userRoute);
 routes.use('/requests/', travelRequestroutes);
 routes.use('/directReports', directreportsRoutes);
 routes.use('/comment', tRequestsCommentsRoutes);
+routes.use('/ratings', reviewsRoutes);
 
 routes.use('/assignUserstoManager', managerRouter);
 routes.use('/', landingPage);
