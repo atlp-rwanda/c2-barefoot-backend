@@ -7,8 +7,8 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.UUID
       },
-      userId: {
-        allowNull: false,
+      user_id: {
+        allowNull: true,
         unique: false,
         type: Sequelize.UUID,
         references: {
@@ -29,7 +29,7 @@ module.exports = {
       status: {
         allowNull: false,
         type: Sequelize.STRING,
-        defaultValue: 'unreaded'
+        defaultValue: 'not readed'
       },
       createdAt: {
         allowNull: false,

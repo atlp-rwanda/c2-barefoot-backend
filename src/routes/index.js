@@ -11,6 +11,7 @@ import permit from '../middlewares/accessControl';
 import locationsRoute from './api/locationsRoute';
 import accommodationRoute from './api/accommodationsRoute';
 import amenityRoute from './api/amenityRoute';
+import notiRoute from './api/notification';
 
 const routes = express.Router();
 
@@ -27,5 +28,6 @@ routes.use('/amenities', amenityRoute);
 routes.use('/admin', permit(['all']), adminRoutes);
 
 routes.use('/profile', userProfile);
+routes.use('/notification', notiRoute);
 
 export default routes;
