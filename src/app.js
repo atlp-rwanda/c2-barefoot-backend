@@ -22,16 +22,14 @@ i18next
   .use(Backend)
   .use(i18nextMiddleware.LanguageDetector)
   .init({
-    // debug: true,
+    debug: true,
     backend: {
       loadPath: `${__dirname}/locales/{{lng}}/{{ns}}.json`,
       addPath: `${__dirname}/locales/{{lng}}/{{ns}}.missing.json`
     },
-    fallbackLng: 'en',
     preload: ['en', 'fr'],
     saveMissing: true
   });
-
 app.use(i18nextMiddleware.handle(i18next));
 
 const port = process.env.PORT || 3000;

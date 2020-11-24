@@ -10,6 +10,7 @@ import logout from '../../controllers/userController/logout';
 import refreshToken from '../../controllers/userController/refreshToken';
 import getAllUsers from '../../controllers/userController/users';
 import verifyUserToken from '../../middlewares/usertokenverification';
+import setUserLocale from '../../middlewares/setLocale';
 
 const router = express.Router();
 
@@ -46,7 +47,7 @@ const router = express.Router();
  *          - email
  *          - password
  *          - address
- *          - language
+ *          - user_locale
  *          - profile_picture
  *        properties:
  *           first_name:
@@ -61,7 +62,7 @@ const router = express.Router();
  *             type: string
  *           address:
  *             type: string
- *           language:
+ *           user_locale:
  *             type: string
  *           occupation:
  *             type: string
@@ -342,5 +343,5 @@ router.post('/refresh-token', refreshToken);
  *          Status: 500
  *          Error: page should be both positive and non zero
  */
-router.get('/all-users', verifyUserToken, getAllUsers);
+router.get('/all-users', setUserLocale, verifyUserToken, getAllUsers);
 export default router;

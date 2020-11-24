@@ -10,7 +10,7 @@ const schema = Joi.object({
   bio: Joi.string().min(0).allow('').allow(null),
   password: Joi.string().required().min(8),
   address: Joi.string().required(),
-  language: Joi.string().required().regex(/^[A-Za-z]+$/),
+  user_locale: Joi.string().regex(/^[A-Za-z]+$/),
   profile_picture: Joi.string()
 });
 

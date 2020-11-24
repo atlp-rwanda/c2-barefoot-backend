@@ -293,7 +293,7 @@ router.delete('/roles', deleteValidation, deleteRoles);
  *                  address:
  *                    type: string
  *                    example: string
- *                  language:
+ *                  user_locale:
  *                    type: string
  *                    example: string
  *                  profile_picture:

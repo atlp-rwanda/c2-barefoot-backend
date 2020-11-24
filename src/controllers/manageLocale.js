@@ -5,9 +5,4 @@ const getAllLocale = async (req, res) => {
   if (records) return res.status(200).json({ status: '200', records });
 };
 
-const getLocale = async (req, res) => {
-  const record = await localeServices.getLocalesByLocaleId();
-  if (record) return res.status(200).json({ status: '200', record });
-};
-
-export { getAllLocale, getLocale };
+export { getAllLocale };

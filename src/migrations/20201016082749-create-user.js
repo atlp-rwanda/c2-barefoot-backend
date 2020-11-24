@@ -1,4 +1,5 @@
 import roles from '../utils/roles';
+import locales from '../utils/locales';
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
@@ -53,9 +54,9 @@ module.exports = {
         },
       },
       // language: { type: Sequelize.STRING, allowNull: false, defaultValue: 'English' },
-      locale_id: {
-        type: Sequelize.UUID,
-        allowNull: true,
+      user_locale: {
+        type: Sequelize.STRING,
+        allowNull: true
       },
       address: { type: Sequelize.STRING, allowNull: false },
       user_role_id: {

@@ -36,7 +36,7 @@ const router = express.Router();
  *          - username
  *          - occupation
  *          - address
- *          - language
+ *          - user_locale
  *          - profile_picture
  *        properties:
  *          first_name:
@@ -51,7 +51,7 @@ const router = express.Router();
  *              type: string
  *          address:
  *              type: string
- *          language:
+ *          user_locale:
  *              type: string
  *          profile_picture:
  *              type: string

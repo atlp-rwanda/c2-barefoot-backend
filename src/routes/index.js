@@ -11,21 +11,22 @@ import permit from '../middlewares/accessControl';
 import locationsRoute from './api/locationsRoute';
 import accommodationRoute from './api/accommodationsRoute';
 import amenityRoute from './api/amenityRoute';
+import setUserLocale from '../middlewares/setLocale';
 
 const routes = express.Router();
 
 routes.use('/user', userRoute);
-routes.use('/requests/', travelRequestroutes);
-routes.use('/directReports', directreportsRoutes);
-routes.use('/comment', tRequestsCommentsRoutes);
+routes.use('/requests/', setUserLocale, travelRequestroutes);
+routes.use('/directReports', setUserLocale, directreportsRoutes);
+routes.use('/comment', setUserLocale, tRequestsCommentsRoutes);
 
-routes.use('/assignUserstoManager', managerRouter);
-routes.use('/', landingPage);
-routes.use('/locations', locationsRoute);
-routes.use('/accommodations', accommodationRoute);
-routes.use('/amenities', amenityRoute);
-routes.use('/admin', permit(['all']), adminRoutes);
+routes.use('/assignUserstoManager', setUserLocale, managerRouter);
+routes.use('/', setUserLocale, landingPage);
+routes.use('/locations', setUserLocale, locationsRoute);
+routes.use('/accommodations', setUserLocale, accommodationRoute);
+routes.use('/amenities', setUserLocale, amenityRoute);
+routes.use('/admin', permit(['all']), setUserLocale, adminRoutes);
 
-routes.use('/profile', userProfile);
+routes.use('/profile', setUserLocale, userProfile);
 
 export default routes;

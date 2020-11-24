@@ -22,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
     bio: { allowNull: true, type: DataTypes.STRING, defaultValue: null },
     verified: { type: DataTypes.BOOLEAN, defaultValue: false },
     user_role_id: { allowNull: true, type: DataTypes.UUID, defaultValue: roles.REQUESTER, },
+    user_locale: { allowNull: true, type: DataTypes.STRING, defaultValue: 'en' },
     manager_id: { allowNull: true, type: DataTypes.UUID },
     refreshtoken: { type: DataTypes.STRING, allowNull: false, defaultValue: 'refreshtoken' },
     profile_picture: {
@@ -58,6 +59,10 @@ module.exports = (sequelize, DataTypes) => {
     //   foreignKey: 'userId',
     //   onDelete: 'CASCADE'
     // })
+
+    User.belongsTo(models.Locale, {
+      foreignKey: 'user_locale'
+    });
   };
 
   //  hash user password before creating user

@@ -34,7 +34,7 @@ class UserService {
   */
  async getUserByUserName(username) {
   const query= {
-    attributes:["id","first_name","last_name","username","bio","occupation","email","address","language","profile_picture","user_role_id","manager_id","verified","refreshtoken"],
+    attributes:["id","first_name","last_name","username","bio","occupation","email","address","user_locale","profile_picture","user_role_id","manager_id","verified","refreshtoken"],
     where: { username: username }
   }
   return this.user.findOne(query);

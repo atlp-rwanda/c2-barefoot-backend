@@ -29,7 +29,7 @@ const login = async (req, res, next) => {
       user_role_id: isUser.user_role_id,
       manager_id: isUser.manager_id,
       profile_picture: isUser.profile_picture,
-      language: isUser.language,
+      user_locale: isUser.user_locale,
       address: isUser.address,
       createdAt: isUser.createdAt,
       updatedAt: isUser.updatedAt
@@ -42,6 +42,7 @@ const login = async (req, res, next) => {
     // updating user refresh token in database
     await isUser.update({ refreshtoken: userToken });
     res.cookie('make', userToken, { httpOnly: false, path: '/api/v1/user/refresh-token' });
+    await res.cookie('locale', userProfile.user_locale);
     return res.status(200).json({
       status: 200, message: 'login successful', data: userToken, profile: userProfile
     });

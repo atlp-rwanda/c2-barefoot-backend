@@ -1,16 +1,10 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('Locales', {
-      id: {
-        allowNull: false,
-        default: Sequelize.fn('uuid_generate_v4'),
-        primaryKey: true,
-        type: Sequelize.UUID
-      },
       locale: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true
+        primaryKey: true
       },
       createdAt: {
         allowNull: false,

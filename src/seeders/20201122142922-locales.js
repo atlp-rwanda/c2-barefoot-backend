@@ -4,12 +4,10 @@ export default {
   up: (queryInterface, Sequelize) => {
     queryInterface.bulkInsert('Locales', [
       {
-        id: locales.french,
-        locale: 'fr'
+        locale: locales.french
       },
       {
-        id: locales.english,
-        locale: 'en'
+        locale: locales.english
       }
     ]);
   },

@@ -10,7 +10,7 @@ const updateProfileInputsValidation = async (req, res, next) => {
     bio: Joi.string().min(0).allow('').allow(null),
     password: Joi.string().min(8),
     address: Joi.string(),
-    language: Joi.string().regex(/^[A-Za-z]+$/),
+    user_locale: Joi.string().regex(/^[A-Za-z]+$/),
     profile_picture: Joi.string()
   });
   try {

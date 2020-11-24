@@ -1,5 +1,6 @@
 import { generateToken } from '../src/utils/auth';
 import roles from '../src/utils/roles';
+import locales from '../src/utils/locales';
 // signup data
 export const validUser = {
   first_name: 'TestName',
@@ -9,7 +10,7 @@ export const validUser = {
   email: 'renedeolynda@gmail.com',
   password: 'pa13332335',
   address: 'Kigali',
-  language: 'English',
+  user_locale: locales.english,
   profile_picture: 'image.png'
 };
 
@@ -20,7 +21,7 @@ export const invalidUser = {
   email: '123',
   password: 'pa13332335',
   address: 'Kigali',
-  language: 'English',
+  user_locale: locales.english,
   profile_picture: 'image.png'
 };
 
@@ -31,7 +32,7 @@ export const validData = {
   occupation: 'software development',
   password: 'pa13332335',
   address: 'Kigali',
-  language: 'English',
+  user_locale: locales.french,
   profile_picture: 'image.png'
 };
 
@@ -42,7 +43,7 @@ export const invalidData = {
   occupation: 'm',
   password: 'pa13332335',
   address: 'Kigali',
-  language: 'English',
+  user_locale: locales.french,
   profile_picture: 'image.png'
 };
 const payload = { username: validUser.username, user_role_id: roles.REQUESTER };
