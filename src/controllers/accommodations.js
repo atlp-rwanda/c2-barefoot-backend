@@ -1,7 +1,7 @@
 import models from '../models';
 import 'express-async-errors';
 import accommodationNotFound from '../utils/Errors/notFoundRequestError';
-import retrieveAccommodations from '../services/getAccommodations';
+import accommodationService from '../services/accommodations';
 
 export const createAccommodation = async (req, res, next) => {
   try {
@@ -17,7 +17,7 @@ export const getAccommodations = async (req, res, next) => {
   const page = Number(req.query.page);
 
   try {
-    const accommodations = await retrieveAccommodations(page);
+    const accommodations = await accommodationService.getAccommodation(page);
     if (!accommodations) {
       throw new accommodationNotFound('There are no accommodations available');
     }
@@ -30,7 +30,7 @@ export const getAccommodations = async (req, res, next) => {
 export const getOneAccommodation = async (req, res, next) => {
   const { id } = req.params;
   try {
-    const singleAccommodation = await models.Accommodation.findOne({ where: { id }, attributes: { exclude: ['createdAt', 'updatedAt'] } });
+    const singleAccommodation = await accommodationService.getSingleAccommodation(id);
     if (!singleAccommodation) {
       throw new accommodationNotFound('Accommodation does not exist');
     }
@@ -43,7 +43,7 @@ export const getOneAccommodation = async (req, res, next) => {
 
 export const updateAccommodation = async (req, res, next) => {
   try {
-    const accommodationExist = await models.Accommodation.findOne({ where: { id: req.params.id } });
+    const accommodationExist = await accommodationService.getSingleAccommodation(req.params.id);
     if (!accommodationExist) {
       throw new accommodationNotFound('Accommodation does not exist');
     }
@@ -57,12 +57,12 @@ export const updateAccommodation = async (req, res, next) => {
 
 export const deleteAccommodation = async (req, res, next) => {
   try {
-    const accommodationExist = await models.Accommodation.findOne({ where: { id: req.params.id } });
+    const accommodationExist = await accommodationService.getSingleAccommodation(req.params.id);
     if (!accommodationExist) {
       throw new accommodationNotFound('Accommodation does not exist');
     }
 
-    const checkTrips = await models.Trip.findOne({ where: { accommodationId: req.params.id } });
+    const checkTrips = await accommodationService.getSingleAccommodation(req.params.id);
     if (checkTrips) {
       const updateTrips = await models.Trip.update({ accommodationId: null }, { where: { accommodationId: req.params.id } });
     }

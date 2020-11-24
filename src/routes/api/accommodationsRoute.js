@@ -413,4 +413,5 @@ router.delete('/:id', permit(['delete accommodations']), deleteAccommodation);
  */
 router.post('/', permit(['create accommodations']), createAccommodation);
 
+router.post('/book/:id', permit(['book accommodations']));
 export default router;
