@@ -6,10 +6,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
     },
-    userId: {
-      allowNull: false,
-      type: DataTypes.UUID
-    },
     title: {
       type: DataTypes.STRING
     },
@@ -18,12 +14,14 @@ module.exports = (sequelize, DataTypes) => {
     },
     status: {
       type: DataTypes.STRING,
-      defaultValue: 'unreaded'
+      defaultValue: 'not readed'
     }
-  });
+  }, {});
 
   Notification.associate = (models) => {
-    Notification.belongsTo(models.User);
+    Notification.belongsTo(models.User, {
+      foreignKey: 'user_id'
+    });
   };
   return Notification;
 };
