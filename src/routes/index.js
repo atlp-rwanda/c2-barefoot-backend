@@ -12,6 +12,7 @@ import locationsRoute from './api/locationsRoute';
 import accommodationRoute from './api/accommodationsRoute';
 import amenityRoute from './api/amenityRoute';
 import reviewsRoutes from './api/ratesAndReviewsRoutes';
+import bookingsRoute from './api/bookingsRoute';
 
 const routes = express.Router();
 
@@ -27,7 +28,7 @@ routes.use('/locations', locationsRoute);
 routes.use('/accommodations', accommodationRoute);
 routes.use('/amenities', amenityRoute);
 routes.use('/admin', permit(['all']), adminRoutes);
-
+routes.use('/bookings', bookingsRoute);
 routes.use('/profile', userProfile);
 
 export default routes;

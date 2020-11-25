@@ -9,7 +9,6 @@ module.exports = {
       },
       username: {
         type: Sequelize.STRING,
-        unique: true
       },
       accommodationId: {
         allowNull: true,
