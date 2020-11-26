@@ -13,6 +13,7 @@ import accommodationRoute from './api/accommodationsRoute';
 import amenityRoute from './api/amenityRoute';
 import reviewsRoutes from './api/ratesAndReviewsRoutes';
 import bookingsRoute from './api/bookingsRoute';
+import notiRoute from './api/notification';
 
 const routes = express.Router();
 
@@ -30,5 +31,6 @@ routes.use('/amenities', amenityRoute);
 routes.use('/admin', permit(['all']), adminRoutes);
 routes.use('/bookings', bookingsRoute);
 routes.use('/profile', userProfile);
+routes.use('/notification', notiRoute);
 
 export default routes;
