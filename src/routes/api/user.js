@@ -10,7 +10,7 @@ import logout from '../../controllers/userController/logout';
 import refreshToken from '../../controllers/userController/refreshToken';
 import getAllUsers from '../../controllers/userController/users';
 import verifyUserToken from '../../middlewares/usertokenverification';
-import {validateResetEmail, validatePassword} from '../../middlewares/resetPasswordValidation';
+import {RequestResetEmail, validateResetPassword} from '../../middlewares/resetPasswordValidation';
 import verifyResetPassword from '../../controllers/userController/updateResetPassword';
 
 const router = express.Router();
@@ -380,7 +380,7 @@ router.get('/all-users', verifyUserToken, getAllUsers);
  *
  */
 
-router.post('/reset-password', validateResetEmail, sendResetPasswordEmail);
+router.post('/request-reset-password', RequestResetEmail, sendResetPasswordEmail);
 
 
 /**
@@ -430,6 +430,6 @@ router.post('/reset-password', validateResetEmail, sendResetPasswordEmail);
  *           confirmPassword:
  *             type: string
  */
-router.patch('/reset-password', validatePassword, verifyResetPassword);
+router.patch('/reset-password', validateResetPassword, verifyResetPassword);
 
 export default router;
