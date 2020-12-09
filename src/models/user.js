@@ -37,9 +37,12 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'manager_id',
       as: 'line_manager',
     });
-    User.belongsTo(models.Role,{
+    User.belongsTo(models.Role, {
       foreignKey: 'user_role_id',
       as: 'user_role'
+    });
+    User.hasMany(models.Notification, {
+      foreignKey: 'user_id'
     });
 
     // user.hasMany(Travel_request, {
