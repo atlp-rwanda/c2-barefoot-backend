@@ -134,7 +134,7 @@ router.get('/', getLocations);
  *
  *
  */
-router.get('/:id', getOneLocation);
+router.get('/:id', permit(['view locations']), getOneLocation);
 
 /**
  * @swagger

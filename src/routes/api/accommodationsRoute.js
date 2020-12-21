@@ -248,7 +248,7 @@ router.get('/', getAccommodations);
  *                      description: Availability of wifi
  *                      example: false
  */
-router.get('/:id', getOneAccommodation);
+router.get('/:id', permit(['view accommodations']), getOneAccommodation);
 
 /**
  * @swagger
