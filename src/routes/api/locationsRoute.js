@@ -29,8 +29,6 @@ const router = express.Router();
  *
  *      "404":
  *        description: Error 404 is thrown when no locations are available
- *      "403":
- *        description: Unauthorised users are not allowed to view locations
  *
  *  components:
  *    schemas:
@@ -107,8 +105,6 @@ router.get('/', getLocations);
  *
  *      "404":
  *        description: Error 404 is thrown when the location does not exist
- *      "403":
- *        description: Unauthorised users are not allowed to view locations
  *
  *  components:
  *    schemas:
