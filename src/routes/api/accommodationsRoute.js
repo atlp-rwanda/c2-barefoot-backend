@@ -115,7 +115,7 @@ const router = express.Router();
  *
  *
  */
-router.get('/', permit(['view accommodations']), getAccommodations);
+router.get('/', getAccommodations);
 
 /**
  * @swagger
@@ -250,7 +250,7 @@ router.get('/', permit(['view accommodations']), getAccommodations);
  *                      description: Availability of wifi
  *                      example: false
  */
-router.get('/:id', permit(['view accommodations']), getOneAccommodation);
+router.get('/:id', getOneAccommodation);
 
 /**
  * @swagger

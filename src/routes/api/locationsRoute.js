@@ -82,7 +82,7 @@ const router = express.Router();
  *
  *
  */
-router.get('/', permit(['view locations']), getLocations);
+router.get('/', getLocations);
 
 /**
  * @swagger
@@ -138,7 +138,7 @@ router.get('/', permit(['view locations']), getLocations);
  *
  *
  */
-router.get('/:id', permit(['view locations']), getOneLocation);
+router.get('/:id', getOneLocation);
 
 /**
  * @swagger
