@@ -7,12 +7,12 @@ export default {
       state: 'Nyarugenge',
       streetAddress: 'KN 22 ST',
       locationID: 'c6028e0d-ef88-4693-ab49-f37669891724',
-      propertyType: 'Hostel',
+      propertyType: 'Hotel',
       numberOfRooms: 100,
-      typeOfBed: 'Double Decker',
-      title: 'Kigali Hostels',
+      typeOfBed: 'Single',
+      title: 'Marriot Hotel',
       description: 'A serene environment for relaxation',
-      photos: 'image.png'
+      photos: 'https://cache.marriott.com/marriottassets/marriott/KGLMC/kglmc-exterior-0030-hor-feat.jpg'
     },
     {
       id: '520f2b37-7bac-4490-aa7a-96f15915bcd7',
@@ -21,12 +21,12 @@ export default {
       state: 'Nyarugenge',
       streetAddress: 'KN 22 ST',
       locationID: 'c6028e0d-ef88-4693-ab49-f37669891724',
-      propertyType: 'Hostel',
+      propertyType: 'Hotel',
       numberOfRooms: 0,
-      typeOfBed: 'Double Decker',
-      title: 'Kigali Hostels',
+      typeOfBed: 'single',
+      title: 'Serena Hotel',
       description: 'A serene environment for relaxation',
-      photos: 'image.png'
+      photos: 'https://www.rwandagorillasafaris.com/wp-content/uploads/2020/01/serena-kigali.jpg'
     }
   ]),
 
