@@ -1,7 +1,7 @@
 import express from 'express';
 import signup from '../../controllers/userController/signup';
 import signupValidation from '../../middlewares/signupValidation';
-import {sendVerificationEmail, sendResetPasswordEmail} from '../../middlewares/sendEmail';
+import { sendVerificationEmail, sendResetPasswordEmail } from '../../middlewares/sendEmail';
 import verification from '../../controllers/userController/verification';
 import loginValidation from '../../middlewares/loginValidation';
 import logedIn from '../../helper/isLogedIn';
@@ -10,7 +10,7 @@ import logout from '../../controllers/userController/logout';
 import refreshToken from '../../controllers/userController/refreshToken';
 import getAllUsers from '../../controllers/userController/users';
 import verifyUserToken from '../../middlewares/usertokenverification';
-import {RequestResetEmail, validateResetPassword} from '../../middlewares/resetPasswordValidation';
+import { RequestResetEmail, validateResetPassword } from '../../middlewares/resetPasswordValidation';
 import verifyResetPassword from '../../controllers/userController/updateResetPassword';
 
 const router = express.Router();
@@ -346,7 +346,6 @@ router.post('/refresh-token', refreshToken);
  */
 router.get('/all-users', verifyUserToken, getAllUsers);
 
-
 /**
  * @swagger
  *
@@ -381,7 +380,6 @@ router.get('/all-users', verifyUserToken, getAllUsers);
  */
 
 router.post('/request-reset-password', RequestResetEmail, sendResetPasswordEmail);
-
 
 /**
  * @swagger
