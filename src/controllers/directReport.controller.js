@@ -52,16 +52,16 @@ export const approve_reject_TravelRequest = async (req, res, next) => {
             const updateStatus = await travelRequestServices.updateStatus({ travelId: travelRequestId, status: { status: changes } });
 
             if (updateStatus) {
-              //in-app notification and email notification
+              // in-app notification and email notification
               const newNotificantion = {
                 user_id: user.id,
                 title: `${req.body.action} Travel Request`,
                 message: `Your travel request was ${req.body.action}d! `
-                  };
-                  
-               const notification = await models.Notification.create(newNotificantion);
-               pusher.trigger('bare-foot-normad', 'notification', notification);
-               const mail = await approveTravelRequestEmail(user.email, req.body.action);
+              };
+
+              const notification = await models.Notification.create(newNotificantion);
+              pusher.trigger('bare-foot-normad', 'notification', notification);
+              const mail = await approveTravelRequestEmail(user.email, req.body.action);
               return res.status(201).json({ status: 201, message: 'Operation performed successfully!' });
             }
             throw new ApplicationError('Failed to approve this travel request, try again!', 500);
