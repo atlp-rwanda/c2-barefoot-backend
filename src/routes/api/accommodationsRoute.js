@@ -34,8 +34,6 @@ const router = express.Router();
  *
  *      "404":
  *        description: Error 404 is thrown when no accommodations are available
- *      "403":
- *        description: Unauthorised users are not allowed to view accommodations
  *
  *  components:
  *    schemas:
@@ -115,7 +113,7 @@ const router = express.Router();
  *
  *
  */
-router.get('/', permit(['view accommodations']), getAccommodations);
+router.get('/', getAccommodations);
 
 /**
  * @swagger
