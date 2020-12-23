@@ -15,7 +15,6 @@ const getUserProfile = async (req, res, next) => {
   } catch (err) { next(err); }
 };
 
-// update a single user profile
 const updateUserProfile = async (req, res, next) => {
   try {
     if (!res.locals.token) throw new ApplicationError('unable to obtain a payload in token', 500);
@@ -27,4 +26,18 @@ const updateUserProfile = async (req, res, next) => {
     res.status(200).json({ status: 200, message: 'successfully updated your profile' });
   } catch (err) { next(err); }
 };
-export { getUserProfile, updateUserProfile };
+
+const changePassword = async (req, res, next) => {
+  try {
+    if (!res.locals.token) throw new ApplicationError('unable to obtain a payload in token', 500);
+    const username = res.locals.token;
+    const record = await UserServices.getUserByUserName(username);
+    if (!record) throw new NotFoundRequestError('user not found', 404);
+    if (record.dataValues.username !== username) throw new AuthorizationError('owner of profile does not match signed in user', 401);
+    const { currentPassword, newPassword } = req.body;
+    UserServices.changePasswordByUsername(currentPassword, newPassword, username);
+    res.status(200).json({ status: 200, message: 'successfully updated your profile' });
+  } catch (err) { next(err); }
+};
+
+export { getUserProfile, updateUserProfile, changePassword };
