@@ -1,5 +1,4 @@
 import models from '../models';
-import NotFoundRequestError from '../utils/Errors/notFoundRequestError';
 
 const { User } = models;
 /**
@@ -42,6 +41,18 @@ class UserService {
   }
 
   /**
+  * @param {string} username add username.
+  * @return {object} get user password
+  */
+  async getPasswordByUserName(username) {
+    const query = {
+      attributes: ["password", "username"],
+      where: { username: username }
+    }
+    return this.user.findOne(query);
+  }
+
+  /**
   * @param {string} email add email.
   * @return {object} get user with provided email
   */
@@ -56,17 +67,6 @@ class UserService {
    */
   async updateUserByUsername(data, username) {
     return this.user.update(data, { where: { username } });
-  }
-
-  /**
-   * @param {string} password include password
-   * @param {string} username add username.
-   * @return {string} success message
-   */
-  async changePasswordByUsername(currentPassword, newPassword, username) {
-    const user = this.user.findOne({ where: { currentPassword } });
-    if (!user) throw new NotFoundRequestError('user not found', 404);
-    return this.user.update(newPassword, { where: { username } });
   }
 }
 

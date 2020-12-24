@@ -46,7 +46,7 @@ export const invalidData = {
 const payload = { username: validUser.username, user_role_id: roles.REQUESTER };
 
 export const validToken = generateToken(payload);
-
+export const validUpdatedUserToken = generateToken({ username: validData.username, user_role_id: roles.REQUESTER })
 export const invalidToken = `${validToken}234`;
 export const validDataToken = generateToken({ username: 'With_LineManager', user_role_id: roles.MANAGER });
 export const invalidDataToken = generateToken({ username: 'fakeUser' });

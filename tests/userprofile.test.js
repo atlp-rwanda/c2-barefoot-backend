@@ -2,7 +2,7 @@
 import { expect, request, use } from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../src/app';
-import { validData, invalidData, validUpdatePassword, validToken } from './dummyData';
+import { validData, invalidData, validToken, validUpdatedUserToken, validUser } from './dummyData';
 
 use(chaiHttp);
 
@@ -28,19 +28,20 @@ describe('testing updating a user profile end point', async () => {
   });
 });
 
-describe('testing updating a user profile end point', async () => {
-  it('when a valid token is provided and invalid data is provided it should return status 401 ', async () => {
-    const res = await request(app).patch('/api/v1/profile/update-profile').send(invalidData).set('Authorization', `Bearer ${validToken}`);
+describe('testing updating a password field in user profile end point', async () => {
+  it('when a valid token is provided and invalid current password is provided it should return status 404 ', async () => {
+    const res = await request(app)
+      .patch('/api/v1/profile/change-password')
+      .send({ currentPassword: 'invalidPasss', newPassword: 'newPass1234' })
+      .set('Authorization', `Bearer ${validUpdatedUserToken}`);
     expect(res).to.have.status(404);
   });
 
-  it('when a valid token is provided and invalid data is provided it should return status 404 ', async () => {
-    const res = await request(app).patch('/api/v1/profile/update-profile').send(invalidData).set('Authorization', `Bearer ${validToken}`);
-    expect(res).to.have.status(404);
-  });
-
-  it('when a valid token is provided and data provided it should return status 200 ', async () => {
-    const res = await request(app).patch('/api/v1/profile/update-profile').send(validUpdatePassword).set('Authorization', `Bearer ${validToken}`);
+  it('when a valid token is provided and valid current password is provided it should return status 200 ', async () => {
+    const res = await request(app)
+      .patch('/api/v1/profile/change-password')
+      .send({ currentPassword: validUser.password, newPassword: 'newPass1234' })
+      .set('Authorization', `Bearer ${validUpdatedUserToken}`);
     expect(res).to.have.status(200);
   });
 });
