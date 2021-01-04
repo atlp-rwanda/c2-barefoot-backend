@@ -11,8 +11,7 @@ let User = '';
 
 describe('Testing the accommodations route', () => {
   it('Should retrieve accommodations in the database', async () => {
-    User = await request(app).post('/api/v1/user/login').send(travelAdmin);
-    const res = await request(app).get('/api/v1/accommodations?page=1').set('Authorization', `Bearer ${User.body.data}`);
+    const res = await request(app).get('/api/v1/accommodations?page=1');
     expect(res.type).to.equal('application/json');
     expect(res).to.have.status(200);
     expect(res.body).to.have.property('page');

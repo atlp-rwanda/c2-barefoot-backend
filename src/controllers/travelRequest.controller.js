@@ -5,8 +5,7 @@ import travelRequestServices from '../services/directTravelRequest';
 import ApplicationError from '../utils/Errors/applicationError';
 import BadRequestError from '../utils/Errors/badRequestError';
 import NotFoundRequestError from '../utils/Errors/notFoundRequestError';
-import rejectTravelRequestEmail from '../middlewares/sendNotificationEmail';
-import { cancelTravelRequestEmail } from '../middlewares/sendNotificationEmail'
+import { cancelTravelRequestEmail } from '../middlewares/sendNotificationEmail';
 
 import pusher from '../config/pusher';
 import models from '../models';
@@ -57,13 +56,13 @@ export const cancel_travelRequest = async (req, res, next) => {
                 user_id: userId,
                 title: 'Cancel Travel Request',
                 message: `You ${req.body.action}ed your travel request `
-                  };
+              };
 
-               const notification = await models.Notification.create(newNotificantion);
-               console.log(notification);
-               pusher.trigger('bare-foot-normad', 'notification', notification);
-               const mail = await cancelTravelRequestEmail(decoded.email, req.body.action);
-               console.log(mail);
+              const notification = await models.Notification.create(newNotificantion);
+              console.log(notification);
+              pusher.trigger('bare-foot-normad', 'notification', notification);
+              const mail = await cancelTravelRequestEmail(decoded.email, req.body.action);
+              console.log(mail);
 
               return res.status(201).json({ status: 201, message: 'Travel request canceled successfully!' });
             }
