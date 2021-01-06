@@ -7,6 +7,7 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: DataTypes.UUIDV4,
     },
     LocationName: DataTypes.STRING,
+    LocationImage: DataTypes.STRING,
     country: DataTypes.STRING,
     description: DataTypes.STRING,
     link: DataTypes.STRING
