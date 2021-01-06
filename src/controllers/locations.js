@@ -85,7 +85,9 @@ export const searchLocations = async (req, res, next) => {
       limit,
       search
     })
-    if (!getLocations.length) {
+    getLocations.page= page;
+    getLocations.limit= limit;
+    if (!getLocations.counts) {
       throw new locationNotFound('Location not found!');
     }
     res.status(200).json(getLocations);

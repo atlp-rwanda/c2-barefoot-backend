@@ -109,9 +109,11 @@ export const searchAccommodations = async (req, res, next) => {
       limit,
       fromLocation
     })
-    if (!getAccommodations.length) {
+    if (!getAccommodations.counts) {
       throw new accommodationNotFound('Accommodation not found!');
     }
+    getAccommodations.page = page;
+    getAccommodations.limit = limit;
     res.status(200).json(getAccommodations);
   } catch (error) {
     next(error);

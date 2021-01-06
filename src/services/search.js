@@ -1,6 +1,7 @@
 import models from '../models';
 import {Op} from 'sequelize';
 
+//search locations based on the location name and the country
 export const queryLocations = async (query) => {
     const { search, offset, limit } = query;
 
@@ -11,14 +12,20 @@ export const queryLocations = async (query) => {
     const key = 'LocationName';
     const resultsUniqueByLocationName = [...new Map(results.map(item =>
     [item[key], item])).values()];
-
-    return resultsUniqueByLocationName;
+    const data ={
+        counts: resultsUniqueByLocationName.length,
+        rows: resultsUniqueByLocationName
+    }
+    return data;
 };
   
+//search accommodations based on the locationID
 export const queryAccommodations = (query) => {
     const { fromLocation, offset, limit } = query;
     const results = models.Accommodation.findAll({offset, limit,  where: { locationID: fromLocation}});
-  
-    return results;
+    const data = {
+        counts: results.length,
+        rows: results
+    }
+    return data;
 };
-  
