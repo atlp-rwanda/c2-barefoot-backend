@@ -60,7 +60,7 @@ export const approve_reject_TravelRequest = async (req, res, next) => {
               };
 
               const notification = await models.Notification.create(newNotificantion);
-              pusher.trigger('bare-foot-normad', 'notification', notification);
+              // pusher.trigger('bare-foot-normad', 'notification', notification);
               const mail = await approveTravelRequestEmail(user.email, req.body.action);
               return res.status(201).json({ status: 201, message: 'Operation performed successfully!' });
             }
