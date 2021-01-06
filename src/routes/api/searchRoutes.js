@@ -67,6 +67,11 @@ router.get('/locations', searchLocations);
  *         schema:
  *           type: string
  *         description: The search keyword used to find accommodations from a specific location
+ *       - in: query
+ *         name: city
+ *         schema:
+ *            type: string
+ *         description: The city keyword of the location
  *    responses:
  *      "200":
  *        description: Returns the first 10 accommodations

@@ -21,8 +21,8 @@ export const queryLocations = async (query) => {
   
 //search accommodations based on the locationID
 export const queryAccommodations = async (query) => {
-    const { fromLocation, offset, limit } = query;
-    const results = await models.Accommodation.findAll({offset, limit,  where: { locationID: fromLocation}});
+    const { fromLocation, city, offset, limit } = query;
+    const results = await models.Accommodation.findAll({offset, limit,  where: { country: {[Op.iLike]:`%${fromLocation}%`}, city:{[Op.iLike]:`%${city}%`} }});
     const data = {
         counts: results.length,
         rows: results

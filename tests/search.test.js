@@ -25,9 +25,9 @@ describe('Test search locations',  () =>{
 });
 
 describe('Test search Accommodations', () =>{
-    it('should return accommodations based on the locationId', async () =>{
-        let locationID='c6028e0d-ef88-4693-ab49-f37669891724';
-        const search = await request(app).get(`/api/v1/search/accommodations?fromLocation=${locationID}`);
+    it('should return accommodations based on the country and city', async () =>{
+        let country='rwanda', city='kigali';
+        const search = await request(app).get(`/api/v1/search/accommodations?fromLocation=${country}&city=${city}`);
         expect(search.type).to.equal('application/json');
         expect(search).to.have.status(200);
         expect(search.body).to.have.property('counts');

@@ -102,12 +102,13 @@ export const searchAccommodations = async (req, res, next) => {
     const page = req.query.page || 1;
     const limit = req.query.limit || 10;
     const skip = ((page - 1) === -1) ? 0 : (page - 1) * limit;
-    const { fromLocation } = req.query;
+    const { fromLocation,city } = req.query;
 
     const getAccommodations = await queryAccommodations({
       offset: skip,
       limit,
-      fromLocation
+      fromLocation,
+      city
     })
     if (!getAccommodations.counts) {
       throw new accommodationNotFound('Accommodation not found!');
