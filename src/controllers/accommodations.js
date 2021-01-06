@@ -4,6 +4,7 @@ import accommodationNotFound from '../utils/Errors/notFoundRequestError';
 import accommodationService from '../services/accommodations';
 import getUserData from '../helper/tokenToData';
 import badRequest from '../utils/Errors/badRequestError';
+import { queryAccommodations } from '../services/search';
 
 export const createAccommodation = async (req, res, next) => {
   try {
@@ -90,6 +91,28 @@ export const bookAccomodation = async (req, res, next) => {
     const booking = await models.Booking.create(req.body);
     const update = await models.Accommodation.update({ numberOfRooms: newRooms }, { where: { id: req.params.id } });
     res.status(201).json({ message: 'Booking successfully made', data: booking });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const searchAccommodations = async (req, res, next) => {
+  
+  try {
+    const page = req.query.page || 1;
+    const limit = req.query.limit || 10;
+    const skip = ((page - 1) === -1) ? 0 : (page - 1) * limit;
+    const { fromLocation } = req.query;
+
+    const getAccommodations = await queryAccommodations({
+      offset: skip,
+      limit,
+      fromLocation
+    })
+    if (!getAccommodations.length) {
+      throw new accommodationNotFound('Accommodation not found!');
+    }
+    res.status(200).json(getAccommodations);
   } catch (error) {
     next(error);
   }

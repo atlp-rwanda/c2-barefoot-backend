@@ -3,6 +3,7 @@ import 'express-async-errors';
 import locationNotFound from '../utils/Errors/notFoundRequestError';
 import badRequest from '../utils/Errors/badRequestError';
 import retrieveLocations from '../services/getLocations';
+import { queryLocations } from '../services/search';
 
 export const getLocations = async (req, res, next) => {
   const page = Number(req.query.page);
@@ -66,6 +67,28 @@ export const deleteLocation = async (req, res, next) => {
 
     const dltLocation = await models.Location.destroy({ where: { id: req.params.id } });
     res.status(201).json({ status: 201, message: 'Location has been deleted' });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const searchLocations = async (req, res, next) => {
+  
+  try {
+    const page = req.query.page || 1;
+    const limit = req.query.limit || 5;
+    const skip = ((page - 1) === -1) ? 0 : (page - 1) * limit;
+    const { search } = req.query;
+
+    const getLocations = await queryLocations({
+      offset: skip,
+      limit,
+      search
+    })
+    if (!getLocations.length) {
+      throw new locationNotFound('Location not found!');
+    }
+    res.status(200).json(getLocations);
   } catch (error) {
     next(error);
   }
