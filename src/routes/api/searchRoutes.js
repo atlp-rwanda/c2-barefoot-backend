@@ -1,58 +1,76 @@
 import express from 'express';
 import { searchAccommodations } from '../../controllers/accommodations';
-import { searchLocations } from '../../controllers/locations';
+import { getAllLocations } from '../../controllers/locations';
 
 const router = express.Router();
+
 
 /**
  * @swagger
  *
- * /api/v1/search/locations:
+ * /api/v1/search/locations/all:
  *  get:
- *    summary: A route that allows any user to perform search operations on locations.
+ *    summary: A route that allows the user to retrieve all locations.
  *    tags: [search]
- *    parameters:
- *       - in: query
- *         name: search
- *         schema:
- *           type: string
- *         description: The search keyword used to find the match location
  *    responses:
  *      "200":
- *        description: Returns the first 5 locations
+ *        description: Returns the first 2 locations
  *        content:
  *        application/json:
  *          schema:
- *            $ref: '#/components/schemas/searchLocations'
+ *            $ref: '#/components/schemas/allLocations'
  *
  *      "404":
- *        description: Error 404 is thrown when no locations are found
+ *        description: Error 404 is thrown when no locations are available
  *
- * components:
+ *  components:
  *    schemas:
- *      searchLocations:
+ *      allLocations:
  *        type: object
  *        properties:
- *          counts:
+ *          status:
  *            type: integer
- *          rows:
- *            type: array
- *            items:
- *              type: object
- *              properties:
- *                 id:
- *                   type: string
- *                 LocationNamee:
- *                   type: string
- *                 country:
- *                   type: string
- *                 description:
- *                   type: string
- *                 link:
- *                   type: string
- * 
+ *            description: The HTTP status code
+ *            example: 200
+ *          locations:
+ *            type: object
+ *            description: An object containing locations retrieved from the database
+ *            properties:
+ *              count:
+ *                type: integer
+ *                description: The number of locations available in the database
+ *                example: 1
+ *              rows:
+ *                type: array
+ *                description: An array of retrieved locations. Each item is a location.
+ *                items:
+ *                    type: object
+ *                    properties:
+ *                      id:
+ *                        type: string
+ *                        description: A unique UUID v4 of the user
+ *                        example: 952595eb-b193-4391-9196-6840f7ad293d
+ *                      LocationName:
+ *                        type: string
+ *                        description: The name of the location
+ *                        example: Kigali
+ *                      country:
+ *                        type: string
+ *                        description: The country where the location is
+ *                        example: Rwanda
+ *                      description:
+ *                        type: string
+ *                        description: A short description about the location
+ *                        example: The land of a thousand hills
+ *                      link:
+ *                        type: string
+ *                        description: A link to a video or wiki with more info about the location
+ *                        example: https://en.wikipedia.org/wiki/Kigali
+ *
+ *
  */
-router.get('/locations', searchLocations);
+router.get('/locations/all', getAllLocations);
+
 
 /**
  * @swagger

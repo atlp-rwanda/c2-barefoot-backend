@@ -2,8 +2,7 @@ import models from '../models';
 import 'express-async-errors';
 import locationNotFound from '../utils/Errors/notFoundRequestError';
 import badRequest from '../utils/Errors/badRequestError';
-import retrieveLocations from '../services/getLocations';
-import { queryLocations } from '../services/search';
+import {retrieveAllLocations, retrieveLocations} from '../services/getLocations';
 
 export const getLocations = async (req, res, next) => {
   const page = Number(req.query.page);
@@ -72,25 +71,14 @@ export const deleteLocation = async (req, res, next) => {
   }
 };
 
-export const searchLocations = async (req, res, next) => {
-  
+export const getAllLocations = async (req, res, next) => {
+  console.log('++++++++++++++++++locationsall')
   try {
-    const page = req.query.page || 1;
-    const limit = req.query.limit || 5;
-    const skip = ((page - 1) === -1) ? 0 : (page - 1) * limit;
-    const { search } = req.query;
-
-    const getLocations = await queryLocations({
-      offset: skip,
-      limit,
-      search
-    })
-    getLocations.page= page;
-    getLocations.limit= limit;
-    if (!getLocations.counts) {
-      throw new locationNotFound('Location not found!');
+    const locations = await retrieveAllLocations();
+    if (!locations.count) {
+      throw new locationNotFound('There are no locations available');
     }
-    res.status(200).json(getLocations);
+    res.status(200).json({ status: 200, locations });
   } catch (error) {
     next(error);
   }

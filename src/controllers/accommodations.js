@@ -102,7 +102,7 @@ export const searchAccommodations = async (req, res, next) => {
     const page = req.query.page || 1;
     const limit = req.query.limit || 10;
     const skip = ((page - 1) === -1) ? 0 : (page - 1) * limit;
-    const { fromLocation,city } = req.query;
+    const { fromLocation,city } = req.query || null;
 
     const getAccommodations = await queryAccommodations({
       offset: skip,

@@ -1,6 +1,6 @@
 import express from 'express';
 import {
-  createLocation, getLocations, getOneLocation, updateLocation, deleteLocation
+  createLocation, getLocations, getOneLocation, updateLocation, deleteLocation,
 } from '../../controllers/locations';
 import permit from '../../middlewares/accessControl';
 
@@ -88,7 +88,7 @@ router.get('/', getLocations);
  * /api/v1/locations/{id}:
  *  get:
  *    summary: This route retrieves a specific location with the specified ID
- *    tags: [One Location]
+ *    tags: [Locations]
  *    parameters:
  *      - in: path
  *        name: id
@@ -142,7 +142,7 @@ router.get('/:id', permit(['view locations']), getOneLocation);
  * /api/v1/locations/{id}:
  *  patch:
  *    summary: This route updates a specific location with the specified ID
- *    tags: [Update one location]
+ *    tags: [Locations]
  *    parameters:
  *      - in: path
  *        name: id
@@ -184,7 +184,7 @@ router.patch('/:id', permit(['update locations']), updateLocation);
  * /api/v1/locations/{id}:
  *  delete:
  *    summary: This route deletes a specific location with the specified ID
- *    tags: [Delete one location]
+ *    tags: [Locations]
  *    parameters:
  *      - in: path
  *        name: id
@@ -226,7 +226,7 @@ router.delete('/:id', permit(['delete locations']), deleteLocation);
  * /api/v1/locations:
  *  post:
  *    summary: This is used to create locations
- *    tags: [Create a location]
+ *    tags: [Locations]
  *    requestBody:
  *      required: true
  *      content:

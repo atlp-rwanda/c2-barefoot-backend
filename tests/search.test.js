@@ -5,22 +5,12 @@ import app from '../src/app';
 use(chaiHttp);
 
 describe('Test search locations',  () =>{
-    it('should return locations based on the location name and country', async ()=>{
-        const search = await request(app).get('/api/v1/search/locations?search=');
+    it('should return all locations ', async ()=>{
+        const search = await request(app).get('/api/v1/search/locations/all');
         expect(search.type).to.equal('application/json');
         expect(search).to.have.status(200);
-        expect(search.body).to.have.property('counts');
-        expect(search.body).to.have.property('rows');
-        expect(search.body).to.have.property('page');
-        expect(search.body).to.have.property('limit');
-    });
-
-    it('should return an error message when there is empty results', async () =>{
-        const search = await request(app).get('/api/v1/search/locations?search=testsst');
-        expect(search.type).to.equal('application/json');
-        expect(search).to.have.status(404);
-        expect(search.body).to.have.property('error');
-        expect(search.body.error).to.equal('Location not found!');
+        expect(search.body.locations).to.have.property('count');
+        expect(search.body.locations).to.have.property('rows');
     });
 });
 
@@ -35,4 +25,26 @@ describe('Test search Accommodations', () =>{
         expect(search.body).to.have.property('limit');
         expect(search.body).to.have.property('rows');
     });
+    it('should return accommodations based on the city', async () =>{
+        let city='kigali';
+        const search = await request(app).get(`/api/v1/search/accommodations?city=${city}`);
+        expect(search.type).to.equal('application/json');
+        expect(search).to.have.status(200);
+        expect(search.body).to.have.property('counts');
+        expect(search.body).to.have.property('page');
+        expect(search.body).to.have.property('limit');
+        expect(search.body).to.have.property('rows');
+    });
+    
+    it('should return accommodations based on the country ', async () =>{
+        let country='rwanda';
+        const search = await request(app).get(`/api/v1/search/accommodations?fromLocation=${country}`);
+        expect(search.type).to.equal('application/json');
+        expect(search).to.have.status(200);
+        expect(search.body).to.have.property('counts');
+        expect(search.body).to.have.property('page');
+        expect(search.body).to.have.property('limit');
+        expect(search.body).to.have.property('rows');
+    });
+
 })
