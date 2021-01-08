@@ -14,10 +14,8 @@ const updateNotifications = async (req, res) => {
   if (!notification) throw new NotFoundRequestError('notification not found', 404);
   try {
     const updated = await updateNotification(notificationId);
-    console.log(updated);
     return res.status(200).json({ status: 200, message: 'notification updated successful!' });
   } catch (error) {
-    console.log(error.message, error.stack);
   }
 };
 export default updateNotifications;

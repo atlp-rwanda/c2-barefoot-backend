@@ -12,7 +12,6 @@ const assignUserTomanagerEmail = async (email) => {
   try {
     const sendmail = await sendMail(mailOptions);
   } catch (error) {
-    console.log(error.message);
   }
 };
 
@@ -26,7 +25,6 @@ export const approveTravelRequestEmail = async (email, action) => {
   try {
     const sendmail = await sendMail(mailOptions);
   } catch (error) {
-    console.log(error.message);
   }
 };
 
@@ -41,7 +39,6 @@ export const cancelTravelRequestEmail = async (email, action) => {
   try {
     const sendmail = await sendMail(mailOptions);
   } catch (error) {
-    console.log(error.message);
   }
 };
 export default assignUserTomanagerEmail;

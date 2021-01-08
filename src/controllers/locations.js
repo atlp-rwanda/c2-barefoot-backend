@@ -72,7 +72,6 @@ export const deleteLocation = async (req, res, next) => {
 };
 
 export const getAllLocations = async (req, res, next) => {
-  console.log('++++++++++++++++++locationsall')
   try {
     const locations = await retrieveAllLocations();
     if (!locations.count) {
