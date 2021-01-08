@@ -59,10 +59,7 @@ export const cancel_travelRequest = async (req, res, next) => {
               };
 
               const notification = await models.Notification.create(newNotificantion);
-              console.log(notification);
-              pusher.trigger('bare-foot-normad', 'notification', notification);
               const mail = await cancelTravelRequestEmail(decoded.email, req.body.action);
-              console.log(mail);
 
               return res.status(201).json({ status: 201, message: 'Travel request canceled successfully!' });
             }

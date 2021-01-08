@@ -121,7 +121,7 @@ router.get('/', getAccommodations);
  * /api/v1/accommodations/{id}:
  *  get:
  *    summary: This route retrieves a specific accommodation with the specified ID
- *    tags: [One Accommodation]
+ *    tags: [accommodations]
  *    security:
  *      - bearerAuth: []
  *    parameters:
@@ -256,7 +256,7 @@ router.get('/:id', permit(['view accommodations']), getOneAccommodation);
  * /api/v1/accommodations/{id}:
  *  patch:
  *    summary: This route updates a specific accommodation with the specified ID
- *    tags: [Update one accommodation]
+ *    tags: [accommodations]
  *    parameters:
  *      - in: path
  *        name: id
@@ -298,7 +298,7 @@ router.patch('/:id', permit(['update accommodations']), updateAccommodation);
  * /api/v1/accommodations/{id}:
  *  delete:
  *    summary: This route deletes a specific accommodation with the specified ID
- *    tags: [Delete one accommodation]
+ *    tags: [accommodations]
  *    parameters:
  *      - in: path
  *        name: id
@@ -340,7 +340,7 @@ router.delete('/:id', permit(['delete accommodations']), deleteAccommodation);
  * /api/v1/accommodations:
  *  post:
  *    summary: This route creates accommodations
- *    tags: [Create Accommodation]
+ *    tags: [accommodations]
  *    requestBody:
  *      required: true
  *      content:
@@ -418,7 +418,7 @@ router.post('/', permit(['create accommodations']), createAccommodation);
  * /api/v1/accommodations/book/{id}:
  *  post:
  *    summary: This route allows managers and requesters to book accommodations
- *    tags: [Book Accommodation]
+ *    tags: [accommodations]
  *    parameters:
  *       - in: path
  *         name: id
