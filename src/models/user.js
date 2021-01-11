@@ -2,7 +2,6 @@ import sequelizePaginate from 'sequelize-paginate';
 import roles from '../utils/roles';
 import { hashPassword } from '../utils/auth';
 
-'use strict';
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
 
@@ -44,22 +43,6 @@ module.exports = (sequelize, DataTypes) => {
     User.hasMany(models.Notification, {
       foreignKey: 'user_id'
     });
-
-    // user.hasMany(Travel_request, {
-    //   as: 'requester',
-    //   foreignKey: 'userId',
-    // targetKey: 'id',
-    //  onUpdate: 'CASCADE',
-    // onDelete: 'CASCADE'
-
-    // });
-
-    // user.belongsToMany(travelRequest, {
-    //   through: 'Accomodation',
-    //   as: 'TravelRequest',
-    //   foreignKey: 'userId',
-    //   onDelete: 'CASCADE'
-    // })
   };
 
   //  hash user password before creating user
