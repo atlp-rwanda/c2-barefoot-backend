@@ -5,6 +5,7 @@ import {
 import {
   findUsers, updateUserRole, deleteOne, createRole, getAllRoles, updatePermissions, deleteRoles, assignLineManager
 } from '../../controllers/admin/users_roles';
+import getPermissions from '../../controllers/admin/getPermissions';
 import { changeUserRole } from '../../middlewares/changeUserRole';
 import permit from '../../middlewares/accessControl';
 
@@ -475,6 +476,8 @@ router.put('/users/line-manager', permit(['assign requesters to manager']), assi
  */
 
 router.delete('/users', deleteValidationEmail, changeUserRole, deleteOne);
+
+router.get('/permissions', getPermissions);
 
 /* a delete route to show how to use this middleware of permissions*
  *for this to pass you have to send exact permission(s) as parameter(s) */

@@ -16,7 +16,7 @@ export const findUsers = async (req, res, next) => {
     const users = await usersService.findUsers({
       offset: skip,
       limit,
-      attributes: ['id', 'first_name', 'last_name', 'username', 'bio', 'email', 'address', 'language', 'profile_picture', 'user_role_id', 'manager_id', 'verified']
+      attributes: ['id', 'first_name', 'last_name', 'username', 'bio', 'email', 'address', 'language', 'occupation', 'profile_picture', 'user_role_id', 'manager_id', 'verified']
 
     });
 
