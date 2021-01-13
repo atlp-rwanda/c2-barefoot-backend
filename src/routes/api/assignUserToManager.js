@@ -40,7 +40,7 @@ router.get('/verified-users', isManager, verifiedUser);
 
 /**
  * @swagger
- * /api/v1/assignUserstoManager/verified-users/managers?page=1:
+ * /api/v1/assignUserstoManager/verified-users/managers:
  *   get:
  *     tags:
  *       - Verified Manager
