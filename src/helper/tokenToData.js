@@ -9,7 +9,9 @@ const getDataFromToken = async (req, res, next) => {
     const authorization = token;
     try {
       const user = await verifyToken(authorization);
+      // console.log(user)
       const userInfo = UserServices.getUserByUserName(user.username);
+      // console.log(userInfo)
       return userInfo;
     } catch (e) {
       return res.status(401).json({ message: 'session has expired, please login' });
