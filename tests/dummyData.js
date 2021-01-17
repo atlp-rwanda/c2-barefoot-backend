@@ -29,7 +29,6 @@ export const validData = {
   last_name: 'TestName',
   username: 'TestName1212',
   occupation: 'software development',
-  password: 'pa13332335',
   address: 'Kigali',
   language: 'English',
   profile_picture: 'image.png'
@@ -40,7 +39,6 @@ export const invalidData = {
   last_name: 'TestName',
   username: 'TestName1212',
   occupation: 'm',
-  password: 'pa13332335',
   address: 'Kigali',
   language: 'English',
   profile_picture: 'image.png'
@@ -48,10 +46,11 @@ export const invalidData = {
 const payload = { username: validUser.username, user_role_id: roles.REQUESTER };
 
 export const validToken = generateToken(payload);
-
+export const validUpdatedUserToken = generateToken({ username: validData.username, user_role_id: roles.REQUESTER })
 export const invalidToken = `${validToken}234`;
 export const validDataToken = generateToken({ username: 'With_LineManager', user_role_id: roles.MANAGER });
 export const invalidDataToken = generateToken({ username: 'fakeUser' });
+export const validUpdatePassword = { currentPassword: validUser.password, newPassword: 'pa13332335' }
 export const { email, password } = validUser;
 // Login data
 

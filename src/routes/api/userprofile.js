@@ -1,7 +1,7 @@
 import express from 'express';
-import { updateUserProfile, getUserProfile } from '../../controllers/userController/userprofile';
+import { updateUserProfile, getUserProfile, changePassword } from '../../controllers/userController/userprofile';
 import verifyUserToken from '../../middlewares/usertokenverification';
-import updateProfileInputsValidation from '../../middlewares/updateprofileinputsvalidation';
+import { updateProfileInputsValidation, changePasswordValidation } from '../../middlewares/updateprofileinputsvalidation';
 import permit from '../../middlewares/accessControl';
 
 const router = express.Router();
@@ -59,6 +59,10 @@ const router = express.Router();
 
 // ------------------ update user profile --------
 router.patch('/update-profile', verifyUserToken, updateProfileInputsValidation, permit(["edit profile"]), updateUserProfile);
+
+// delete password
+
+router.patch('/change-password', verifyUserToken, changePasswordValidation, permit(["edit profile"]), changePassword);
 
 /**
  * @swagger
