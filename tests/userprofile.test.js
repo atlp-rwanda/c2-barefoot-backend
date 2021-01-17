@@ -32,7 +32,7 @@ describe('testing updating a password field in user profile end point', async ()
   it('when a valid token is provided and invalid current password is provided it should return status 404 ', async () => {
     const res = await request(app)
       .patch('/api/v1/profile/change-password')
-      .send({ currentPassword: 'invalidPasss', newPassword: 'newPass1234' })
+      .send({ current_password: 'invalidPasss', new_password: 'newPass1234' })
       .set('Authorization', `Bearer ${validUpdatedUserToken}`);
     expect(res).to.have.status(404);
   });
@@ -40,7 +40,7 @@ describe('testing updating a password field in user profile end point', async ()
   it('when a valid token is provided and valid current password is provided it should return status 200 ', async () => {
     const res = await request(app)
       .patch('/api/v1/profile/change-password')
-      .send({ currentPassword: validUser.password, newPassword: 'newPass1234' })
+      .send({ current_password: validUser.password, new_password: 'newPass1234' })
       .set('Authorization', `Bearer ${validUpdatedUserToken}`);
     expect(res).to.have.status(200);
   });

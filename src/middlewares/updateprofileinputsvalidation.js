@@ -21,8 +21,8 @@ const updateProfileInputsValidation = async (req, res, next) => {
 
 const changePasswordValidation = async (req, res, next) => {
   const schema = Joi.object({
-    currentPassword: Joi.string().required().min(8),
-    newPassword: Joi.string().required().min(8),
+    current_password: Joi.string().required().min(8),
+    new_password: Joi.string().required().min(8),
   });
   try {
     const { error } = schema.validate(req.body);

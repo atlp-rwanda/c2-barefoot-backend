@@ -35,10 +35,10 @@ const changePassword = async (req, res, next) => {
     const record = await UserServices.getPasswordByUserName(username);
     if (!record) throw new NotFoundRequestError('user not found', 404);
     if (record.dataValues.username !== username) throw new AuthorizationError('owner of profile does not match signed in user', 401);
-    const { currentPassword, newPassword } = req.body;
-    const checkPass = comparePassword(currentPassword, record.dataValues.password)
+    const { current_password, new_password } = req.body;
+    const checkPass = comparePassword(current_password, record.dataValues.password)
     if (!checkPass) throw new NotFoundRequestError('user with that password is not found', 404);
-    UserServices.updateUserByUsername(newPassword, username);
+    UserServices.updateUserByUsername({ password: new_password }, username);
     res.status(200).json({ status: 200, message: 'successfully updated your profile' });
   } catch (err) {
     next(err);
